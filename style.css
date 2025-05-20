@@ -19,7 +19,7 @@ h1 {
     margin-bottom: 10px;
 }
 
-/* --- Control Button Styles (Start/Stop Scanner, Fetch UPC, Clear Results) --- */
+/* --- Control Button Styles (Start/Stop Scanner, Fetch UPC, Clear Results, Toggle Manual) --- */
 .controls button {
     background-color: #28a745; /* Green for start/show */
     color: white;
@@ -149,14 +149,14 @@ h1 {
     text-align: center; /* Default align center for product card */
 }
 
-/* Product Card Specific Styles */
 .product-card {
-    /* Already handled by #productInfo itself or can be combined */
-    padding: 0; /* Reset padding as #productInfo has it */
-    border: none; /* Reset border as #productInfo has it */
-    background-color: transparent; /* Reset background as #productInfo has it */
-    box-shadow: none; /* Reset shadow as #productInfo has it */
-    margin: 0; /* Reset margin as #productInfo has it */
+    /* These properties are largely handled by #productInfo itself.
+       This class is now mainly for semantic grouping within #productInfo. */
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    margin: 0;
 }
 
 .product-image {
@@ -171,11 +171,11 @@ h1 {
     margin-top: 0;
     margin-bottom: 15px;
 }
-#productInfo h3 { /* Targeting nutrition facts, etc. */
+#productInfo h3 { /* Targeting section headings like Nutrition Facts, Additives */
     color: #28a745;
     margin-top: 0;
     margin-bottom: 15px;
-    font-size: 1.2em; /* Adjusted for collapsible headers */
+    font-size: 1.2em; /* Adjusted for consistency */
 }
 
 #productInfo p {
@@ -197,7 +197,7 @@ h1 {
     cursor: pointer;
     padding: 10px 15px;
     width: 100%;
-    border: none; /* Remove border-bottom from previous rule */
+    border: none;
     text-align: left;
     outline: none;
     font-size: 16px;
@@ -255,7 +255,7 @@ h1 {
     font-size: 0.85em;
     color: #666;
     margin-top: 20px;
-    text-align: right; /* Aligned to right as per your code */
+    text-align: right;
     font-style: italic;
 }
 
@@ -304,6 +304,7 @@ h1 {
     margin-left: 10px;
     min-width: 30px; /* Ensure consistent size */
     text-align: center;
+    vertical-align: middle; /* Align vertically with text */
 }
 
 /* Color coding for NOVA groups */
@@ -313,45 +314,66 @@ h1 {
 .nova-group-4 { background-color: #F44336; /* Red - Ultra-processed foods */ }
 .nova-group-Unknown { background-color: #9E9E9E; /* Grey - Unknown */ }
 
+/* --- Additive Section Styling --- */
+.additive-list {
+    list-style-type: none; /* Remove default bullets */
+    padding: 0;
+    margin: 0;
+}
 
-/* --- Additive Risks Styling --- */
-.additive-risks {
-    background-color: #fff3cd; /* Light yellow background */
-    border: 1px solid #ffeeba; /* Yellow border */
-    border-left: 5px solid #ffc107; /* Stronger left border */
+.additive-list li {
+    background-color: #f9f9f9; /* Slightly lighter background for list items */
+    border: 1px solid #e0e0e0;
     border-radius: 5px;
     padding: 10px 15px;
-    margin-top: 10px;
-    font-size: 0.9em;
-    line-height: 1.4;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text to start */
+    text-align: left; /* Ensure text within list item is left-aligned */
 }
 
-.additive-risks ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    padding: 0;
+.additive-list li:last-child {
+    margin-bottom: 0;
 }
 
-.additive-risks ul li {
+.additive-list li strong {
+    font-size: 1.1em;
+    color: #333;
     margin-bottom: 5px;
 }
 
-.additive-risks .disclaimer {
-    font-size: 0.8em;
-    color: #777;
-    margin-top: 10px;
-    padding-top: 5px;
-    border-top: 1px dashed #eee;
+.additive-list li p {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 5px;
+    margin-bottom: 0;
+    line-height: 1.4;
 }
 
-/* Specific adjustments for additive list items */
-.additive-list li {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px dotted #eee;
+.additive-risk-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+    margin-top: 5px; /* Space from the additive name */
+    text-transform: capitalize; /* Capitalize the risk level */
 }
-.additive-list li:last-child {
-    border-bottom: none; /* No border for the last item */
-    margin-bottom: 0;
-    padding-bottom: 0;
+
+/* Color coding for additive risk levels */
+.risk-level-low { background-color: #4CAF50; } /* Green */
+.risk-level-moderate { background-color: #2196F3; } /* Blue */
+.risk-level-high { background-color: #FFC107; } /* Orange */
+.risk-level-very-high { background-color: #F44336; } /* Red */
+.risk-level-unknown { background-color: #9E9E9E; } /* Grey */
+
+.additive-disclaimer {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 15px;
+    border-top: 1px dashed #eee;
+    padding-top: 10px;
+    text-align: center;
 }

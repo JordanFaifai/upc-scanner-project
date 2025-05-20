@@ -62,13 +62,49 @@ document.addEventListener('DOMContentLoaded', function() {
             const novaGroup = data.novaGroup || 'Unknown';
             const novaExplanation = data.novaExplanation || 'Information not available.';
             const imageUrl = data.image || 'no_image.png'; // Provide a default image if none
-            const allergens = data.allergens || 'No allergens specified.';
             const source = data.source || 'Open Food Facts';
             const nutrition = data.nutrition_facts; // This is an object
+            const additives = data.additives || []; // Expecting an array of additive objects
+            let allergens = data.allergens || []; // Expecting an array of raw allergen strings
+
+            // --- Allergen Processing ---
+            let processedAllergens = new Set(); // Use a Set to store unique allergens
+            if (Array.isArray(allergens)) {
+                allergens.forEach(allergen => {
+                    let cleanedAllergen = allergen.replace(/^en:/, '').trim(); // Remove 'en:' prefix
+                    cleanedAllergen = cleanedAllergen.charAt(0).toUpperCase() + cleanedAllergen.slice(1); // Capitalize first letter
+                    if (cleanedAllergen) {
+                        processedAllergens.add(cleanedAllergen);
+                    }
+                });
+            }
+            const allergensHtml = processedAllergens.size > 0
+                ? `<p>${Array.from(processedAllergens).join(', ')}</p>`
+                : '<p>No allergens specified.</p>';
+
+
+            // --- Additives Processing ---
+            let additivesHtml = '';
+            if (additives && additives.length > 0) {
+                additivesHtml = '<h3>Food Additives</h3><ul class="additive-list">';
+                additives.forEach(additive => {
+                    const levelClass = additive.risk_level ? `risk-level-${additive.risk_level.toLowerCase()}` : '';
+                    additivesHtml += `
+                        <li>
+                            <strong>${additive.name}</strong> (${additive.e_number || 'N/A'})
+                            <span class="additive-risk-badge ${levelClass}">${additive.risk_level || 'Unknown Risk'}</span>
+                            <p>${additive.explanation || 'No explanation available.'}</p>
+                        </li>
+                    `;
+                });
+                additivesHtml += '</ul><p class="additive-disclaimer"><em>Note: Additive risk levels are based on available research and may vary.</em></p>';
+            } else {
+                additivesHtml = '<p>No specific food additives found.</p>';
+            }
 
             // Helper function to format nutrition data
             const formatNutrition = (nutriment, unit = '') => {
-                return nutriment !== 'N/A' && nutriment !== undefined ? `${nutriment}${unit}` : 'N/A';
+                return nutriment !== 'N/A' && nutriment !== undefined && nutriment !== null ? `${nutriment}${unit}` : 'N/A';
             };
 
             let nutritionHtml = '';
@@ -102,15 +138,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="collapsible-section">
                         <button class="collapsible-header">Allergens</button>
                         <div class="collapsible-content">
-                            <p>${allergens}</p>
+                            ${allergensHtml}
                         </div>
                     </div>
 
                     <div class="collapsible-section">
                         <button class="collapsible-header">NOVA Classification</button>
                         <div class="collapsible-content">
-                            <p><strong>NOVA Group:</strong> ${novaGroup}</p>
+                            <p><strong>NOVA Group:</strong> <span class="nova-badge nova-group-${novaGroup.replace(' ', '-')}">${novaGroup}</span></p>
                             <p>${novaExplanation}</p>
+                        </div>
+                    </div>
+
+                    <div class="collapsible-section">
+                        <button class="collapsible-header">Food Additives</button>
+                        <div class="collapsible-content">
+                            ${additivesHtml}
                         </div>
                     </div>
 
