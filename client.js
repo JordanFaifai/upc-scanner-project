@@ -119,7 +119,7 @@ async function fetchIngredients(upc) {
     try {
         // IMPORTANT: This URL MUST match the URL of your backend server.
         // When running locally, it's 'http://localhost:3000/api/ingredients/YOUR_UPC'
-        const response = await fetch(`/api/ingredients/${upc}`);
+        const response = await fetch(`https://upc-scanner-project.onrender.com/api/ingredients/${upc}`);
 
         if (!response.ok) {
             const errorText = await response.text();
