@@ -56,9 +56,19 @@ switch (novaGroup) {
 // --- NEW CODE FOR ADDITIVES ---
 const additivesTags = product.additives_tags || []; // Get the raw tags
 const additives = additivesTags.map(tag => {
-    // Clean up the tag (e.g., "en:e100" -> "E100")
-    // You can enhance this later to map E-numbers to common names if desired
-    return tag.replace(/^en:/, '').toUpperCase();
+    const cleanedTag = tag.replace(/^en:/, '').toUpperCase(); // E.g., "E262" or "LECITHINS"
+    const additiveInfo = additiveMap[cleanedTag]; // Look up in our map (additiveMap should be at the top of your server.js)
+
+    if (additiveInfo) {
+        // **THIS IS THE CORRECTED LINE to show Name (Type) without E-number**
+        return `${additiveInfo.name} (${additiveInfo.type})`;
+    } else if (cleanedTag.startsWith('E')) {
+        // If it's an E-number but not in our map, display as "E-number (Unknown Type)"
+        return `${cleanedTag} (Unknown Type)`;
+    } else {
+        // If it's not an E-number (e.g., a common name like "SOY-LECITHIN" not in map)
+        return `${cleanedTag} (Uncategorized Additive)`;
+    }
 });
             // Send the ingredient data back to your frontend
             res.json({
