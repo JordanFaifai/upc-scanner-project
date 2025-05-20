@@ -1,0 +1,304 @@
+ /* Base styles from your screenshot */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .controls button {
+            background-color: #28a745; /* Green for start/show */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .controls button:hover {
+            background-color: #218838;
+        }
+
+        #stopScannerBtn {
+            background-color: #dc3545; /* Red for stop */
+        }
+        #stopScannerBtn:hover {
+            background-color: #c82333;
+        }
+
+        #scanner-container {
+            width: 100%;
+            max-width: 600px; /* Limit scanner width */
+            height: 400px; /* Fixed height for the scanner area */
+            background-color: #000; /* Black background for scanner area */
+            border: 1px solid #ccc;
+            margin: 20px 0;
+            position: relative; /* Needed for absolute positioning of video/canvas */
+            overflow: hidden; /* Hide anything outside the container */
+            display: flex; /* Use flexbox to center content */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Essential CSS for video display */
+        #scanner-container video {
+            width: 100%; /* Make video fill container width */
+            height: 100%; /* Make video fill container height */
+            display: block; /* Ensure it's a block element */
+            object-fit: cover; /* This is KEY: makes the video cover the container */
+            position: absolute; /* Position relative to scanner-container */
+            top: 0;
+            left: 0;
+        }
+
+        /* Styles for the canvas (the red scanning line) */
+        #scanner-container canvas.drawingBuffer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #manualScanSection {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #manualScanSection h2 {
+            margin-top: 0;
+            color: #34495e;
+        }
+
+        #upcInput {
+            width: calc(100% - 22px); /* Account for padding and border */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        #fetchUpcBtn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        #fetchUpcBtn:hover {
+            background-color: #0056b3;
+        }
+
+        #productInfo {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            min-height: 100px; /* Ensure some visible area */
+        }
+
+        #productInfo h3 {
+            color: #28a745;
+            margin-top: 0;
+        }
+
+        #productInfo p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        #clearResultsBtn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        #clearResultsBtn:hover {
+            background-color: #5a6268;
+        }
+
+        /* Message styles */
+        .message.info {
+            color: #007bff;
+        }
+        .message.warning {
+            color: #ffc107;
+        }
+        .message.error {
+            color: #dc3545;
+        }
+/* style.css */
+
+/* NOVA Group Styling */
+.nova-section {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.nova-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    margin-left: 10px;
+    min-width: 30px; /* Ensure consistent size */
+    text-align: center;
+}
+
+/* Color coding for NOVA groups */
+.nova-group-1 { background-color: #4CAF50; /* Green - Minimally processed */ }
+.nova-group-2 { background-color: #2196F3; /* Blue - Processed culinary ingredients */ }
+.nova-group-3 { background-color: #FFC107; /* Orange - Processed foods */ }
+.nova-group-4 { background-color: #F44336; /* Red - Ultra-processed foods */ }
+.nova-group-Unknown { background-color: #9E9E9E; /* Grey - Unknown */ }
+
+/* Collapsible Sections */
+.collapsible-section {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 15px;
+    overflow: hidden; /* Important for max-height transition */
+}
+
+.collapsible-header {
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+.collapsible-header:hover {
+    background-color: #e0e0e0;
+}
+
+.collapsible-header .toggle-icon {
+    font-size: 1.5em;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-content {
+    max-height: 0; /* Hidden by default */
+    transition: max-height 0.3s ease-out; /* Smooth transition for opening/closing */
+    padding: 0 15px; /* Add padding when content is visible */
+    box-sizing: border-box;
+}
+
+.collapsible-content p, .collapsible-content ul {
+    padding-top: 10px; /* Spacing for content */
+    padding-bottom: 10px;
+    margin: 0;
+}
+
+/* Adjust padding for the last collapsible section if it's the last element in productInfoDiv */
+.collapsible-section:last-of-type .collapsible-header {
+    border-bottom: none; /* No border for the last header */
+}
+
+
+/* Additive Risks Styling */
+.additive-risks {
+    background-color: #fff3cd; /* Light yellow background */
+    border: 1px solid #ffeeba; /* Yellow border */
+    border-left: 5px solid #ffc107; /* Stronger left border */
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-top: 10px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.additive-risks ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding: 0;
+}
+
+.additive-risks ul li {
+    margin-bottom: 5px;
+}
+
+.additive-risks .disclaimer {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px dashed #eee;
+}
+
+/* Minor adjustments for existing elements */
+.product-info h3 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.8em;
+}
+
+.source-info {
+    text-align: right;
+    font-style: italic;
+    color: #666;
+    margin-top: 20px;
+}
+
+/* Ensure additive list items have proper spacing */
+.additive-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #eee;
+}
+.additive-list li:last-child {
+    border-bottom: none; /* No border for the last item */
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

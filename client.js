@@ -54,21 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = await response.json();
         console.log('Successfully fetched product data:', data); // ADD OR MODIFY THIS LINE
 
-        if (data.productName && data.ingredients) { // Check directly for productName
-            // ... rest of your success display logic
-            let ingredients = data.ingredients || 'No ingredients listed.'; // Corrected ingredient access
-            productInfoDiv.innerHTML = `
-    <h3>${data.productName}</h3>
-    <p><strong>Ingredients:</strong> ${ingredients}</p>
-
-    <hr>
-<h4>NOVA Group: ${data.novaGroup}</h4>
-<p>${data.novaExplanation}</p> <h4>Food Additives:</h4>
-                <p>${data.additives.length > 0 ? data.additives.join(', ') : 'No additives listed.'}</p>
-
-                <p><small>Source: ${data.source}</small></p>
-            `;
-        } else {
+        if (data.productName && data.ingredients) { let ingredients = data.ingredients || 'No ingredient text available.';
+let novaGroup = data.novaGroup || 'Unknown';
+// ... (many more lines of HTML string building and the JavaScript for collapsible sections) ...} else {
             console.warn('API returned no product data or product name for UPC:', upc, data); // ADD OR MODIFY THIS LINE
             productInfoDiv.innerHTML = `<p>No product found for UPC: ${upc}</p>`;
         }
