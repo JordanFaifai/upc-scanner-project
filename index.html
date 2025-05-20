@@ -102,24 +102,30 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>UPC Ingredient Scanner</h1>
-        <p>Point your camera at a UPC barcode to scan and get ingredient info.</p>
+    <h1>UPC Ingredient Scanner</h1>
+    <p id="scanner-message" class="message">Scanner stopped. Click "Start Scanner" to begin.</p>
 
-        <button id="startButton">Start Scanner</button>
-        <button id="stopButton" class="stop-button" style="display:none;">Stop Scanner</button>
-
-        <div id="scanner-container">
-            <video id="interactive" class="viewport" autoplay="true" preload="auto" src="" muted="true"></video>
-            <div class="scan-line"></div>
-        </div>
-        <p class="message" id="scanner-message">Scanner stopped. Click "Start Scanner" to begin.</p>
-
-        <div id="results">
-            <h3>Ingredients:</h3>
-            <p>Scan a UPC to see results.</p>
-        </div>
+    <div class="controls">
+        <button id="startScannerBtn">Start Scanner</button>
+        <button id="stopScannerBtn" style="display:none;">Stop Scanner</button>
     </div>
+
+    <div id="scanner-container">
+        </div>
+
+    <button id="toggleManualScanBtn">Show Manual Scan</button>
+
+    <div id="manualScanSection" style="display: none;">
+        <h2>Manual UPC Scan</h2>
+        <input type="text" id="upcInput" placeholder="Enter UPC code">
+        <button id="fetchUpcBtn">Fetch Product</button>
+    </div>
+
+    <div id="productInfo">
+        <p>Scan a UPC or enter it manually to see results.</p>
+    </div>
+
+    <button id="clearResultsBtn" style="display: none;">Clear Results</button>
 
     <script src="https://unpkg.com/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
     <script src="client.js"></script>
