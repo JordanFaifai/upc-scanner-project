@@ -428,31 +428,42 @@ switch (novaGroup) {
         novaExplanation = "Group 3: **Processed Foods.** These are relatively simple products made by adding Group 2 ingredients (like salt, sugar, oil) to Group 1 foods. Examples include canned vegetables, simple cheeses, and cured meats. They are processed to increase shelf life or palatability, but typically contain few ingredients and no 'cosmetic' additives.";
         break;
     case 4:
-        novaExplanation = "Group 4: **Ultra-Processed Foods.** These are industrial formulations often containing many ingredients including industrial additives and substances extracted from foods. They are designed for convenience, hyper-palatability, and long shelf-life, and are generally associated with adverse health outcomes due to high levels of added sugar, unhealthy fats, and sodium.";
+    let baseNova4Explanation = "Group 4: **Ultra-Processed Foods.** These are industrial formulations often containing many ingredients including industrial additives and substances extracted from foods. They are designed for convenience, hyper-palatability, and long shelf-life, and are generally associated with adverse health outcomes due to high levels of added sugar, unhealthy fats, and sodium.";
 
-        if (productAdditives && productAdditives.length > 0) {
-            const detectedAdditiveTypes = new Set();
-            productAdditives.forEach(additiveString => {
-                // Extract the type from strings like "E100 (Curcumin, Color)"
-                const match = additiveString.match(/\(([^,]+), ([^)]+)\)/);
-                if (match && match[2]) {
-                    detectedAdditiveTypes.add(match[2].trim());
-                } else if (additiveString.includes("Unknown Type")) {
-                    // For additives not found in our map, just add a generic type
-                    detectedAdditiveTypes.add("Various Industrial Additives");
-                }
-            });
-
-            // Filter out the generic type if specific types are found
-            let typesList = Array.from(detectedAdditiveTypes).filter(type => type !== "Various Industrial Additives").join(', ');
-
-            if (typesList) {
-                novaExplanation += ` This classification is often driven by the presence of industrial food additives such as **${typesList}**.`;
-            } else if (detectedAdditiveTypes.has("Various Industrial Additives")) {
-                 novaExplanation += ` This classification is often driven by the presence of various industrial food additives.`;
+    if (productAdditives && productAdditives.length > 0) {
+        const detectedAdditiveNames = new Set(); // NOW COLLECTING UNIQUE NAMES
+        productAdditives.forEach(additiveString => {
+            // The regex now correctly extracts the NAME from "E100 (Curcumin, Color)"
+            // It looks for any characters after the opening parenthesis, up to the first comma
+            const match = additiveString.match(/\(([^,]+),/);
+            if (match && match[1]) {
+                detectedAdditiveNames.add(match[1].trim()); // Add the extracted NAME to the Set
+            } else if (additiveString.includes("Unknown Type")) {
+                detectedAdditiveNames.add("Various Unspecified Additives");
             }
+        });
+
+        // Convert the Set of unique names to an array and join them
+        let namesList = Array.from(detectedAdditiveNames).filter(name =>
+            name !== "Various Unspecified Additives" // Filter out the generic fallback if specific names are found
+        ).join(', ');
+
+        if (namesList) {
+            // Updated phrasing to state these additives are the reason, and include unique names
+            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, primarily due to the presence of industrial food additives such as **${namesList}**. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
+        } else if (detectedAdditiveNames.has("Various Unspecified Additives")) {
+            // Fallback if specific names couldn't be extracted but generic types were caught
+            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, likely due to the presence of various industrial food additives. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
+        } else {
+            // Fallback if there are additives but we somehow couldn't parse any names (shouldn't happen with fixed input)
+            novaExplanation = baseNova4Explanation;
         }
-        break;
+    } else {
+        // If no additives are present (or detected) but it's still Group 4
+        // (e.g., highly processed without common additives listed in OF database)
+        novaExplanation = baseNova4Explanation;
+    }
+    break; // Don't forget the break!
     default:
         novaExplanation = "NOVA classification not available or unknown for this product. The NOVA system classifies foods based on the nature, extent, and purpose of their industrial processing.";
 }
