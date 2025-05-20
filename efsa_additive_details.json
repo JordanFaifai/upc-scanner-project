@@ -1,0 +1,1280 @@
+{
+  "E284": {
+    "name": "E284",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E300": {
+    "name": "E300",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E551": {
+    "name": "E551",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E340": {
+    "name": "(i)",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E306": {
+    "name": "E306",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E160D": {
+    "name": "E160D",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E422": {
+    "name": "E422",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E512": {
+    "name": "E512",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E127": {
+    "name": "E127",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E122": {
+    "name": "E122",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E480H": {
+    "name": "NovelosA",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E141": {
+    "name": "(ii)",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E129": {
+    "name": "E129",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E352I": {
+    "name": "E352I",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E238": {
+    "name": "E238",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E460": {
+    "name": "(i)",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E412": {
+    "name": "E412",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E476": {
+    "name": "E476",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E426": {
+    "name": "E426",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E535": {
+    "name": "E535",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E536": {
+    "name": "E536",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E538": {
+    "name": "E538",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E455": {
+    "name": "E455",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E445": {
+    "name": "E445",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E433": {
+    "name": "E433",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E339": {
+    "name": "(iii)",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E414": {
+    "name": "E414",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E170": {
+    "name": "E170",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E220": {
+    "name": "E220",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E621": {
+    "name": "E621",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E622": {
+    "name": "E622",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E623": {
+    "name": "E623",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E624": {
+    "name": "E624",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E625": {
+    "name": "E625",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E335": {
+    "name": "(ii)",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E140": {
+    "name": "(i)",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E212": {
+    "name": "E212",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E213": {
+    "name": "E213",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E436": {
+    "name": "E436",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E435": {
+    "name": "E435",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E434": {
+    "name": "E434",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E425": {
+    "name": "i",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E415": {
+    "name": "E415",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E400": {
+    "name": "Dimethoat EC (400 g/L EC)",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E403": {
+    "name": "E403",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E404": {
+    "name": "E404",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E521": {
+    "name": "E521",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E541": {
+    "name": "E541",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E553A": {
+    "name": "(ii)",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E160C": {
+    "name": "E160C",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E101": {
+    "name": "Kocid",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E200": {
+    "name": "E200",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E432": {
+    "name": "E432",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E950": {
+    "name": "E950",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E221": {
+    "name": "E221",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E222": {
+    "name": "E222",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E223": {
+    "name": "E223",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E228": {
+    "name": "E228",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E224": {
+    "name": "E224",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E226": {
+    "name": "E226",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E227": {
+    "name": "E227",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E413": {
+    "name": "E413",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E417": {
+    "name": "E417",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E249": {
+    "name": "E249",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E250": {
+    "name": "E250",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E509": {
+    "name": "E509",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E202": {
+    "name": "E202",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E161H": {
+    "name": "E161H",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E160A": {
+    "name": "(ii)",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E161B": {
+    "name": "E161B",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E907": {
+    "name": "E907",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E330": {
+    "name": "E330",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E444": {
+    "name": "E444",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E491": {
+    "name": "E491",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E492": {
+    "name": "E492",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E493": {
+    "name": "E493",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E494": {
+    "name": "E494",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E495": {
+    "name": "E495",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E251": {
+    "name": "E251",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E252": {
+    "name": "E252",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E440I": {
+    "name": "i",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E150C": {
+    "name": "E150C",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E336": {
+    "name": "(i)",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E210": {
+    "name": "E210",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E295": {
+    "name": "E295",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E237": {
+    "name": "E237",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E312": {
+    "name": "E312",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E302": {
+    "name": "E302",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E464": {
+    "name": "E464",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E350": {
+    "name": "Diflufenican + Flurtamon SC (100 + 250 g/L)",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E017": {
+    "name": "A2747",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E045": {
+    "name": "A6148",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E620": {
+    "name": "E620",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E999": {
+    "name": "E999",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E310": {
+    "name": "E310",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E586": {
+    "name": "E586",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E322": {
+    "name": "E322",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E160B": {
+    "name": "(i)",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E552": {
+    "name": "E552",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E461": {
+    "name": "E461",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E463": {
+    "name": "E463",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E465": {
+    "name": "E465",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E468": {
+    "name": "E468",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E469": {
+    "name": "E469",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E160": {
+    "name": "PMP S",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E555": {
+    "name": "E555",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E631": {
+    "name": "E631",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E481": {
+    "name": "E481",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E482": {
+    "name": "E482",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E153": {
+    "name": "E153",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E627": {
+    "name": "E627",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E635": {
+    "name": "E635",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E239": {
+    "name": "E239",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E470A": {
+    "name": "E470A",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E470B": {
+    "name": "E470B",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E203": {
+    "name": "E203",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E558": {
+    "name": "E558",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E152": {
+    "name": "1",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E311": {
+    "name": "E311",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E120": {
+    "name": "1",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E171": {
+    "name": "E171",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E416": {
+    "name": "E416",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E459": {
+    "name": "E459",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E410": {
+    "name": "E410",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E242": {
+    "name": "E242",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E236": {
+    "name": "E236",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E132": {
+    "name": "E132",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E283": {
+    "name": "E283",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E511": {
+    "name": "E511",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E553B": {
+    "name": "E553B",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E315": {
+    "name": "E315",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E316": {
+    "name": "E316",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E544": {
+    "name": "R88",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E100": {
+    "name": "Methyl bromid",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E507": {
+    "name": "E507",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E508": {
+    "name": "E508",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E912": {
+    "name": "E912",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E955": {
+    "name": "E955",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E175": {
+    "name": "E175",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E280": {
+    "name": "E280",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E418": {
+    "name": "E418",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E405": {
+    "name": "E405",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E145": {
+    "name": "0",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E500I": {
+    "name": "i",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E240": {
+    "name": "Floramit SC",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E161I": {
+    "name": "E161I",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E161G": {
+    "name": "E161G",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E160E": {
+    "name": "E160E",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E160F": {
+    "name": "E160F",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E554": {
+    "name": "E554",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E520": {
+    "name": "E520",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E559": {
+    "name": "E559",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E670": {
+    "name": "a",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E920": {
+    "name": "E920",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E462": {
+    "name": "E462",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E961": {
+    "name": "E961",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E901": {
+    "name": "E901",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E234": {
+    "name": "E234",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E216": {
+    "name": "E216",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E214": {
+    "name": "E214",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E215": {
+    "name": "E215",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E473": {
+    "name": "E473",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E474": {
+    "name": "E474",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E500": {
+    "name": "Terbuthylazin g/l SC",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E914": {
+    "name": "E914",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E211": {
+    "name": "E211",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E281": {
+    "name": "E281",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E102": {
+    "name": "E102",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E570": {
+    "name": "Omit EW",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E771": {
+    "name": "IN-0",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E134": {
+    "name": "A4123",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E282": {
+    "name": "E282",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E392": {
+    "name": "E392",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E263": {
+    "name": "E263",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E235": {
+    "name": "E235",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E124": {
+    "name": "E124",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E104": {
+    "name": "E104",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E110": {
+    "name": "E110",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E155": {
+    "name": "E155",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E150D": {
+    "name": "E150D",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E180": {
+    "name": "E180",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E151": {
+    "name": "E151",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E123": {
+    "name": "E123",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E968": {
+    "name": "E968",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E321": {
+    "name": "E321",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E320": {
+    "name": "E320",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E466": {
+    "name": "E466",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E522": {
+    "name": "E522",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E516": {
+    "name": "E516",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E960": {
+    "name": "E960",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E150A": {
+    "name": "E150A",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E150B": {
+    "name": "E150B",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E142": {
+    "name": "E142",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E185": {
+    "name": "Banol",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E270": {
+    "name": "E270",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E325": {
+    "name": "E325",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E133": {
+    "name": "E133",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E450": {
+    "name": "Mirag SC",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  },
+  "E523": {
+    "name": "E523",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E334": {
+    "name": "E334",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E307": {
+    "name": "E307",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E296": {
+    "name": "E296",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E308": {
+    "name": "E308",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E309": {
+    "name": "E309",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E514": {
+    "name": "(i)",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E905": {
+    "name": "E905",
+    "type": "E number",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: E number."
+  },
+  "E351": {
+    "name": "E351",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E319": {
+    "name": "E319",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E965": {
+    "name": "(ii)",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E951": {
+    "name": "E951",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E128": {
+    "name": "E128",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E301": {
+    "name": "E301",
+    "type": "Name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Name."
+  },
+  "E750": {
+    "name": "Chlormequat-chlorid g/L",
+    "type": "Trade name",
+    "risk_level": "Refer to EFSA scientific opinions",
+    "explanation": "This substance is listed in the EFSA OpenFoodTox database. More detailed scientific assessments are available via specific EFSA opinions. Type: Trade name."
+  }
+}
