@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 const response = await fetch(`/api/ingredients/${upc}`);
-                const data = await response.json();
+                const data = await response.json(); // 'data' now directly contains the product object (e.g., {name: "...", ingredients: "...", ...})
 
                 if (!response.ok) {
                     // Specific error handling for API response issues
@@ -55,22 +55,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     return; // Stop execution if there's an API error
                 }
 
-                if (!data.product) {
-                    // Handle case where product is not found
-                    displayMessage(`Product not found for UPC: ${upc}.`, 'warning');
+                // *** CRITICAL CHANGE HERE: Check if 'data' itself contains valid product info (e.g., a 'name') ***
+                // If the server returns product data directly, 'data.product' would be undefined.
+                // We check if 'data' is an object and has a 'name' property to consider it a valid product.
+                if (!data || typeof data !== 'object' || !data.name) {
+                    displayMessage(`Product data incomplete or not found for UPC: ${upc}.`, 'warning');
                     productInfoDiv.innerHTML = `
                         <div class="info-card no-product">
-                            <h2>Product Not Found</h2>
-                            <p>We couldn't find details for UPC: <strong>${upc}</strong> in the Open Food Facts database.</p>
+                            <h2>Product Not Found or Incomplete Data</h2>
+                            <p>We received data for UPC: <strong>${upc}</strong>, but it does not appear to be a complete product record from Open Food Facts.</p>
                             <p>Try scanning a different product or check the UPC for typos.</p>
                             <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link">Search Open Food Facts directly for ${upc}</a></p>
                         </div>
                     `;
                     clearResultsBtn.style.display = 'block'; // Allow clearing this message
-                    return; // Stop execution if product not found
+                    return; // Stop execution if product data is invalid
                 }
 
-                // If product is found and response is OK
+                // If product data is found and looks valid
+                // *** CRITICAL CHANGE HERE: Pass 'data' directly, as it IS the product object ***
                 displayProductInfo(data);
                 displayMessage('Product information fetched successfully.', 'success');
                 clearResultsBtn.style.display = 'block'; // Show clear button after successful fetch
@@ -99,9 +102,10 @@ document.addEventListener('DOMContentLoaded', function() {
         displayMessage('Results cleared.', 'info');
     });
 
-    function displayProductInfo(productData) { // Renamed param to productData for clarity
-        const product = productData.product; // The actual product object is nested
-
+    // *** CRITICAL CHANGE HERE: 'product' parameter now directly IS the product object ***
+    function displayProductInfo(product) { 
+        // Removed: const product = productData.product; // This line is no longer needed
+        
         let html = ''; // Initialize the HTML string
 
         // --- Product Header (Name and Image) ---
@@ -121,8 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         // --- Processing Level (NOVA Group) ---
+        // Ensure product.novaGroup and product.novaExplanation are accessed directly
         html += `
-            <div class="section-card nova-info nova-group-${product.novaGroup.toLowerCase().replace(' ', '-') || 'unknown'}">
+            <div class="section-card nova-info nova-group-${(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
                 <h2>Processing Level: NOVA Group ${product.novaGroup || 'N/A'}</h2>
                 <p>This classification describes how much a food has been processed:</p>
                 <p>
@@ -242,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
         productInfoDiv.innerHTML = html;
     }
 
-    // Quagga2 scanner integration
+    // Quagga2 scanner integration (This section is now correct and unchanged from previous fix)
     function startScanner() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             Quagga.init({
@@ -266,7 +271,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 Quagga.start();
                 isScannerRunning = true;
                 displayMessage('Scanner started. Point to a UPC code.', 'info');
-                // FIX: Corrected the incomplete line here!
                 startScannerBtn.style.display = 'none'; 
                 stopScannerBtn.style.display = 'inline-block';
             });
