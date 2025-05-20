@@ -287,7 +287,16 @@ const additiveMap = {
 // --- END NEW ADDITIVE MAP ---
 
 // ... (rest of your server.js code remains the same)
-
+// Helper function to normalize additive codes for lookup
+function normalizeAdditiveCode(code) {
+    if (!code) return '';
+    let normalized = code.replace(/^en:/, '').toUpperCase();
+    const eNumberMatch = normalized.match(/^(E\d+)([A-Z]*)?(?:\(|\s)*([IVXLC\d]*)?(?:\)|\s)*$/i);
+    if (eNumberMatch) {
+        return eNumberMatch[1];
+    }
+    return normalized;
+}
 
 // API endpoint to fetch ingredients based on UPC
 // When your frontend asks for /api/ingredients/12345, this code runs
