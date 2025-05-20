@@ -61,8 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 ingredients += `<br><small>(Debug: ${data.product.ingredients_text_debug})</small>`;
             }
             productInfoDiv.innerHTML = `
-                <h3>${data.product.product_name}</h3>
-                <p><strong>Ingredients:</strong> ${ingredients}</p>
+                <h3>${data.productName}</h3>
+                <p><strong>Ingredients:</strong> ${data.ingredients}</p>
+                <p><small>Source: ${data.source}</small></p>
             `;
         } else {
             console.warn('API returned no product data or product name for UPC:', upc, data); // ADD OR MODIFY THIS LINE
