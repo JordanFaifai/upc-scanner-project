@@ -390,9 +390,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
         // Check if product data was found
         if (data.status === 1 && data.product) {
             const product = data.product;
-            console.log("Raw product data from OFF for NOVA:", product.nova_group);
-            console.log("Raw product data from OFF for Ingredients:", product.ingredients_text);
-            const ingredientsText = product.ingredients_text || "No ingredient text available.";
+                       const ingredientsText = product.ingredients_text || "No ingredient text available.";
             const productName = product.product_name || "Unknown Product";
 // server.js - Inside the 'if (data.status === 1 && data.product)' block
 
