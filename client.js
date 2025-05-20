@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             // !! IMPORTANT: THIS URL NEEDS TO BE UPDATED TO YOUR RENDER URL !!
             // Example: const response = await fetch(`https://upc-scanner-project.onrender.com/api/ingredients/${upc}`);
-            const response = await fetch(`https://YOUR-RENDER-APP-NAME.onrender.com/api/ingredients/${upc}`); // THIS IS THE LINE THAT NEEDS YOUR RENDER URL
+            const response = await fetch(`/api/ingredients/${upc}`); // THIS IS THE LINE THAT NEEDS YOUR RENDER URL
 
             if (!response.ok) {
                 const errorText = await response.text();
