@@ -22,8 +22,8 @@ function startScanner() {
             type: "LiveStream",
             target: document.querySelector('#interactive'), // Target the video element
             constraints: {
-                facingMode: "environment" // Use rear camera on mobile devices
-            },
+                facingMode: { ideal: "environment" } // Change to ideal request for rear camera
+},
         },
         decoder: {
             readers: [
