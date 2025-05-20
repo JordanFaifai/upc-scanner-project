@@ -1635,4 +1635,83 @@
     "status": ""
   },
   "Brilliant Blue FCF (FD&C Blue No. 1)": {
-    "name": "Brilliant Blue FCF (FD&C
+    "name": "Brilliant Blue FCF (FD&C Blue No. 1)",
+    "type": "Color",
+    "status": ""
+  },
+  "Calcium Benzoate": {
+    "name": "Calcium Benzoate",
+    "type": "Preservative",
+    "status": ""
+  },
+  "Canthaxanthin": {
+    "name": "Canthaxanthin",
+    "type": "Color",
+    "status": "(used in animal feed, restricted in food)"
+  },
+  "Caramel Color (Class I-IV)": {
+    "name": "Caramel Color (Class I-IV)",
+    "type": "Color",
+    "status": ""
+  },
+  "Diacetyltartaric Acid Esters of Mono- and Diglycerides": {
+    "name": "Diacetyltartaric Acid Esters of Mono- and Diglycerides",
+    "type": "Emulsifier",
+    "status": ""
+  },
+  "Erythrosine (FD&C Red No. 3)": {
+    "name": "Erythrosine (FD&C Red No. 3)",
+    "type": "Color",
+    "status": "(limited use, E127)"
+  },
+  "Fast Green FCF (FD&C Green No. 3)": {
+    "name": "Fast Green FCF (FD&C Green No. 3)",
+    "type": "Color",
+    "status": "Not authorized in EU"
+  },
+  "High-Fructose Corn Syrup (HFCS)": {
+    "name": "High-Fructose Corn Syrup (HFCS)",
+    "type": "Sweetener",
+    "status": ""
+  },
+  "Indigotine (FD&C Blue No. 2)": {
+    "name": "Indigotine (FD&C Blue No. 2)",
+    "type": "Color",
+    "status": ""
+  },
+  "Potassium Bisulfate": {
+    "name": "Potassium Bisulfate",
+    "type": "Preservative",
+    "status": ""
+  },
+  "Potassium Sorbate": {
+    "name": "Potassium Sorbate",
+    "type": "Preservative",
+    "status": ""
+  },
+  "Red 40 (Allura Red)": {
+    "name": "Red 40 (Allura Red)",
+    "type": "Color",
+    "status": ""
+  },
+  "Sodium Benzoate": {
+    "name": "Sodium Benzoate",
+    "type": "Preservative",
+    "status": ""
+  },
+  "Sorbic Acid": {
+    "name": "Sorbic Acid",
+    "type": "Preservative",
+    "status": ""
+  },
+  "Yellow 5 (Tartrazine)": {
+    "name": "Yellow 5 (Tartrazine)",
+    "type": "Color",
+    "status": "(requires warning for potential effects on children)"
+  },
+  "Yellow 6 (Sunset Yellow)": {
+    "name": "Yellow 6 (Sunset Yellow)",
+    "type": "Color",
+    "status": "(requires warning for potential effects on children)"
+  }
+}
