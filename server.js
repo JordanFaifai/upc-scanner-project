@@ -495,10 +495,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+
 
 // Start the server and listen for incoming requests
 app.listen(PORT, () => {
