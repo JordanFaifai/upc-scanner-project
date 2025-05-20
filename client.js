@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
         productInfoDiv.innerHTML = html;
     }
 
-    // Quagga2 scanner integration (Remains unchanged from your provided code)
+    // Quagga2 scanner integration
     function startScanner() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             Quagga.init({
@@ -266,4 +266,68 @@ document.addEventListener('DOMContentLoaded', function() {
                 Quagga.start();
                 isScannerRunning = true;
                 displayMessage('Scanner started. Point to a UPC code.', 'info');
-                startScannerBtn.style.display
+                // FIX: Corrected the incomplete line here!
+                startScannerBtn.style.display = 'none'; 
+                stopScannerBtn.style.display = 'inline-block';
+            });
+
+            Quagga.onDetected(function(result) {
+                if (result && result.codeResult && result.codeResult.code) {
+                    const upcCode = result.codeResult.code;
+                    upcInput.value = upcCode; // Populate the manual input field
+                    stopScanner(); // Stop the scanner automatically on detection
+                    fetchUpcBtn.click(); // Trigger the fetch for the detected UPC
+                }
+            });
+
+            Quagga.onProcessed(function(result) {
+                var drawingCtx = Quagga.canvas.ctx.overlay;
+                var drawingCanvas = Quagga.canvas.dom.overlay;
+
+                if (result) {
+                    if (result.boxes) {
+                        drawingCtx.clearRect(
+                            0,
+                            0,
+                            parseInt(drawingCanvas.width),
+                            parseInt(drawingCanvas.height)
+                        );
+                        result.boxes
+                            .filter(function(box) {
+                                return box !== result.box;
+                            })
+                            .forEach(function(box) {
+                                Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                            });
+                    }
+
+                    if (result.box) {
+                        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "blue", lineWidth: 2 });
+                    }
+
+                    if (result.codeResult && result.codeResult.code) {
+                        Quagga.ImageDebug.drawPath(result.line, { x: "x", y: "y" }, drawingCtx, { color: "red", lineWidth: 3 });
+                    }
+                }
+            });
+        } else {
+            displayMessage('getUserMedia not supported in this browser. Please use manual UPC entry.', 'error');
+            startScannerBtn.style.display = 'none';
+        }
+    }
+
+    function stopScanner() {
+        if (isScannerRunning) {
+            Quagga.stop();
+            isScannerRunning = false;
+            displayMessage('Scanner stopped.');
+            // Clear the scanner container content
+            scannerContainer.innerHTML = '';
+            startScannerBtn.style.display = 'inline-block';
+            stopScannerBtn.style.display = 'none';
+        }
+    }
+
+    startScannerBtn.addEventListener('click', startScanner);
+    stopScannerBtn.addEventListener('click', stopScanner);
+});
