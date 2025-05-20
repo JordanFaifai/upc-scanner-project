@@ -23,9 +23,6 @@ const additiveMap = {
 // When your frontend asks for /api/ingredients/12345, this code runs
 app.get('/api/ingredients/:upc', async (req, res) => {
     const upc = req.params.upc;
-    // IMPORTANT: Open Food Facts API v2 is recommended.
-    // Your code uses v0, which is deprecated and might have missing fields.
-    // Change to v2:
     const OF_API_URL = `https://world.openfoodfacts.org/api/v2/product/${upc}.json`;
 
     try {
@@ -65,7 +62,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             product.allergens_tags.map(tag => tag.replace('en:', '').replace(/-/g, ' ')) : [];
 
 
-        // Process additives
+        // Process additives - NOW USING efsa_additive_details.json
         const rawAdditives = product.additives_tags || [];
         const processedAdditives = rawAdditives.map(additive => {
             const additiveId = additive.replace('en:', '').toUpperCase(); // e.g., E330

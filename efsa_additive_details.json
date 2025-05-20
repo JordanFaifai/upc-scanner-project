@@ -1,476 +1,1337 @@
 {
-  "E209": {
-    "name": "PBBs are a class of brominated hydrocarbons with a basic structure consisting of two phenyl rings to which bromine atoms are attached. The present substance includes 16 PBB congeners: BB-3, -15, -29, -49, -52, -77, -80, -101, -103, -126, -153, -169, -180, -194, -206 and -209. There ar possible compounds, referred to as PBB congeners, which differ in the number and position of the bromine atoms in the two phenyl rings. Like polychlorinated biphenyls (PCBs), the benzene ring can rotate around the central bond that connects both phenyl rings adopting a planar and a non-planar configuration depending on the degree of substitution in the ortho positions. PBBs where the hydrogen atoms in the ortho positions are substituted by bromine atoms are called ortho PBBs, and those where the hydrogen atoms in the ortho positions are not substituted by bromine are called non-ortho PBBs. This difference in molecular structure is relevant for the interaction with different receptors determining the toxicological properties of PBBs.",
-    "type": "group, closed",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E127": {
-    "name": "Erythrosine (), an approved colourant in food, is prepared by iodination of 9-(O-carboxyphenyl)-6-hydroxy-3H-xanthen-3-one, disodium salt. It is a water soluble red powder or granules.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E965": {
-    "name": "Maltitol Syrup ( (ii)) consists of mainly maltitol with sorbitol and hydrogenated oligo and polysaccharides. It is manufactured by the catalytic hydrogenation of high maltose-content glucose syrup.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E920": {
-    "name": "L-cysteine, synonym (R)-2-amino-3-mercaptopropanoic acid, CAS 52-90-4, is a sulphurcontaining amino acid, m. wt. 121.16. The same E-number, , covers both L-cysteine and its hydrochloride, and the two substances are used interchangeably in food applications. According to JECFA: \"Sp.rotation = +6.9 to +8.5Â° (30Â°)\".",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E160C": {
-    "name": "Paprika extract (capsanthin, capsorubin, known also under the synonym of paprika oleoresin), , is obtained by solvent extraction of the natural strains of paprika (Capsicum annuum L), which consists of the ground fruit pods, with or without seeds, and contains the major colouring principles of this substance (capsanthin and capsorubin). A wide variety of other coloured compounds is known to be present. Paprika extract should not contain less than 7.0% of total carotenoids. The content of capsanthin/capsorubin should not be less than 30% of total carotenoids and capsaicin not more than 250 mg kg-1.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E500": {
-    "name": "Ethyl cellulose is the ethyl ether of cellulose. Cellulose is a high molecular weight linear homopolymer of about 3000 Beta-D-glucopyranosyl repeating units joined by (beta-1,4) glycosidic linkages. Its molecular mass is abov.000 Dalton. It is insoluble in water. Ethyl cellulose is a free flowing white to light tan powder. The percentage of ethoxy groups (-OC2H5) in the molecule varies between 44% and 51% on a dry weight basis (equivalent to not more than 2.6 ethoxyl groups on average per anhydroglucose unit).",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E270": {
-    "name": "Lactic acid () is a permitted food additive (quantum satis). Stereoisomeric composition not specified. According to the JECFA: Min. assay value is \"95 % by chemical analysis (acid/base titration)\".",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E325": {
-    "name": "Sodium lactate () is a permitted food additive (quantum satis).",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E914": {
-    "name": "n the literature, oxidised polyethylene wax () is described in only general terms as being similar to natural waxes, consisting of long-chain carboxylic acids with hydroxyl-, carbonyl- and ester groups. No structure is available in the literature.",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E102": {
-    "name": "Tartrazine () is an azo dye. It has a molecular weight of 534.36 g/mol. Tartrazine is soluble in water and sparingly soluble in ethanol.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E155": {
-    "name": "Brown HT () is a bis azo-dye food colouring consisting of reddish-brown powder or granules with the molecular weight of 652.56 g/mol. Brown HT is soluble in water and insoluble in ethanol.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E151": {
-    "name": "Brilliant Black BN () is a bis-azo dye with the molecular weight of 867.68 g/mol. Brilliant Black BN is soluble in water and slightly soluble in ethanol.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E180": {
-    "name": "Litholrubine BK () is a red (powder) mono-azo dye with a molecular weight of 424.45 g/mol. Litholrubine BK is described as slightly soluble in hot water (at 90 Â°C), insoluble in cold water and insoluble in ethanol.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E433": {
-    "name": "Anionic methacrylate copolymer (AMC) is a fully polymerised copolymer of methacrylic acid, methyl methacrylate and methyl acrylate. The commercial product is a 30% aqueous polymeric dispersion. The dispersion contains 0.3% sodium lauryl sulphate w/w and 1.2% polysorbate 80 (Polyoxyethylene sorbitan monooleate, ), w/w, as emulsifiers.",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E320": {
-    "name": "Butylated hydroxyanisole (BHA)() is a synthetic antioxidant with the molecular formula C11H16O2. BHA is a white or slightly yellow crystalline or waxy solid with a faint characteristic odour. BHA is insoluble in water, freely soluble in ethanol, other alcohols, propylene glycol, petroleum ether, and fats and oils. It has a boiling point of 268 °C, a melting point of 48-63 °C, and an octanol/water partition coefficient (log Pow) of 3.5. The density is 1.0587 g/cm³ at 20 °C.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E142": {
-    "name": "Green S () is a triarylmethane food colour consisting of dark-green powder or granules, soluble in water and slightly soluble in ethanol. Green S (E 142) consists essentially of N-(4-((4-(dimethylamino)phenyl)(2-hydroxy-3,6-disulpho-1- naphthalenyl)methylene)-2,5-cyclohexadien-1-ylidene)-N-methylmethanaminium, hydroxide, inner salt, monosodium salt.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
   "E100": {
-    "name": "Curcumin () is a dicinnamoylmethane food dye consisting of three principal colouring components. The product consists essentially of curcumins i.e. the colouring principle (1E,6E)-1,7-bis- (4-hydroxy-3-methoxyphenyl)-1,6-heptadiene-3,5-dione, with the molecular formula C21H20O6 and molecular weight of 368.39 g/mol, and its desmethoxy- and bis-desmethoxy-derivatives with molecular formulas C20H18O5 and C19H16O4 and molecular weights of 338.39 and 308.39 g/mol respectively, in varying proportions. The three principal components of curcumin (I, II and III) have CAS Registry Number 458-37-7,33171-16-3 and 33171-05-0 respectively.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E345": {
-    "name": "Zinc picolinate is slightly soluble in water. The molecular weight of zinc picolinate is 309.59 g/mol (and for its dihydrat.58 g/mol).",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E350": {
-    "name": "A mixture of highly refined paraffinic and naphthenic liquid hydrocarbons with a boiling point abov °C; obtained from mineral crude oils through various refining steps (e.g. distillation, extraction and crystallisation) and subsequent purification by acid and/or catalytic hydro-treatment. High viscosity mineral oils has the empirical formula: CnH2(n+1-z) where n is equal to 22 - 60 and z to 0 - 5.",
-    "type": "complex mixtures: not derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E200": {
-    "name": "A mixture of highly refined paraffinic and naphthenic liquid hydrocarbons with boiling point abov C; obtained from mineral crude oils through various refining steps (eg. distillation, extraction and crystallisation) and subsequent purification by acid and/or catalytic hydrotreatment; may contain antioxidants approved for food use. The oil is divided into three classes having different viscosities and average molecular weights. Class I: 8.5-11 mm2/s Class II: 7.0-8.5 mm2/s Class III:3.0-7.0 mm2/s Class I: Not less than 25 Class II: Not less than 22 Class III: Not less than 17 Class I: 480-500 Class II: 400-480 Class III:300-400",
-    "type": "complex mixtures: not derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E154": {
-    "name": "Brown FK () is a red-brown azo-dye. It is soluble in water and sparingly soluble in ethanol.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E160A": {
-    "name": "Mixed carotenes from natural strains of edible plants ( (i)) are obtained by solvent extraction of Carrots (Daucus carota) and palm fruit oil (Elaeis guineensis). The main colouring principle consists of carotenoids of which beta-carotene accounts for the major part. Alpha-, gamma-carotene and other pigments may be present. Besides the pigments, the substance may contain oils, fats and waxes naturally occurring in the source material. The colour index number is 75130 and the synonym is CI Food Orange 5.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E440": {
-    "name": "CASno reported refers to the racemate. Butane-1,3-diol is a colourless, viscous liquid, miscible with water and very hygroscopic (it absorbs 38.5 % w/w of water in 144 hours at 81 % relative humidity). It has a boiling point of 207.5 °C, ignition temperatur °C (DIN 51794) and a flash point (open cup) of 121 °C.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E250E": {
-    "name": "Difenoconazole formulation (SCORC)",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E570": {
-    "name": "Propargite formulation (Omit EW)",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E134": {
-    "name": "Spiroxamine impurity (A4320)",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E207": {
-    "name": "Spiroxamine impurity (A7192)",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E025": {
-    "name": "Fludioxonil formulation (CELEST FS)",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E638": {
-    "name": "Penoxsulam formulation (D)",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E400": {
-    "name": "Bispyribac formulation (Nomine SC)",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E163": {
-    "name": "There is limited information on the types and percentages of individual anthocyanins and anthocyanidins in anthocyanins (). The anthocyanins/anthocyanidins class consists of some 500 or more compounds. The structural variations of anthocyanins are due to differences in the number of hydroxyl groups in the molecule, the degree of methylation of these hydroxyl groups, the nature and number of the sugar moiety attached to the phenolic (aglycone) molecule and the position of the attachment, as well as the nature and number of aliphatic or aromatic acids attached to the sugars. Anthocyanins most frequently occur as 3-monosides, 3-biosides and 3-triosides as well as 3,5-diglycosides and more rarely 3,7-diglycosides associated with the sugars glucose < rhamnose < galactose < xylose < arabinose.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E809": {
-    "name": "Smoke Concentrat045 is obtained from beech wood of the tree species Fagus sylvatica L. The production of Smoke Concentrate 809045 comprises the following steps: (i) smouldering pieces of wood under controlled conditions, (ii) condensing the released smoke, (iii) separation of the liquid phase from the tar, (iv) treatment with activated carbon, (v) distillation, and (vi) filtration. Essential process parameters have been provided by the applicant.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E230": {
-    "name": "The copolymer has a weight-averaged molecular weight higher than 6000 Da and the low molecular weight fraction (LMWF) below 1000 Da was estimated to be below 10% w/w. The copolymer starts decomposing at temperatures abov °C, which is above the maximum process temperature of polyethylene and polypropylene but it is below the maximum process temperature of polyethylene terephthalate (PET).",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+    "name": "Curcumin",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
   "E101": {
-    "name": "Copper hydroxide formulation (Kocid)",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "Remarks: the panel concludes that data are not sufficient to estimate the additional need for dietary riboflavin during pregnancy based on fetal uptake and riboflavin accretion in the placenta during pregnancy, and that only one study shows a higher requirement in pregnant women compared to non-pregnant women (kuizon et al., 1998). thus, the panel calculates the additional riboflavin intake needed by pregnant women by allometric scaling (on the assumption that riboflavin requirement is related to metabolically active body mass). it was calculated from the ar of non-pregnant women (the unrounded value of 1.34 mg/day was used in the calculation, section 6.1), using the reference body weight for non-pregnant women and the mean gestational increase in body weight. the reference body weight of 18-79-year-old women (58.5 kg) was previously calculated from the measured body heights of 19,969 women in 13 eu member states and assuming a bmi of 22 kg/m2 (efsa nda panel (2013)). a mean gestational increase in body weight of 12 kg, for women with a singleton pregnancy and a pre-pregnancy bmi in the range between 18.5 and 24.9 kg/m2, was also previously considered (efsa nda panel, 2013). the panel notes that the accretion in fetal tissues mostly occurs in the last months of pregnancy. in order to allow for the extra need related to the growth of maternal tissues (e.g. placenta), the panel applies this additional requirement to the whole period of pregnancy.. "
+    "name": "Riboflavin",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E302": {
-    "name": "Calcium L-ascorbate (, INS302) is the calcium salt of L-ascorbic acid. Calcium L-ascorbate (anhydrous) has the the molecular weight is 390.31 g/mol.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E102": {
+    "name": "Tartrazine",
+    "type": "Color",
+    "status": "Not banned in EU (requires warning for potential effects on children)"
   },
-  "E464": {
-    "name": "Hydroxypropyl methyl cellulose (HPMC) () is cellulose, obtained directly from strains of fibrous plant material, partially etherified with methyl groups and containing a small degree of hydroxypropyl substitution (Commission Regulation (EU) No 231/2012). According to JECFA (JECFA, 2011), HPMC is a methyl cellulose, modified by treatment with alkali and propylene oxide, to which a small number of 2-hydroxypropyl groups are attached through ether links to the anhydroglucose units of the cellulose. The article of commerce may be further specified by viscosity.",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E104": {
+    "name": "Quinoline Yellow",
+    "type": "Color",
+    "status": "Not banned in EU (requires warning for potential effects on children)"
   },
-  "E140": {
-    "name": "The colouring principles of the family of chlorophylls have a porphyrin ring (tetrapyrrole ring) as basic structure, with a coordinated magnesium ion (Mg2+) (i.e. chlorophylls a and b) or without a coordinated magnesium ion (Mg2+) (i.e. phaeophytins a and b). According to the European Commission (EC) specifications (Commission Regulation (EU) No 231/2012), chlorophylls are obtained by solvent extraction of strains of edible plant material, grass, lucerne and nettle. According to the Natural Food Colours Association (NATCOL, 2011b), the most commonly used raw materials for the production of chlorophylls in Europe are grass, lucerne, nettle and spinach. The ANS Panel noted that not all sources used for the production of chlorophylls are part of the regular human diet. The Panel noted that, according to an industry source (NATCOL, 2011b) other raw materials (e.g. from Basella spp. and Morus spp.) may be used for the extraction of chlorophyll products outside of the EU. Therefore, compounds extracted from these other raw materials may be present in the food additive (i), and the Panel noted that these may not be included in the compounds tested in the available toxicity studies.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E141": {
-    "name": "Cu-chlorophylls ((i)) are pigments with a porphyrin ring (tetrapyrrole ring) as basic structure with a coordinated copper ion (Cu2+) and a phytol ester side chain. Synonyms of Cu-chlorophylls are CI Natural Green 3, copper chlorophyll and copper phaeophytin. CI Natural Green 3 is also indicated as a synonym for chlorophylls (E 140(i)) in Commission Regulation (EU) 231/2012. The Panel considered that use of the same synonyms to identify different food additives should be modified in order to prevent misidentification.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E306": {
-    "name": "Tocopherol-rich extract () contains tocopherols, such as d-alpha-, d-beta-, d-gamma- and d-delta-tocopherols, and tocotrienols.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E311": {
-    "name": "Octyl gallate () is the octyl ester of 3,4,5-trihydroxybenzoic acid.",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E110": {
+    "name": "Sunset Yellow FCF",
+    "type": "Color",
+    "status": "Not banned in EU (requires warning for potential effects on children)"
   },
   "E120": {
-    "name": "Cochineal, carminic acid, carmines () are red anthraquinone dyes.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+    "name": "Cochineal, Carminic Acid, Carmines",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E172": {
-    "name": "ron oxides and hydroxides () are produced synthetically and consist essentially of anhydrous and/or hydrated iron oxides.",
-    "type": "group, closed",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E122": {
+    "name": "Azorubine, Carmoisine",
+    "type": "Color",
+    "status": "Not banned in EU (requires warning for potential effects on children)"
+  },
+  "E123": {
+    "name": "Amaranth",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E124": {
+    "name": "Ponceau 4R, Cochineal Red A",
+    "type": "Color",
+    "status": "Not banned in EU (requires warning for potential effects on children)"
+  },
+  "E129": {
+    "name": "Allura Red AC",
+    "type": "Color",
+    "status": "Not banned in EU (requires warning for potential effects on children)"
+  },
+  "E131": {
+    "name": "Patent Blue V",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E132": {
+    "name": "Indigotine, Indigo Carmine",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E133": {
+    "name": "Brilliant Blue FCF",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E140": {
+    "name": "Chlorophylls, Chlorophyllins",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E141": {
+    "name": "Copper Complexes of Chlorophylls",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E142": {
+    "name": "Green S",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E150a": {
+    "name": "Plain Caramel",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E150b": {
+    "name": "Caustic Sulphite Caramel",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E150c": {
+    "name": "Ammonia Caramel",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E150d": {
+    "name": "Sulphite Ammonia Caramel",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E151": {
+    "name": "Brilliant Black BN",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E153": {
+    "name": "Vegetable Carbon",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E160a": {
+    "name": "Carotenes",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E160b": {
+    "name": "Annatto, Bixin, Norbixin",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E160c": {
+    "name": "Paprika Extract, Capsanthin, Capsorubin",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E160d": {
+    "name": "Lycopene",
+    "type": "Color",
+    "status": "Not banned in EU"
+  },
+  "E161b": {
+    "name": "Lutein",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
   "E162": {
-    "name": "Beetroot red () is obtained from the roots of strains of red beets (Beta vulgaris L. var. ruba) by pressing crushed beet as pressed juice or by aqueous extraction of shredded beetroots and subsequent enrichment in the active principle. Beetroot red (E 162) contains a number of pigments, belonging to the general class of the betalain. The main colouring principle consists of betacyanins (red), of which betanin accounts for 75-95%. Minor amounts of betaxanthin (yellow) and degradation products of betalains (light brown) may be present.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+    "name": "Beetroot Red, Betanin",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E432": {
-    "name": "Polysorbates (-E 436) constitute a class of surface active agents which are obtained by reaction of sorbitol, fatty acids and ethylene oxide. They are defined as mixtures of partial esters of sorbitol and its mono- and dianhydrides with edible commercial fatty acids which are condensed with ethylene oxide (Commission Regulation (EU) No 231/2012, TemaNord, 2002; JECFA, 2006a; EFEMA, 2009).",
-    "type": "group, closed",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E163": {
+    "name": "Anthocyanins",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E470A": {
-    "name": "Behenic acid (docosanoic acid C22H44O2, C22:0) is obtained from a fraction of fully hydrogenated refined mustard seed oil and can be used for the synthesis of several emulsifiers (i.e. , E 471, E 472 (a, b, c and e), E 475 and E 477).",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E170": {
+    "name": "Calcium Carbonate",
+    "type": "Color, Acidity Regulator",
+    "status": "Not banned in EU"
   },
-  "E410": {
-    "name": "Locust bean gum () is the ground endosperm of the seeds of the strains of carob tree, Ceratonia siliqua (L.) Taub. (Family Leguminosae). It consists of 87-88% (on dry basis) high molecular weight polysaccharides composed of mannose and galactose units (galactomannans) in approximate ratio 4:1. The remaining 12-13% consists mainly of protein and fibrous matter such as residues from the germ, seed coat and cell wall material. Locust bean gum galactomannans are composed of linear chains of (1->4)-linked beta-D-mannopyranosyl units with varying amounts of single (1->6)-linked alpha-D-galactopyranosyl residues as side chains.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E171": {
+    "name": "Titanium Dioxide",
+    "type": "Color",
+    "status": "Banned in EU (since August 7, 2022)"
   },
-  "E412": {
-    "name": "Guar gum ()",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E172": {
+    "name": "Iron Oxides and Hydroxides",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E413": {
-    "name": "Tragacanth () is exclusively defined as a dried exudation obtained from the stems and branches of strains of Astragalus gummifer Labillardiere and other Asiatic species of Astragalus (family Leguminosae). It consists mainly of high molecular weight polysaccharides (galactoarabans and acidic polysaccharides) which, on hydrolysis, yield galacturonic acid, galactose, arabinose, xylose and fucose. Small amounts of rhamnose and of glucose (derived from traces of starch and/or cellulose) may also be present (Commission Regulation (EU) No 231/2012).",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E173": {
+    "name": "Aluminium",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E417": {
-    "name": "Tara gum is obtained by grinding the endosperm of the seeds of natural strains of Caesalpinia spinosa (family Leguminosae). It consists chiefly of polysaccharides of high molecular weight composed mainly of galactomannans. The principal component consists of a linear chain of (1-4)-beta-D-mannopyranose units with alpha-D-galactopyranose units attached by (1-6) linkages. The ratio of mannose to galactose in tara gum is 3:1. (In locust bean gum, this ratio is 4:1 and in guar gum 2:1). It is a white to white-yellow odourless powder. It is soluble in water and insoluble in ethanol (specifications for tara gum () according to Commission Regulation (EU) No 231/2012).",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E174": {
+    "name": "Silver",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E425": {
-    "name": "Konjac glucomannan ( ii)",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E175": {
+    "name": "Gold",
+    "type": "Color",
+    "status": "Not banned in EU"
   },
-  "E471": {
-    "name": "Mono- and di-glycerides of fatty acids ()",
-    "type": "group, closed",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E200": {
+    "name": "Sorbic Acid",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E461": {
-    "name": "Methyl cellulose () is cellulose obtained directly from strains of fibrous plant material and partially etherified with methyl groups (Commission Regulation (EU) No 231/2012). According to JECFA (JECFA, 2006a), methyl cellulose is the methyl ether of cellulose, prepared from wood pulp or cotton by treatment with alkali and methylation of the alkali cellulose with methyl chloride. The article of commerce can be specified further by viscosity.",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E202": {
+    "name": "Potassium Sorbate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E463": {
-    "name": "Hydroxypropyl cellulose () is cellulose obtained directly from strains of fibrous plant material and partially etherified with hydroxypropyl groups (Commission Regulation (EU) No 231/2012). According to JECFA (JECFA, 2006b1), Hydroxypropyl cellulose is an ether of cellulose containing hydroxypropyl substitution prepared from cellulose by treatment with alkali and propylene oxide. The article of commerce can be specified further by viscosity.",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E203": {
+    "name": "Calcium Sorbate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E469": {
-    "name": "Enzymatically hydrolysed carboxy methyl cellulose () is obtained from carboxy methyl cellulose by enzymatic digestion with a cellulase produced by Trichoderma longibrachiatum (formerly T. reesei) (Commission Regulation (EU) No 231/2012). According to JECFA (JECFA, 2006d), enzymatically hydrolysed carboxy methyl cellulose is the product is the sodium salt of a carboxymethyl ether of cellulose, which has been partially hydrolysed by enzymatic treatment with food-grade Trichoderma reesei cellulase. The total content of mono- and disaccharides does not exceed about 7.5%.",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E210": {
+    "name": "Benzoic Acid",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E460": {
-    "name": "Powdered cellulose ((ii)) is purified, mechanically disintegrated cellulose prepared by processing alpha-cellulose obtained as a pulp from natural strains of fibrous plant materials (Commission Regulation (EU) No 231/2012). According to JECFA (2006a), powdered cellulose is purified, mechanically disintegrated cellulose prepared by processing alpha-cellulose obtained as a pulp from fibrous plant materials; occurs as a white, odourless substance consisting of fibrous particles which may be compressed into self-binding tablets which disintegrate rapidly in water; exists in various grades exhibiting degrees of fineness ranging from a dense free flowing powder to a coarse, fluffy non-flowing material.",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E211": {
+    "name": "Sodium Benzoate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E470B": {
-    "name": "According to Commission Regulation (EU) No 231/2012, () is magnesium salts of fatty acids occurring in food oils and fats, these salts being obtained either from edible fats and oils or from distilled food fatty acids. The composition and the nature of the fatty acid moieties depend on the source material (vegetable or animal) used for the production of the food additive and on the selection of the fatty acid fraction of the distillation, to which the hydrolysed source material was subjected (EFSA ANS Panel, 2017).",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E212": {
+    "name": "Potassium Benzoate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E960": {
-    "name": "The product is obtained by extracting and purifying steviol glycosides () from the dried leaves of Stevia rebaudiana Bertoni, then reacting these steviol glycosides with glucotransferase enzymes in the presence of glucose resulting in the addition of glucose moieties to the parent steviol glycosides. These glucosylated steviol glycosides are purified by employing adsorption and ion exchange chromatography, resulting in a final product comprising not less than 95% steviol glycosides, determined as the sum of the glucosylated and parent steviol glycosides.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E213": {
+    "name": "Calcium Benzoate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E407": {
-    "name": "Carrageenan () is obtained by extraction with water or dilute aqueous alkali of strains of seaweeds of Gigartinaceae, Solieriaceae, Hypneaceae and Furcellariaceae, families of the class Rhodophyceae (red seaweeds). It consists chiefly of the potassium, sodium, magnesium and calcium sulphate esters of galactose and 3,6-anhydrogalactose polysaccharides. These hexoses are alternately linked alpha-1,3 and beta-1,4 in the copolymer. The prevalent polysaccharides in carrageenan are designated as iota, lambda, kappa depending on the number of sulphate by repeating unit (i.e. 1,2,3 sulphate). Between iota and lambda there is a continuum of intermediate compositions differing in number of sulphates per repeat units between 1 and 2. During the process, no organic precipitant shall be used other than methanol, ethanol and propan-2-ol. The wording “carrageenan” is reserved for the non-hydrolysed or otherwise chemically degraded polymer. Formaldehyde may be present as an adventitious impurity up to a maximum of 5 mg/kg (According to the Commission Regulation (EU) No 231/20121). Three major types of carrageenan can be distinguished by the number and position of the sulfate groups on the disaccharide repeating unit (Marburger, 2003; Draeger et al., 2011): 1) iota-carrageenan with one sulfate group at C4 of the beta-D-galactose, 2) lambda-carrageenan with one sulfate group at C4 of the beta-D-galactose and one sulfate group at C2 of the alpha-3,6-anhydro-D-galactose, and 3) kappa-carrageenan with one sulfate group at C2 of the beta-D-galactose and two sulfate groups at C2 and C6 of the alpha-D-galactose. The names iota, lambda- and kappa-carrageenan do not reflect definitive chemical structures but only general differences in the composition and degree of sulfation at specific locations in the polymer (JECFA, 2001).",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E214": {
+    "name": "Ethyl p-Hydroxybenzoate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E553A": {
-    "name": "According to Commission Regulation (EU) No 231/2012, the food additive magnesium silicate ((i)) is defined as 'a synthetic compound of which the molar ratio of magnesium oxide to silicon dioxide is approximately 2:5'. Physical description: It is a very fine, white, odourless powder, free from grittiness (Commission Regulation (EU) No 231/2012).",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E215": {
+    "name": "Sodium Ethyl p-Hydroxybenzoate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E470": {
-    "name": "Chemical formula: Ln2Ter3(H2O)4 with Ter = terephthalic acid and with Ln=Lanthanides in all combinations of La, Eu, Gd and Tb. The complexes are solid salts formed by reaction of disodium terephthalate with the corresponding lanthanide chloride (LnCl3) followed by precipitation from aqueous solution. The molecular masses range from 842 Da for La2(Ter)3(H2O)4 to 882 Da for Tb2(Ter)3(H2O)4. Upon heating, the complexes lose water between 150°C and 200°C and are decomposed abov°C. In water and 50% ethanol, solubility was determined to be ca. 20 mg/L, in 3% acetic acid ca. 100 mg/L. The additive is used as a fine powder with particles largely in the 10 lm range and is not considered a nano material.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E216": {
+    "name": "Propylparaben",
+    "type": "Preservative",
+    "status": "Banned in EU"
   },
-  "E479B": {
-    "name": "Oxidised soya bean oil interacted with mono- and diglycerides of fatty acids () is defined as a complex mixture of esters of glycerol and fatty acids found in edible fat and fatty acids from thermally oxidised soya bean oil. It is produced by interaction and deodorisation under vacuum at 130°C of 10% of thermally oxidised soya bean oil and 90% mono- and diglycerides of food fatty acids. Soya bean oil is exclusively made from strains of soya beans. It is pale yellow to light brown a waxy or solid consistency. it is insoluble in water; soluble in hot oil or fat.",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E217": {
+    "name": "Sodium Propylparaben",
+    "type": "Preservative",
+    "status": "Banned in EU"
   },
-  "E477": {
-    "name": "Propylene glycol esters of fatty acids consists of mixtures of propane-1,2-diol mono- and diesters of fatty acids occurring in food fats and oils. The alcohol moiety is exclusively propane-1,2-diol together with dimer and traces of trimer. Organic acids other than food fatty acids are absent. Description: clear liquids or waxy white flakes, beads or solids having a bland odour. Propane-1,2-diol esters of fatty acids () is typically dispersible in hot water, but not in cold water and is soluble in edible oils and fats (EFEMA, 2009). According to the JECFA specifications, propane-1,2-diol esters of fatty acids are insoluble in water (JECFA, 2006). Commercial, distilled propane-1,2-diol esters of fatty acids (E 477) with a minimum monoester content (90%) are mixtures of positional isomers of the monoester and propane-1,2-diol diesters and have mainly a mixed fatty acid profile. The typical fatty acid composition of distilled propane-1,2-diol esters is a blend of palmitic and stearic acid, which may vary from 60:40 to 30:70 in the C16:C18 ratio (Sparsø, 2015).",
-    "type": "complex mixtures: not derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E218": {
+    "name": "Methyl p-Hydroxybenzoate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E999": {
-    "name": "Quillaia extract () is obtained by aqueous extraction of the milled inner bark or wood of Quillaja saponaria Molina, or other Quillaja species, trees of the family Rosaceae. It contains a number of triterpenoid saponins consisting of glycosides of quillaic acid. Sugars - including glucose, galactose, arabinose, xylose, and rhamnose - are also present, along with tannin, calcium oxalate and other minor components (Specifications for Quillaia extract (E 999) according to Commission Regulation (EU) No 231/2012).",
-    "type": "complex product: derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E219": {
+    "name": "Sodium Methyl p-Hydroxybenzoate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E338": {
-    "name": "Phosphoric acid-phosphates - di-, tri- and polyphosphates (-341, E 343, E 450-452)",
-    "type": "group, closed",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E220": {
+    "name": "Sulphur Dioxide",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E907": {
-    "name": "Hydrogenated poly-1-decene is a member of a more general family of hydrocarbons known as polyolefin saturated hydrocarbons (POSH) which in turn is a subgroup of mineral oil saturated hydrocarbons (MOSH) and more generally mineral oil hydrocarbons (MOH). According to Commission Regulation (EU) No 231/2012), hydrogenated poly-1-decene () has chemical formula C10nH20n+2 (n = 3-6) and average molecular weight 560 g/mol; no EC or CAS numbers are reported. The substance must have a purity equal to or greater than 98.5%, a content of compounds with carbon number less than 30 not higher than 1.5%, a level of the heavy metals nickel and lead not higher than 1 mg/kg each, and the following oligomer composition: C30, 13-37 %; C40, 35-70 %; C50: 9-25 %; C60, 1-7 %. The substance is described as a viscous liquid (viscosity: 5.7-6.1 9 10-6 m2 s-1 at 100°C), insoluble in water, slightly soluble in ethanol, and soluble in toluene, that burns with a bright flame and a paraffin-like characteristic smell. Hydrogenated poly-1-decene is synthesised from pure 1-decene - itself made from ethylene. It is mixture of synthetic branched-chain hydrocarbons produced by oligomerisation of pure 1-decene to the tri-, tetra-, penta- and hexa-decene molecules, followed by hydrogenation to full saturation of the oligomers; both processes are carried out in the presence of a catalyst; the crude mixture is purified by filtration through activated clay (SCF, 2001; WHO, 2000, 2001; JECFA, 2001).",
-    "type": "complex mixtures: not derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E221": {
+    "name": "Sodium Sulphite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E472A": {
-    "name": "Acetic acid esters of mono- and diglycerides of fatty acids () are defined as esters of glycerol with acetic acid and fatty acids occurring in food fats and oils. They may contain small amounts of free glycerol, free fatty acids, free acetic acid and free glycerides.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E222": {
+    "name": "Sodium Bisulphite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E472B": {
-    "name": "Lactic acid esters of mono- and diglycerides of fatty acids () are defined as esters of glycerol with lactic acid and fatty acids occurring in food fats and oils. They may contain small amounts of free glycerol, free fatty acids, free lactic acid and free glycerides.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E223": {
+    "name": "Sodium Metabisulphite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E472C": {
-    "name": "Citric acid esters of mono- and diglycerides of fatty acids () are defined as esters of glycerol with citric acid and fatty acids occurring in food fats and oils. They may contain small amounts of free glycerol, free fatty acids, free citric acid and free glycerides. They may be partially or wholly neutralised with sodium, potassium or calcium salts suitable for the purpose and authorised as food additives.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E224": {
+    "name": "Potassium Metabisulphite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E472D": {
-    "name": "Tartaric acid esters of mono- and diglycerides of fatty acids () are defined as esters of glycerol with tartaric acid and fatty acids occurring in food fats and oils. They may contain small amounts of free glycerol, free fatty acids, free tartaric acid and free glycerides.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E226": {
+    "name": "Calcium Sulphite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E472E": {
-    "name": "Mono- and diacetyltartaric acid esters of mono- and diglycerides of fatty acids () are defined as mixed esters of glycerol with mono- and diacetyltartaric acids (obtained from tartaric acid) and fatty acids occurring in food fats and oils. They may contain small amounts of free glycerol, free fatty acids, free tartaric and acetic acids and their combinations, and free glycerides. They may contain also tartaric and acetic esters of fatty acids.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E227": {
+    "name": "Calcium Bisulphite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E472F": {
-    "name": "Mixed acetic and tartaric acid esters of mono- and diglycerides of fatty acids () are defined as esters of glycerol with acetic and tartaric acids and fatty acids occurring in food fats and oils. They may contain small amounts of free glycerol, free fatty acids, free tartaric and acetic acids, and free glycerides. They may contain mono- and diacetyltartaric esters of mono- and diglycerides of fatty acids.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E228": {
+    "name": "Potassium Bisulphite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
   },
-  "E483": {
-    "name": "Diesters of stearyl tartrate () is a product of the esterification of tartaric acid with commercial stearyl alcohol, which consists essentially of stearyl and palmityl alcohols. It consists mainly of diester (distearyl tartrate, stearyl palmityl tartrate and dipalmityl tartrate), with minor amounts of monoester and of unchanged starting materials'. The additive is described by a content of total ester not less than 90% corresponding to an ester value within the range of 163-180.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E249": {
+    "name": "Potassium Nitrite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E250": {
+    "name": "Sodium Nitrite",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E251": {
+    "name": "Sodium Nitrate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E252": {
+    "name": "Potassium Nitrate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E270": {
+    "name": "Lactic Acid",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E280": {
+    "name": "Propionic Acid",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E281": {
+    "name": "Sodium Propionate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E282": {
+    "name": "Calcium Propionate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E283": {
+    "name": "Potassium Propionate",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E284": {
+    "name": "Boric Acid",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E285": {
+    "name": "Sodium Tetraborate (Borax)",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E300": {
+    "name": "Ascorbic Acid (Vitamin C)",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E301": {
+    "name": "Sodium Ascorbate",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E302": {
+    "name": "Calcium Ascorbate",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E304": {
+    "name": "Fatty Acid Esters of Ascorbic Acid",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E306": {
+    "name": "Tocopherols",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E307": {
+    "name": "Alpha-Tocopherol",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E308": {
+    "name": "Gamma-Tocopherol",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E309": {
+    "name": "Delta-Tocopherol",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E310": {
+    "name": "Propyl Gallate",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E311": {
+    "name": "Octyl Gallate",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E312": {
+    "name": "Dodecyl Gallate",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E315": {
+    "name": "Erythorbic Acid",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E316": {
+    "name": "Sodium Erythorbate",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E320": {
+    "name": "Butylated Hydroxyanisole (BHA)",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E321": {
+    "name": "Butylated Hydroxytoluene (BHT)",
+    "type": "Antioxidant",
+    "status": "Not banned in EU"
+  },
+  "E322": {
+    "name": "Lecithins",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E330": {
+    "name": "Citric Acid",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E331": {
+    "name": "Sodium Citrates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E332": {
+    "name": "Potassium Citrates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E333": {
+    "name": "Calcium Citrates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E334": {
+    "name": "Tartaric Acid",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
   },
   "E335": {
-    "name": "Monosodium tartrate ((i))",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
-  },
-  "E353": {
-    "name": "Metatartaric acid is a polydisperse polymer of tartaric acid with a degree of esterification above 32%. It is manufactured by heating L-tartaric acid from natural sources at temperatures of 150-170°C under atmospheric or under a reduced pressure. The product contains ditartaric monoester and diester, other polyester acids of variable chain length, as well as free tartaric acid. In a separate reaction, the tartaric acid is transformed, by elimination of water, to oxaloacetic acid (glyoxylic acid), that is quite unstable, and decarboxylates further to pyruvic acid. Pyruvic acid may also react with hydroxyl groups of tartaric or metatartaric acid (), a reaction that will terminate polymerisation. Therefore, the main constituents of commercial metatartaric acid (E 353) are the polymer consisting of molecules up to 75 monomers chain-length, the free tartaric acid (9-18%), pyruvic acid (1-6%) and oxaloacetic acid (< 1%). It also contains around 20% water.",
-    "type": "mixture or formulation",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+    "name": "Sodium Tartrates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
   },
   "E336": {
-    "name": "Dipotassium tartrate ((ii))",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+    "name": "Potassium Tartrates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
   },
   "E337": {
-    "name": "Potassium sodium tartrate ()",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+    "name": "Sodium Potassium Tartrate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
   },
-  "E354": {
-    "name": "Calcium tartrate ()",
-    "type": "single chemical entity",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E338": {
+    "name": "Phosphoric Acid",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E339": {
+    "name": "Sodium Phosphates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E340": {
+    "name": "Potassium Phosphates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E341": {
+    "name": "Calcium Phosphates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E400": {
+    "name": "Alginic Acid",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E401": {
+    "name": "Sodium Alginate",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E402": {
+    "name": "Potassium Alginate",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E403": {
+    "name": "Ammonium Alginate",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E404": {
+    "name": "Calcium Alginate",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E405": {
+    "name": "Propane-1,2-Diol Alginate",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E406": {
+    "name": "Agar",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E407": {
+    "name": "Carrageenan",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E410": {
+    "name": "Locust Bean Gum",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E412": {
+    "name": "Guar Gum",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E413": {
+    "name": "Tragacanth",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E414": {
+    "name": "Acacia Gum (Gum Arabic)",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E415": {
+    "name": "Xanthan Gum",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E416": {
+    "name": "Karaya Gum",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E417": {
+    "name": "Tara Gum",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E418": {
+    "name": "Gellan Gum",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E420": {
+    "name": "Sorbitol",
+    "type": "Sweetener, Humectant",
+    "status": "Not banned in EU"
+  },
+  "E421": {
+    "name": "Mannitol",
+    "type": "Sweetener, Humectant",
+    "status": "Not banned in EU"
+  },
+  "E422": {
+    "name": "Glycerol",
+    "type": "Humectant",
+    "status": "Not banned in EU"
+  },
+  "E425": {
+    "name": "Konjac Gum",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E432": {
+    "name": "Polyoxyethylene Sorbitan Monolaurate (Polysorbate 20)",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E433": {
+    "name": "Polyoxyethylene Sorbitan Monooleate (Polysorbate 80)",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E434": {
+    "name": "Polyoxyethylene Sorbitan Monopalmitate (Polysorbate 40)",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E435": {
+    "name": "Polyoxyethylene Sorbitan Monostearate (Polysorbate 60)",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E436": {
+    "name": "Polyoxyethylene Sorbitan Tristearate (Polysorbate 65)",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E440": {
+    "name": "Pectins",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E442": {
+    "name": "Ammonium Phosphatides",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E443": {
+    "name": "Brominated Vegetable Oil (BVO)",
+    "type": "Emulsifier",
+    "status": "Banned in EU"
+  },
+  "E444": {
+    "name": "Sucrose Acetate Isobutyrate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E445": {
+    "name": "Glycerol Esters of Wood Rosins",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E450": {
+    "name": "Diphosphates",
+    "type": "Acidity Regulator, Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E451": {
+    "name": "Triphosphates",
+    "type": "Acidity Regulator, Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E452": {
+    "name": "Polyphosphates",
+    "type": "Acidity Regulator, Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E460": {
+    "name": "Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E461": {
+    "name": "Methyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E462": {
+    "name": "Ethyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E463": {
+    "name": "Hydroxypropyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E464": {
+    "name": "Hydroxypropyl Methyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E465": {
+    "name": "Ethyl Methyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E466": {
+    "name": "Carboxymethyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E468": {
+    "name": "Cross-Linked Sodium Carboxymethyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E469": {
+    "name": "Enzymatically Hydrolysed Carboxymethyl Cellulose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E470a": {
+    "name": "Sodium, Potassium, and Calcium Salts of Fatty Acids",
+    "type": "Emulsifier, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E470b": {
+    "name": "Magnesium Salts of Fatty Acids",
+    "type": "Emulsifier, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E471": {
+    "name": "Mono- and Diglycerides of Fatty Acids",
+    "type": "Emulsifier, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E472a": {
+    "name": "Acetic Acid Esters of Mono- and Diglycerides",
+    "type": "Emulsifier, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E472b": {
+    "name": "Lactic Acid Esters of Mono- and Diglycerides",
+    "type": "Emulsifier, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E472c": {
+    "name": "Citric Acid Esters of Mono- and Diglycerides",
+    "type": "Emulsifier, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E472e": {
+    "name": "Mono- and Diacetyl Tartaric Acid Esters of Mono- and Diglycerides",
+    "type": "Emulsifier, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E473": {
+    "name": "Sucrose Esters of Fatty Acids",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E474": {
+    "name": "Sucroglycerides",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E475": {
+    "name": "Polyglycerol Esters of Fatty Acids",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E476": {
+    "name": "Polyglycerol Polyricinoleate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E477": {
+    "name": "Propane-1,2-Diol Esters of Fatty Acids",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E479b": {
+    "name": "Thermally Oxidized Soya Bean Oil",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E481": {
+    "name": "Sodium Stearoyl-2-Lactylate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E482": {
+    "name": "Calcium Stearoyl-2-Lactylate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E483": {
+    "name": "Stearyl Tartrate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E491": {
+    "name": "Sorbitan Monostearate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E492": {
+    "name": "Sorbitan Tristearate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E493": {
+    "name": "Sorbitan Monolaurate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E494": {
+    "name": "Sorbitan Monooleate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E495": {
+    "name": "Sorbitan Monopalmitate",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E500": {
+    "name": "Sodium Carbonates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E501": {
+    "name": "Potassium Carbonates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E503": {
+    "name": "Ammonium Carbonates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E504": {
+    "name": "Magnesium Carbonates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E507": {
+    "name": "Hydrochloric Acid",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E508": {
+    "name": "Potassium Chloride",
+    "type": "Gelling Agent",
+    "status": "Not banned in EU"
+  },
+  "E509": {
+    "name": "Calcium Chloride",
+    "type": "Gelling Agent",
+    "status": "Not banned in EU"
+  },
+  "E511": {
+    "name": "Magnesium Chloride",
+    "type": "Gelling Agent",
+    "status": "Not banned in EU"
+  },
+  "E513": {
+    "name": "Sulphuric Acid",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E514": {
+    "name": "Sodium Sulphates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E515": {
+    "name": "Potassium Sulphates",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E516": {
+    "name": "Calcium Sulphate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E520": {
+    "name": "Aluminium Sulphate",
+    "type": "Firming Agent",
+    "status": "Not banned in EU"
+  },
+  "E521": {
+    "name": "Aluminium Sodium Sulphate",
+    "type": "Firming Agent",
+    "status": "Not banned in EU"
+  },
+  "E522": {
+    "name": "Aluminium Potassium Sulphate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E523": {
+    "name": "Aluminium Ammonium Sulphate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E524": {
+    "name": "Sodium Hydroxide",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E525": {
+    "name": "Potassium Hydroxide",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E526": {
+    "name": "Calcium Hydroxide",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E527": {
+    "name": "Ammonium Hydroxide",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E528": {
+    "name": "Magnesium Hydroxide",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E529": {
+    "name": "Calcium Oxide",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E530": {
+    "name": "Magnesium Oxide",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E535": {
+    "name": "Sodium Ferrocyanide",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E536": {
+    "name": "Potassium Ferrocyanide",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E538": {
+    "name": "Calcium Ferrocyanide",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E541": {
+    "name": "Sodium Aluminium Phosphate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E551": {
+    "name": "Silicon Dioxide",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E552": {
+    "name": "Calcium Silicate",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E553b": {
+    "name": "Talc",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E554": {
+    "name": "Sodium Aluminium Silicate",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E555": {
+    "name": "Potassium Aluminium Silicate",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E558": {
+    "name": "Bentonite",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E559": {
+    "name": "Aluminium Silicate (Kaolin)",
+    "type": "Anti-Caking Agent",
+    "status": "Not banned in EU"
+  },
+  "E570": {
+    "name": "Fatty Acids",
+    "type": "Emulsifier",
+    "status": "Not banned in EU"
+  },
+  "E574": {
+    "name": "Gluconic Acid",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E575": {
+    "name": "Glucono-Delta-Lactone",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E576": {
+    "name": "Sodium Gluconate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E577": {
+    "name": "Potassium Gluconate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E578": {
+    "name": "Calcium Gluconate",
+    "type": "Acidity Regulator",
+    "status": "Not banned in EU"
+  },
+  "E585": {
+    "name": "Ferrous Lactate",
+    "type": "Color Retention Agent",
+    "status": "Not banned in EU"
+  },
+  "E620": {
+    "name": "Glutamic Acid",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E621": {
+    "name": "Monosodium Glutamate (MSG)",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E622": {
+    "name": "Monopotassium Glutamate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E623": {
+    "name": "Calcium Diglutamate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E624": {
+    "name": "Monoammonium Glutamate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E625": {
+    "name": "Magnesium Diglutamate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E626": {
+    "name": "Guanylic Acid",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E627": {
+    "name": "Disodium Guanylate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E628": {
+    "name": "Dipotassium Guanylate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E629": {
+    "name": "Calcium Guanylate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E630": {
+    "name": "Inosinic Acid",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E631": {
+    "name": "Disodium Inosinate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E632": {
+    "name": "Dipotassium Inosinate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E633": {
+    "name": "Calcium Inosinate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E634": {
+    "name": "Calcium 5'-Ribonucleotides",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E635": {
+    "name": "Disodium 5'-Ribonucleotides",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E640": {
+    "name": "Glycine and its Sodium Salt",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E650": {
+    "name": "Zinc Acetate",
+    "type": "Flavor Enhancer",
+    "status": "Not banned in EU"
+  },
+  "E715": {
+    "name": "Avoparcin",
+    "type": "Antibiotic (Feed Additive)",
+    "status": "Banned in EU"
   },
   "E900": {
-    "name": "Dimethyl polysiloxane ()",
-    "type": "polymer",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+    "name": "Dimethylpolysiloxane",
+    "type": "Anti-Foaming Agent",
+    "status": "Not banned in EU"
   },
-  "E600": {
-    "name": "ermiculite is a soft phyllosilicate mineral which expands after thermal treatment producing an accordion-like lightweight grey to brown product. It is characterised by a sheet-like structure. Vermiculite is obtained by mining, followed by crushing, grinding, drying and sizing. The granular vermiculite is then heated for a few seconds to temperatures abov°C, leading to the sudden evaporation of the combined water. The granules expand and extend in length, in a process called exfoliation, reaching dimensions typically of > 100 microm. The exfoliated structure gives vermiculite a high capacity to absorb liquids.",
-    "type": "complex mixtures: not derived from botanical sources",
-    "risk_level": "Unspecified",
-    "explanation": "No specific EFSA assessment details found for this E-number."
+  "E901": {
+    "name": "Beeswax",
+    "type": "Glazing Agent",
+    "status": "Not banned in EU"
+  },
+  "E902": {
+    "name": "Candelilla Wax",
+    "type": "Glazing Agent",
+    "status": "Not banned in EU"
+  },
+  "E903": {
+    "name": "Carnauba Wax",
+    "type": "Glazing Agent",
+    "status": "Not banned in EU"
+  },
+  "E904": {
+    "name": "Shellac",
+    "type": "Glazing Agent",
+    "status": "Not banned in EU"
+  },
+  "E905": {
+    "name": "Paraffin",
+    "type": "Glazing Agent",
+    "status": "Not banned in EU"
+  },
+  "E912": {
+    "name": "Montan Acid Esters",
+    "type": "Glazing Agent",
+    "status": "Not banned in EU"
+  },
+  "E914": {
+    "name": "Oxidized Polyethylene Wax",
+    "type": "Glazing Agent",
+    "status": "Not banned in EU"
+  },
+  "E920": {
+    "name": "L-Cysteine",
+    "type": "Flour Treatment Agent",
+    "status": "Not banned in EU"
+  },
+  "E924": {
+    "name": "Potassium Bromate",
+    "type": "Flour Treatment Agent",
+    "status": "Banned in EU"
+  },
+  "E927a": {
+    "name": "Azodicarbonamide",
+    "type": "Flour Treatment Agent",
+    "status": "Banned in EU"
+  },
+  "E950": {
+    "name": "Acesulfame Potassium",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E951": {
+    "name": "Aspartame",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E952": {
+    "name": "Cyclamic Acid and its Salts",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E953": {
+    "name": "Isomalt",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E954": {
+    "name": "Saccharin and its Salts",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E955": {
+    "name": "Sucralose",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E957": {
+    "name": "Thaumatin",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E959": {
+    "name": "Neohesperidine DC",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E960": {
+    "name": "Steviol Glycosides",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E961": {
+    "name": "Neotame",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E962": {
+    "name": "Aspartame-Acesulfame Salt",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E965": {
+    "name": "Maltitol",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E966": {
+    "name": "Lactitol",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E967": {
+    "name": "Xylitol",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E968": {
+    "name": "Erythritol",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E969": {
+    "name": "Advantame",
+    "type": "Sweetener",
+    "status": "Not banned in EU"
+  },
+  "E999": {
+    "name": "Quillaia Extract",
+    "type": "Foaming Agent",
+    "status": "Not banned in EU"
+  },
+  "E1103": {
+    "name": "Invertase",
+    "type": "Enzyme",
+    "status": "Not banned in EU"
+  },
+  "E1105": {
+    "name": "Lysozyme",
+    "type": "Preservative",
+    "status": "Not banned in EU"
+  },
+  "E1200": {
+    "name": "Polydextrose",
+    "type": "Thickener, Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E1201": {
+    "name": "Polyvinylpyrrolidone",
+    "type": "Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E1202": {
+    "name": "Polyvinylpolypyrrolidone",
+    "type": "Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E1204": {
+    "name": "Pullulan",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1404": {
+    "name": "Oxidized Starch",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1410": {
+    "name": "Monostarch Phosphate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1412": {
+    "name": "Distarch Phosphate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1413": {
+    "name": "Phosphated Distarch Phosphate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1414": {
+    "name": "Acetylated Distarch Phosphate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1420": {
+    "name": "Acetylated Starch",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1422": {
+    "name": "Acetylated Distarch Adipate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1440": {
+    "name": "Hydroxypropyl Starch",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1442": {
+    "name": "Hydroxypropyl Distarch Phosphate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1450": {
+    "name": "Starch Sodium Octenyl Succinate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1451": {
+    "name": "Acetylated Oxidized Starch",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1452": {
+    "name": "Starch Aluminium Octenyl Succinate",
+    "type": "Thickener",
+    "status": "Not banned in EU"
+  },
+  "E1505": {
+    "name": "Triethyl Citrate",
+    "type": "Stabilizer",
+    "status": "Not banned in EU"
+  },
+  "E1518": {
+    "name": "Glyceryl Triacetate (Triacetin)",
+    "type": "Humectant",
+    "status": "Not banned in EU"
+  },
+  "E1520": {
+    "name": "Propylene Glycol",
+    "type": "Humectant",
+    "status": "Not banned in EU"
   }
 }
