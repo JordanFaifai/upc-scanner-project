@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = await response.json();
         console.log('Successfully fetched product data:', data); // ADD OR MODIFY THIS LINE
 
-        if (data.product && data.product.product_name) {
+        if (data.productName && data.ingredients) { // Check directly for productName
             // ... rest of your success display logic
             let ingredients = data.product.ingredients_text || 'No ingredients listed.';
             if (data.product.ingredients_text_debug) {
