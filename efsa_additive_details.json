@@ -2,1336 +2,1637 @@
   "E100": {
     "name": "Curcumin",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E101": {
     "name": "Riboflavin",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E102": {
     "name": "Tartrazine",
     "type": "Color",
-    "status": "Not banned in EU (requires warning for potential effects on children)"
+    "status": "(requires warning for potential effects on children)"
   },
   "E104": {
     "name": "Quinoline Yellow",
     "type": "Color",
-    "status": "Not banned in EU (requires warning for potential effects on children)"
+    "status": "(requires warning for potential effects on children)"
   },
   "E110": {
     "name": "Sunset Yellow FCF",
     "type": "Color",
-    "status": "Not banned in EU (requires warning for potential effects on children)"
+    "status": "(requires warning for potential effects on children)"
   },
   "E120": {
     "name": "Cochineal, Carminic Acid, Carmines",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E122": {
     "name": "Azorubine, Carmoisine",
     "type": "Color",
-    "status": "Not banned in EU (requires warning for potential effects on children)"
+    "status": "(requires warning for potential effects on children)"
   },
   "E123": {
     "name": "Amaranth",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E124": {
     "name": "Ponceau 4R, Cochineal Red A",
     "type": "Color",
-    "status": "Not banned in EU (requires warning for potential effects on children)"
+    "status": "(requires warning for potential effects on children)"
   },
   "E129": {
     "name": "Allura Red AC",
     "type": "Color",
-    "status": "Not banned in EU (requires warning for potential effects on children)"
+    "status": "(requires warning for potential effects on children)"
   },
   "E131": {
     "name": "Patent Blue V",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E132": {
     "name": "Indigotine, Indigo Carmine",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E133": {
     "name": "Brilliant Blue FCF",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E140": {
     "name": "Chlorophylls, Chlorophyllins",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E141": {
     "name": "Copper Complexes of Chlorophylls",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E142": {
     "name": "Green S",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E150a": {
     "name": "Plain Caramel",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E150b": {
     "name": "Caustic Sulphite Caramel",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E150c": {
     "name": "Ammonia Caramel",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E150d": {
     "name": "Sulphite Ammonia Caramel",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E151": {
     "name": "Brilliant Black BN",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E153": {
     "name": "Vegetable Carbon",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E160a": {
     "name": "Carotenes",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E160b": {
     "name": "Annatto, Bixin, Norbixin",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E160c": {
     "name": "Paprika Extract, Capsanthin, Capsorubin",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E160d": {
     "name": "Lycopene",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E161b": {
     "name": "Lutein",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E162": {
     "name": "Beetroot Red, Betanin",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E163": {
     "name": "Anthocyanins",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E170": {
     "name": "Calcium Carbonate",
     "type": "Color, Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E171": {
     "name": "Titanium Dioxide",
     "type": "Color",
-    "status": "Banned in EU (since August 7, 2022)"
+    "status": "BANNED in EU"
   },
   "E172": {
     "name": "Iron Oxides and Hydroxides",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E173": {
     "name": "Aluminium",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E174": {
     "name": "Silver",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E175": {
     "name": "Gold",
     "type": "Color",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E180": {
+    "name": "Litholrubine BK",
+    "type": "Color",
+    "status": ""
   },
   "E200": {
     "name": "Sorbic Acid",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E202": {
     "name": "Potassium Sorbate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E203": {
     "name": "Calcium Sorbate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E210": {
     "name": "Benzoic Acid",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E211": {
     "name": "Sodium Benzoate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E212": {
     "name": "Potassium Benzoate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E213": {
     "name": "Calcium Benzoate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E214": {
     "name": "Ethyl p-Hydroxybenzoate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E215": {
     "name": "Sodium Ethyl p-Hydroxybenzoate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E216": {
     "name": "Propylparaben",
     "type": "Preservative",
-    "status": "Banned in EU"
+    "status": "BANNED in EU"
   },
   "E217": {
     "name": "Sodium Propylparaben",
     "type": "Preservative",
-    "status": "Banned in EU"
+    "status": "BANNED in EU"
   },
   "E218": {
     "name": "Methyl p-Hydroxybenzoate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E219": {
     "name": "Sodium Methyl p-Hydroxybenzoate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E220": {
     "name": "Sulphur Dioxide",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E221": {
     "name": "Sodium Sulphite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E222": {
     "name": "Sodium Bisulphite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E223": {
     "name": "Sodium Metabisulphite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E224": {
     "name": "Potassium Metabisulphite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E226": {
     "name": "Calcium Sulphite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E227": {
     "name": "Calcium Bisulphite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E228": {
     "name": "Potassium Bisulphite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E234": {
+    "name": "Nisin",
+    "type": "Preservative",
+    "status": ""
+  },
+  "E235": {
+    "name": "Natamycin",
+    "type": "Preservative",
+    "status": ""
+  },
+  "E239": {
+    "name": "Hexamethylene Tetramine",
+    "type": "Preservative",
+    "status": ""
+  },
+  "E242": {
+    "name": "Dimethyl Dicarbonate",
+    "type": "Preservative",
+    "status": ""
   },
   "E249": {
     "name": "Potassium Nitrite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E250": {
     "name": "Sodium Nitrite",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E251": {
     "name": "Sodium Nitrate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E252": {
     "name": "Potassium Nitrate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E260": {
+    "name": "Acetic Acid",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E261": {
+    "name": "Potassium Acetate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E262": {
+    "name": "Sodium Acetates",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E263": {
+    "name": "Calcium Acetate",
+    "type": "Acidity Regulator",
+    "status": ""
   },
   "E270": {
     "name": "Lactic Acid",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E280": {
     "name": "Propionic Acid",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E281": {
     "name": "Sodium Propionate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E282": {
     "name": "Calcium Propionate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E283": {
     "name": "Potassium Propionate",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E284": {
     "name": "Boric Acid",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E285": {
     "name": "Sodium Tetraborate (Borax)",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E290": {
+    "name": "Carbon Dioxide",
+    "type": "Preservative, Gas",
+    "status": ""
+  },
+  "E296": {
+    "name": "Malic Acid",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E297": {
+    "name": "Fumaric Acid",
+    "type": "Acidity Regulator",
+    "status": ""
   },
   "E300": {
     "name": "Ascorbic Acid (Vitamin C)",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E301": {
     "name": "Sodium Ascorbate",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E302": {
     "name": "Calcium Ascorbate",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E304": {
     "name": "Fatty Acid Esters of Ascorbic Acid",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E306": {
     "name": "Tocopherols",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E307": {
     "name": "Alpha-Tocopherol",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E308": {
     "name": "Gamma-Tocopherol",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E309": {
     "name": "Delta-Tocopherol",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E310": {
     "name": "Propyl Gallate",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E311": {
     "name": "Octyl Gallate",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E312": {
     "name": "Dodecyl Gallate",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E315": {
     "name": "Erythorbic Acid",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E316": {
     "name": "Sodium Erythorbate",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E319": {
+    "name": "Tertiary-Butylhydroquinone (TBHQ)",
+    "type": "Antioxidant",
+    "status": "Not authorized in EU"
   },
   "E320": {
     "name": "Butylated Hydroxyanisole (BHA)",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E321": {
     "name": "Butylated Hydroxytoluene (BHT)",
     "type": "Antioxidant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E322": {
     "name": "Lecithins",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E325": {
+    "name": "Sodium Lactate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E326": {
+    "name": "Potassium Lactate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E327": {
+    "name": "Calcium Lactate",
+    "type": "Acidity Regulator",
+    "status": ""
   },
   "E330": {
     "name": "Citric Acid",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E331": {
     "name": "Sodium Citrates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E332": {
     "name": "Potassium Citrates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E333": {
     "name": "Calcium Citrates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E334": {
     "name": "Tartaric Acid",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E335": {
     "name": "Sodium Tartrates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E336": {
     "name": "Potassium Tartrates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E337": {
     "name": "Sodium Potassium Tartrate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E338": {
     "name": "Phosphoric Acid",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E339": {
     "name": "Sodium Phosphates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E340": {
     "name": "Potassium Phosphates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E341": {
     "name": "Calcium Phosphates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E343": {
+    "name": "Magnesium Phosphates",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E350": {
+    "name": "Sodium Malates",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E351": {
+    "name": "Potassium Malate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E352": {
+    "name": "Calcium Malates",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E353": {
+    "name": "Metatartaric Acid",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E354": {
+    "name": "Calcium Tartrate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E355": {
+    "name": "Adipic Acid",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E356": {
+    "name": "Sodium Adipate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E357": {
+    "name": "Potassium Adipate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E363": {
+    "name": "Succinic Acid",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E380": {
+    "name": "Triammonium Citrate",
+    "type": "Acidity Regulator",
+    "status": ""
+  },
+  "E385": {
+    "name": "Calcium Disodium EDTA",
+    "type": "Preservative",
+    "status": ""
   },
   "E400": {
     "name": "Alginic Acid",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E401": {
     "name": "Sodium Alginate",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E402": {
     "name": "Potassium Alginate",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E403": {
     "name": "Ammonium Alginate",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E404": {
     "name": "Calcium Alginate",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E405": {
     "name": "Propane-1,2-Diol Alginate",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E406": {
     "name": "Agar",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E407": {
     "name": "Carrageenan",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E407a": {
+    "name": "Processed Eucheuma Seaweed",
+    "type": "Thickener, Stabilizer",
+    "status": ""
   },
   "E410": {
     "name": "Locust Bean Gum",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E412": {
     "name": "Guar Gum",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E413": {
     "name": "Tragacanth",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E414": {
     "name": "Acacia Gum (Gum Arabic)",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E415": {
     "name": "Xanthan Gum",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E416": {
     "name": "Karaya Gum",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E417": {
     "name": "Tara Gum",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E418": {
     "name": "Gellan Gum",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E420": {
     "name": "Sorbitol",
     "type": "Sweetener, Humectant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E421": {
     "name": "Mannitol",
     "type": "Sweetener, Humectant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E422": {
     "name": "Glycerol",
     "type": "Humectant",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E425": {
     "name": "Konjac Gum",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E426": {
+    "name": "Soybean Hemicellulose",
+    "type": "Thickener",
+    "status": ""
+  },
+  "E427": {
+    "name": "Cassia Gum",
+    "type": "Thickener",
+    "status": ""
   },
   "E432": {
     "name": "Polyoxyethylene Sorbitan Monolaurate (Polysorbate 20)",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E433": {
     "name": "Polyoxyethylene Sorbitan Monooleate (Polysorbate 80)",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E434": {
     "name": "Polyoxyethylene Sorbitan Monopalmitate (Polysorbate 40)",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E435": {
     "name": "Polyoxyethylene Sorbitan Monostearate (Polysorbate 60)",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E436": {
     "name": "Polyoxyethylene Sorbitan Tristearate (Polysorbate 65)",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E440": {
     "name": "Pectins",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E442": {
     "name": "Ammonium Phosphatides",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E443": {
     "name": "Brominated Vegetable Oil (BVO)",
     "type": "Emulsifier",
-    "status": "Banned in EU"
+    "status": "BANNED in EU"
   },
   "E444": {
     "name": "Sucrose Acetate Isobutyrate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E445": {
     "name": "Glycerol Esters of Wood Rosins",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E450": {
     "name": "Diphosphates",
     "type": "Acidity Regulator, Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E451": {
     "name": "Triphosphates",
     "type": "Acidity Regulator, Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E452": {
     "name": "Polyphosphates",
     "type": "Acidity Regulator, Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E460": {
     "name": "Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E461": {
     "name": "Methyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E462": {
     "name": "Ethyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E463": {
     "name": "Hydroxypropyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E464": {
     "name": "Hydroxypropyl Methyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E465": {
     "name": "Ethyl Methyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E466": {
     "name": "Carboxymethyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E468": {
     "name": "Cross-Linked Sodium Carboxymethyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E469": {
     "name": "Enzymatically Hydrolysed Carboxymethyl Cellulose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E470a": {
     "name": "Sodium, Potassium, and Calcium Salts of Fatty Acids",
     "type": "Emulsifier, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E470b": {
     "name": "Magnesium Salts of Fatty Acids",
     "type": "Emulsifier, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E471": {
     "name": "Mono- and Diglycerides of Fatty Acids",
     "type": "Emulsifier, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E472a": {
     "name": "Acetic Acid Esters of Mono- and Diglycerides",
     "type": "Emulsifier, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E472b": {
     "name": "Lactic Acid Esters of Mono- and Diglycerides",
     "type": "Emulsifier, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E472c": {
     "name": "Citric Acid Esters of Mono- and Diglycerides",
     "type": "Emulsifier, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E472e": {
     "name": "Mono- and Diacetyl Tartaric Acid Esters of Mono- and Diglycerides",
     "type": "Emulsifier, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E473": {
     "name": "Sucrose Esters of Fatty Acids",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E474": {
     "name": "Sucroglycerides",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E475": {
     "name": "Polyglycerol Esters of Fatty Acids",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E476": {
     "name": "Polyglycerol Polyricinoleate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E477": {
     "name": "Propane-1,2-Diol Esters of Fatty Acids",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E479b": {
     "name": "Thermally Oxidized Soya Bean Oil",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E481": {
     "name": "Sodium Stearoyl-2-Lactylate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E482": {
     "name": "Calcium Stearoyl-2-Lactylate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E483": {
     "name": "Stearyl Tartrate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E491": {
     "name": "Sorbitan Monostearate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E492": {
     "name": "Sorbitan Tristearate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E493": {
     "name": "Sorbitan Monolaurate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E494": {
     "name": "Sorbitan Monooleate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E495": {
     "name": "Sorbitan Monopalmitate",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E500": {
     "name": "Sodium Carbonates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E501": {
     "name": "Potassium Carbonates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E503": {
     "name": "Ammonium Carbonates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E504": {
     "name": "Magnesium Carbonates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E507": {
     "name": "Hydrochloric Acid",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E508": {
     "name": "Potassium Chloride",
     "type": "Gelling Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E509": {
     "name": "Calcium Chloride",
     "type": "Gelling Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E511": {
     "name": "Magnesium Chloride",
     "type": "Gelling Agent",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E512": {
+    "name": "Stannous Chloride",
+    "type": "Stabilizer",
+    "status": ""
   },
   "E513": {
     "name": "Sulphuric Acid",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E514": {
     "name": "Sodium Sulphates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E515": {
     "name": "Potassium Sulphates",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E516": {
     "name": "Calcium Sulphate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E517": {
+    "name": "Ammonium Sulphate",
+    "type": "Acidity Regulator",
+    "status": ""
   },
   "E520": {
     "name": "Aluminium Sulphate",
     "type": "Firming Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E521": {
     "name": "Aluminium Sodium Sulphate",
     "type": "Firming Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E522": {
     "name": "Aluminium Potassium Sulphate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E523": {
     "name": "Aluminium Ammonium Sulphate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E524": {
     "name": "Sodium Hydroxide",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E525": {
     "name": "Potassium Hydroxide",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E526": {
     "name": "Calcium Hydroxide",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E527": {
     "name": "Ammonium Hydroxide",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E528": {
     "name": "Magnesium Hydroxide",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E529": {
     "name": "Calcium Oxide",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E530": {
     "name": "Magnesium Oxide",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E535": {
     "name": "Sodium Ferrocyanide",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E536": {
     "name": "Potassium Ferrocyanide",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E538": {
     "name": "Calcium Ferrocyanide",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E541": {
     "name": "Sodium Aluminium Phosphate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E551": {
     "name": "Silicon Dioxide",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E552": {
     "name": "Calcium Silicate",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E553a": {
+    "name": "Magnesium Silicate",
+    "type": "Anti-Caking Agent",
+    "status": ""
   },
   "E553b": {
     "name": "Talc",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E554": {
     "name": "Sodium Aluminium Silicate",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E555": {
     "name": "Potassium Aluminium Silicate",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E556": {
+    "name": "Calcium Aluminium Silicate",
+    "type": "Anti-Caking Agent",
+    "status": ""
   },
   "E558": {
     "name": "Bentonite",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E559": {
     "name": "Aluminium Silicate (Kaolin)",
     "type": "Anti-Caking Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E570": {
     "name": "Fatty Acids",
     "type": "Emulsifier",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E574": {
     "name": "Gluconic Acid",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E575": {
     "name": "Glucono-Delta-Lactone",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E576": {
     "name": "Sodium Gluconate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E577": {
     "name": "Potassium Gluconate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E578": {
     "name": "Calcium Gluconate",
     "type": "Acidity Regulator",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E579": {
+    "name": "Ferrous Gluconate",
+    "type": "Color Retention Agent",
+    "status": ""
   },
   "E585": {
     "name": "Ferrous Lactate",
     "type": "Color Retention Agent",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E586": {
+    "name": "4-Hexylresorcinol",
+    "type": "Antioxidant",
+    "status": ""
   },
   "E620": {
     "name": "Glutamic Acid",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E621": {
     "name": "Monosodium Glutamate (MSG)",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E622": {
     "name": "Monopotassium Glutamate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E623": {
     "name": "Calcium Diglutamate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E624": {
     "name": "Monoammonium Glutamate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E625": {
     "name": "Magnesium Diglutamate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E626": {
     "name": "Guanylic Acid",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E627": {
     "name": "Disodium Guanylate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E628": {
     "name": "Dipotassium Guanylate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E629": {
     "name": "Calcium Guanylate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E630": {
     "name": "Inosinic Acid",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E631": {
     "name": "Disodium Inosinate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E632": {
     "name": "Dipotassium Inosinate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E633": {
     "name": "Calcium Inosinate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E634": {
     "name": "Calcium 5'-Ribonucleotides",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E635": {
     "name": "Disodium 5'-Ribonucleotides",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E640": {
     "name": "Glycine and its Sodium Salt",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E650": {
     "name": "Zinc Acetate",
     "type": "Flavor Enhancer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E715": {
     "name": "Avoparcin",
     "type": "Antibiotic (Feed Additive)",
-    "status": "Banned in EU"
+    "status": "BANNED in EU"
   },
   "E900": {
     "name": "Dimethylpolysiloxane",
     "type": "Anti-Foaming Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E901": {
     "name": "Beeswax",
     "type": "Glazing Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E902": {
     "name": "Candelilla Wax",
     "type": "Glazing Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E903": {
     "name": "Carnauba Wax",
     "type": "Glazing Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E904": {
     "name": "Shellac",
     "type": "Glazing Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E905": {
     "name": "Paraffin",
     "type": "Glazing Agent",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E907": {
+    "name": "Hydrogenated Poly-1-Decene",
+    "type": "Glazing Agent",
+    "status": ""
   },
   "E912": {
     "name": "Montan Acid Esters",
     "type": "Glazing Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E914": {
     "name": "Oxidized Polyethylene Wax",
     "type": "Glazing Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E920": {
     "name": "L-Cysteine",
     "type": "Flour Treatment Agent",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E924": {
     "name": "Potassium Bromate",
     "type": "Flour Treatment Agent",
-    "status": "Banned in EU"
+    "status": "BANNED in EU"
   },
   "E927a": {
     "name": "Azodicarbonamide",
     "type": "Flour Treatment Agent",
-    "status": "Banned in EU"
+    "status": "BANNED in EU"
+  },
+  "E927b": {
+    "name": "Carbamide (Urea)",
+    "type": "Stabilizer",
+    "status": ""
+  },
+  "E938": {
+    "name": "Argon",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E939": {
+    "name": "Helium",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E941": {
+    "name": "Nitrogen",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E942": {
+    "name": "Nitrous Oxide",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E943a": {
+    "name": "Butane",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E943b": {
+    "name": "Isobutane",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E944": {
+    "name": "Propane",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E948": {
+    "name": "Oxygen",
+    "type": "Propellant Gas",
+    "status": ""
+  },
+  "E949": {
+    "name": "Hydrogen",
+    "type": "Propellant Gas",
+    "status": ""
   },
   "E950": {
     "name": "Acesulfame Potassium",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E951": {
     "name": "Aspartame",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E952": {
     "name": "Cyclamic Acid and its Salts",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E953": {
     "name": "Isomalt",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E954": {
     "name": "Saccharin and its Salts",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E955": {
     "name": "Sucralose",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E957": {
     "name": "Thaumatin",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E959": {
     "name": "Neohesperidine DC",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E960": {
     "name": "Steviol Glycosides",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E961": {
     "name": "Neotame",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E962": {
     "name": "Aspartame-Acesulfame Salt",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E965": {
     "name": "Maltitol",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E966": {
     "name": "Lactitol",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E967": {
     "name": "Xylitol",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E968": {
     "name": "Erythritol",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E969": {
     "name": "Advantame",
     "type": "Sweetener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E999": {
     "name": "Quillaia Extract",
     "type": "Foaming Agent",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E1101": {
+    "name": "Proteases",
+    "type": "Enzyme",
+    "status": ""
+  },
+  "E1102": {
+    "name": "Glucose Oxidase",
+    "type": "Enzyme",
+    "status": ""
   },
   "E1103": {
     "name": "Invertase",
     "type": "Enzyme",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E1104": {
+    "name": "Lipases",
+    "type": "Enzyme",
+    "status": ""
   },
   "E1105": {
     "name": "Lysozyme",
     "type": "Preservative",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1200": {
     "name": "Polydextrose",
     "type": "Thickener, Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1201": {
     "name": "Polyvinylpyrrolidone",
     "type": "Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1202": {
     "name": "Polyvinylpolypyrrolidone",
     "type": "Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E1203": {
+    "name": "Polyvinyl Alcohol",
+    "type": "Stabilizer",
+    "status": ""
   },
   "E1204": {
     "name": "Pullulan",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1404": {
     "name": "Oxidized Starch",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1410": {
     "name": "Monostarch Phosphate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1412": {
     "name": "Distarch Phosphate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1413": {
     "name": "Phosphated Distarch Phosphate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1414": {
     "name": "Acetylated Distarch Phosphate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1420": {
     "name": "Acetylated Starch",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1422": {
     "name": "Acetylated Distarch Adipate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1440": {
     "name": "Hydroxypropyl Starch",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1442": {
     "name": "Hydroxypropyl Distarch Phosphate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1450": {
     "name": "Starch Sodium Octenyl Succinate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1451": {
     "name": "Acetylated Oxidized Starch",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
   },
   "E1452": {
     "name": "Starch Aluminium Octenyl Succinate",
     "type": "Thickener",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E1503": {
+    "name": "Castor Oil",
+    "type": "Stabilizer",
+    "status": ""
   },
   "E1505": {
     "name": "Triethyl Citrate",
     "type": "Stabilizer",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E1517": {
+    "name": "Glyceryl Diacetate (Diacetin)",
+    "type": "Humectant",
+    "status": ""
   },
   "E1518": {
     "name": "Glyceryl Triacetate (Triacetin)",
     "type": "Humectant",
-    "status": "Not banned in EU"
+    "status": ""
+  },
+  "E1519": {
+    "name": "Benzyl Alcohol",
+    "type": "Preservative",
+    "status": ""
   },
   "E1520": {
     "name": "Propylene Glycol",
     "type": "Humectant",
-    "status": "Not banned in EU"
-  }
-}
+    "status": ""
+  },
+  "E1521": {
+    "name": "Polyethylene Glycol",
+    "type": "Stabilizer",
+    "status": ""
+  },
+  "Acesulfame K": {
+    "name": "Acesulfame K",
+    "type": "Sweetener",
+    "status": ""
+  },
+  "Alitame": {
+    "name": "Alitame",
+    "type": "Sweetener",
+    "status": "Not authorized in EU"
+  },
+  "Amaranth (FD&C Red No. 2)": {
+    "name": "Amaranth (FD&C Red No. 2)",
+    "type": "Color",
+    "status": "Not authorized in EU"
+  },
+  "Beta-Apo-8'-Carotenal": {
+    "name": "Beta-Apo-8'-Carotenal",
+    "type": "Color",
+    "status": ""
+  },
+  "Brilliant Blue FCF (FD&C Blue No. 1)": {
+    "name": "Brilliant Blue FCF (FD&C

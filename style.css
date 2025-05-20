@@ -36,14 +36,112 @@ h1 {
     background-color: #218838;
 }
 
-#stopScannerBtn {
-    background-color: #dc3545; /* Red for stop */
+#stopScannerBtn, #clearResultsBtn {
+    background-color: #dc3545; /* Red for stop/clear */
 }
-#stopScannerBtn:hover {
+
+#stopScannerBtn:hover, #clearResultsBtn:hover {
     background-color: #c82333;
 }
 
-#fetchUpcBtn {
+#toggleManualScanBtn {
+    background-color: #007bff; /* Blue for toggle manual scan */
+    margin-top: 20px;
+}
+
+#toggleManualScanBtn:hover {
+    background-color: #0056b3;
+}
+
+/* --- Scanner Container and Message Styles --- */
+#scanner-container {
+    width: 100%;
+    max-width: 600px;
+    height: 300px; /* Increased height for better visibility */
+    background-color: #eee;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensure video feed stays within bounds */
+    position: relative; /* For Quagga to overlay drawing */
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+#scanner-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the container without distorting aspect ratio */
+}
+
+#scanner-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.message {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.message.info {
+    background-color: #e2f0fb;
+    color: #0056b3;
+    border: 1px solid #b8daff;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* --- Manual Scan Section Styles --- */
+#manualScanSection {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+#manualScanSection h2 {
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+#manualScanSection input[type="text"] {
+    width: calc(100% - 22px); /* Account for padding and border */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#manualScanSection button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -54,271 +152,48 @@ h1 {
     transition: background-color 0.3s ease;
 }
 
-#fetchUpcBtn:hover {
+#manualScanSection button:hover {
     background-color: #0056b3;
-}
-
-#clearResultsBtn {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-}
-#clearResultsBtn:hover {
-    background-color: #5a6268;
-}
-
-/* --- Scanner Container Styles --- */
-#scanner-container {
-    width: 100%;
-    max-width: 600px; /* Limit scanner width */
-    height: 400px; /* Fixed height for the scanner area */
-    background-color: #000; /* Black background for scanner area */
-    border: 1px solid #ccc;
-    margin: 20px 0;
-    position: relative; /* Needed for absolute positioning of video/canvas */
-    overflow: hidden; /* Hide anything outside the container */
-    display: flex; /* Use flexbox to center content */
-    justify-content: center;
-    align-items: center;
-}
-
-/* Essential CSS for video display within scanner */
-#scanner-container video {
-    width: 100%; /* Make video fill container width */
-    height: 100%; /* Make video fill container height */
-    display: block; /* Ensure it's a block element */
-    object-fit: cover; /* This is KEY: makes the video cover the container */
-    position: absolute; /* Position relative to scanner-container */
-    top: 0;
-    left: 0;
-}
-
-/* Styles for the canvas (QuaggaJS drawing buffer) */
-#scanner-container canvas.drawingBuffer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* --- Manual Scan Section Styles --- */
-#manualScanSection {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
-
-#manualScanSection h2 {
-    margin-top: 0;
-    color: #34495e;
-}
-
-#upcInput {
-    width: calc(100% - 22px); /* Account for padding and border */
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
 }
 
 /* --- Product Info Display Styles --- */
 #productInfo {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    margin-top: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
     width: 100%;
     max-width: 600px;
-    min-height: 100px; /* Ensure some visible area */
-    text-align: center; /* Default align center for product card */
+    text-align: left; /* Align text within product info to the left */
 }
 
-.product-card {
-    /* These properties are largely handled by #productInfo itself.
-       This class is now mainly for semantic grouping within #productInfo. */
+#productInfo h2, #productInfo h3 {
+    color: #34495e;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+#productInfo p, #productInfo ul {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+#productInfo ul {
+    list-style: none; /* Remove default bullet points */
     padding: 0;
-    border: none;
-    background-color: transparent;
-    box-shadow: none;
-    margin: 0;
 }
 
-.product-image {
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 15px;
-    border-radius: 4px;
-}
-
-#productInfo h2 { /* Targeting the product name within #productInfo */
-    color: #2c3e50;
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-#productInfo h3 { /* Targeting section headings like Nutrition Facts, Additives */
-    color: #28a745;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.2em; /* Adjusted for consistency */
-}
-
-#productInfo p {
-    line-height: 1.6;
-    margin-bottom: 10px;
-}
-
-/* --- Collapsible Sections Styles --- */
-.collapsible-section {
-    margin-bottom: 10px;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    overflow: hidden; /* Important for max-height transition to work smoothly */
-}
-
-.collapsible-header {
-    background-color: #4CAF50; /* A pleasant green */
-    color: white;
-    cursor: pointer;
-    padding: 10px 15px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-    display: flex; /* Use flexbox for spacing between text and icon */
-    justify-content: space-between; /* Pushes icon to the right */
-    align-items: center;
-}
-
-.collapsible-header:hover {
-    background-color: #45a049; /* Slightly darker green on hover */
-}
-
-/* Plus/Minus icon for the header (as used in client.js) */
-.collapsible-header::after {
-    content: '\02795'; /* Unicode for a thick plus sign */
-    font-size: 13px;
-    color: white;
-    margin-left: 10px; /* Space between text and icon */
-    transition: transform 0.3s ease; /* Smooth transition for icon rotation */
-}
-
-/* Change icon to minus when active/open */
-.collapsible-header.active::after {
-    content: '\2796'; /* Unicode for a thick minus sign */
-    /* No rotation needed if content is directly the minus sign */
-}
-
-.collapsible-content {
-    padding: 0 15px;
-    background-color: white;
-    max-height: 0; /* Starts hidden */
-    overflow: hidden;
-    transition: max-height 0.3s ease-out; /* Smooth slide effect */
-    text-align: left; /* Keep text aligned left within content */
-}
-
-.collapsible-content p,
-.collapsible-content ul {
-    padding: 10px 0; /* Add some padding to content */
-    margin: 0; /* Remove default margins */
-}
-
-.collapsible-content ul {
-    list-style-type: disc; /* Or 'none' if you prefer no bullets */
-    padding-left: 20px; /* Indent list items */
-}
-
-.collapsible-content li {
+#productInfo li {
     margin-bottom: 5px;
 }
 
-/* --- Source Info --- */
-.source-info {
-    font-size: 0.85em;
-    color: #666;
-    margin-top: 20px;
-    text-align: right;
-    font-style: italic;
-}
-
-/* --- Message Styles (for general display, loading, warning, error) --- */
-.message {
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.message.info {
-    background-color: #e0f7fa; /* Light blue */
-    color: #00796b; /* Dark cyan */
-    border: 1px solid #00bcd4; /* Cyan border */
-}
-
-.message.warning {
-    background-color: #fffde7; /* Light yellow */
-    color: #fbc02d; /* Amber */
-    border: 1px solid #ffeb3b; /* Yellow border */
-}
-
-.message.error {
-    background-color: #ffebee; /* Light red */
-    color: #d32f2f; /* Dark red */
-    border: 1px solid #f44336; /* Red border */
-}
-
-/* --- NOVA Group Styling --- */
-.nova-section {
-    margin-top: 20px;
-    padding: 10px 15px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-}
-
-.nova-badge {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: white;
-    margin-left: 10px;
-    min-width: 30px; /* Ensure consistent size */
-    text-align: center;
-    vertical-align: middle; /* Align vertically with text */
-}
-
-/* Color coding for NOVA groups */
-.nova-group-1 { background-color: #4CAF50; /* Green - Minimally processed */ }
-.nova-group-2 { background-color: #2196F3; /* Blue - Processed culinary ingredients */ }
-.nova-group-3 { background-color: #FFC107; /* Orange - Processed foods */ }
-.nova-group-4 { background-color: #F44336; /* Red - Ultra-processed foods */ }
-.nova-group-Unknown { background-color: #9E9E9E; /* Grey - Unknown */ }
-
-/* --- Additive Section Styling --- */
+/* Additive List Specific Styles */
 .additive-list {
-    list-style-type: none; /* Remove default bullets */
+    list-style: none;
     padding: 0;
-    margin: 0;
+    margin-top: 10px;
 }
 
 .additive-list li {
@@ -359,21 +234,22 @@ h1 {
     font-weight: bold;
     color: white;
     margin-top: 5px; /* Space from the additive name */
-    text-transform: capitalize; /* Capitalize the risk level */
+    text-transform: capitalize; /* Capitalize the first letter */
 }
 
-/* Color coding for additive risk levels */
-.risk-level-low { background-color: #4CAF50; } /* Green */
-.risk-level-moderate { background-color: #2196F3; } /* Blue */
-.risk-level-high { background-color: #FFC107; } /* Orange */
-.risk-level-very-high { background-color: #F44336; } /* Red */
-.risk-level-unknown { background-color: #9E9E9E; } /* Grey */
+.additive-risk-badge.banned {
+    background-color: #dc3545; /* Red for banned */
+}
 
-.additive-disclaimer {
-    font-size: 0.8em;
-    color: #777;
-    margin-top: 15px;
-    border-top: 1px dashed #eee;
-    padding-top: 10px;
-    text-align: center;
+.additive-risk-badge.warning {
+    background-color: #ffc107; /* Orange for warnings */
+    color: #343a40; /* Darker text for readability on orange */
+}
+
+/* Basic styling for product image */
+#productInfo img {
+    display: block; /* Ensures image is on its own line */
+    margin: 10px auto 20px auto; /* Center image and add vertical spacing */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
