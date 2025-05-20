@@ -29,13 +29,49 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             const product = data.product;
             const ingredientsText = product.ingredients_text || "No ingredient text available.";
             const productName = product.product_name || "Unknown Product";
+// server.js - Inside the 'if (data.status === 1 && data.product)' block
 
+const product = data.product; // This line should already be there
+
+const ingredientsText = product.ingredients_text || "No ingredient text available.";
+const productName = product.product_name || "Unknown Product";
+
+// --- NEW CODE FOR NOVA CLASSIFICATION ---
+const novaGroup = product.nova_group || "Not Classified";
+let novaExplanation = "Information not available.";
+switch (novaGroup) {
+    case 1:
+        novaExplanation = "Group 1: Unprocessed or Minimally Processed Foods (e.g., fresh fruits, vegetables, meat, eggs).";
+        break;
+    case 2:
+        novaExplanation = "Group 2: Processed Culinary Ingredients (e.g., oils, butter, sugar, salt, flour).";
+        break;
+    case 3:
+        novaExplanation = "Group 3: Processed Foods (e.g., canned vegetables, simple cheeses, homemade bread, cured meats). Contain few ingredients.";
+        break;
+    case 4:
+        novaExplanation = "Group 4: Ultra-Processed Foods (e.g., soft drinks, packaged snacks, instant noodles, industrial breads). Often contain many additives, flavors, colors, and emulsifiers, and are designed for convenience and hyper-palatability. Generally associated with negative health outcomes.";
+        break;
+    default:
+        novaExplanation = "NOVA classification not available or unknown for this product.";
+}
+
+// --- NEW CODE FOR ADDITIVES ---
+const additivesTags = product.additives_tags || []; // Get the raw tags
+const additives = additivesTags.map(tag => {
+    // Clean up the tag (e.g., "en:e100" -> "E100")
+    // You can enhance this later to map E-numbers to common names if desired
+    return tag.replace(/^en:/, '').toUpperCase();
+});
             // Send the ingredient data back to your frontend
             res.json({
-                upc: upc,
-                productName: productName,
-                ingredients: ingredientsText,
-                source: "Open Food Facts"
+                 upc: upc,
+    productName: productName,
+    ingredients: ingredientsText,
+    novaGroup: novaGroup,          // <-- NEW
+    novaExplanation: novaExplanation, // <-- NEW
+    additives: additives,         // <-- NEW
+    source: "Open Food Facts"
             });
         } else {
             console.log(`Product not found for UPC: ${upc}`);

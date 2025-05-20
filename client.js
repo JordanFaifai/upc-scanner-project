@@ -58,8 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // ... rest of your success display logic
             let ingredients = data.ingredients || 'No ingredients listed.'; // Corrected ingredient access
             productInfoDiv.innerHTML = `
-                <h3>${data.productName}</h3>
-                <p><strong>Ingredients:</strong> ${ingredients}</p>
+    <h3>${data.productName}</h3>
+    <p><strong>Ingredients:</strong> ${ingredients}</p>
+
+    <hr> <h4>NOVA Group: <span class="math-inline">\{data\.novaGroup\}</h4\>
+<p>${data.novaExplanation}</p> <h4>Food Additives:</h4>
+                <p>${data.additives.length > 0 ? data.additives.join(', ') : 'No additives listed.'}</p>
+
                 <p><small>Source: ${data.source}</small></p>
             `;
         } else {
