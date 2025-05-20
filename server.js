@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const fetch = require('node-fetch'); // Used to make requests to the Open Food Facts API
 const path = require('path'); // Node.js built-in module for path manipulation
@@ -399,6 +398,9 @@ app.get('/api/ingredients/:upc', async (req, res) => {
         // Check if product data was found
         if (data.status === 1 && data.product) {
             const product = data.product;
+            // Add this line to log the extracted product object
+            console.log('Extracted product object:', JSON.stringify(product, null, 2));
+
             const ingredientsText = product.ingredients_text || "No ingredient text available.";
             const productName = product.product_name || "Unknown Product";
 
@@ -452,53 +454,49 @@ app.get('/api/ingredients/:upc', async (req, res) => {
                         } else if (detectedAdditiveNames.has("Various Unspecified Additives")) {
                             novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, likely due to the presence of various industrial food additives. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
                         } else {
-                            novaExplanation = baseNova4Explanation;
+                            novaExplanation = baseNova4Explanation; // Fallback if no specific additives are found but it's still NOVA 4
                         }
                     } else {
-                        novaExplanation = baseNova4Explanation;
+                        novaExplanation = baseNova4Explanation; // Default for NOVA 4 if no additive tags are present
                     }
                     break;
                 default:
-                    novaExplanation = "Information not available for this NOVA group.";
+                    novaExplanation = "Information not available or not classified by NOVA. The NOVA classification system categorizes foods based on the nature, extent, and purpose of industrial processing.";
+                    break;
             }
 
-            // Extract additives for the 'Additives' section
-            const productAdditivesForDisplay = product.additives_tags
-                ? product.additives_tags.map(tag => {
-                    const eNumber = tag.toUpperCase().replace(/^EN:/, '');
-                    const additiveInfo = additiveMap[eNumber];
-                    return additiveInfo
-                        ? { eNumber: eNumber, name: additiveInfo.name, type: additiveInfo.type }
-                        : { eNumber: eNumber, name: 'Unknown Additive', type: 'Unknown Type' };
-                })
-                : [];
+            const simplifiedProduct = {
+                name: productName, // Using your new productName variable
+                image: product.image_front_url || 'N/A',
+                ingredients: ingredientsText, // Using your new ingredientsText variable
+                allergens: product.allergens_from_ingredients || 'N/A',
+                novaGroup: novaGroup, // Include novaGroup
+                novaExplanation: novaExplanation, // Include novaExplanation
+                source: source, // Include source
+                nutrition_facts: product.nutriments ? {
+                    calories: product.nutriments.energy_value || 'N/A',
+                    protein: product.nutriments.proteins_100g || 'N/A',
+                    carbohydrates: product.nutriments.carbohydrates_100g || 'N/A',
+                    fat: product.nutriments.fat_100g || 'N/A'
+                } : 'N/A'
+            };
 
-            // Send product information back to the client
-            res.json({
-                productName: productName,
-                ingredients: ingredientsText,
-                novaGroup: novaGroup,
-                novaExplanation: novaExplanation,
-                additives: productAdditivesForDisplay, // Ensure this sends the structured additive data
-                source: source
-            });
+            // Log the simplified product object that will be sent to the client
+            console.log('Simplified product object sent to client:', JSON.stringify(simplifiedProduct, null, 2));
 
+            res.json(simplifiedProduct); // Send the simplified product data
         } else {
-            // Product not found or no product data
-            console.log(`Product not found on OFF for UPC: ${upc}`);
-            res.status(404).json({ message: `Product not found for UPC: ${upc}.` });
+            console.log('No product found for UPC:', upc);
+            res.status(404).json({ error: 'No product found for UPC ' + upc });
         }
 
     } catch (error) {
-        console.error(`Error fetching product info for UPC ${upc}:`, error);
-        res.status(500).json({ message: 'Error fetching product info from external API.', error: error.message });
+        console.error('Error fetching data from Open Food Facts API:', error);
+        res.status(500).json({ error: 'Failed to fetch product data' });
     }
 });
 
-
-
-// Start the server and listen for incoming requests
+// Start the server
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Open http://localhost:${PORT} in your browser to use the scanner.`);
+    console.log(`Server is running on port ${PORT}`);
 });
