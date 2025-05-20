@@ -31,10 +31,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             const productName = product.product_name || "Unknown Product";
 // server.js - Inside the 'if (data.status === 1 && data.product)' block
 
-const product = data.product; // This line should already be there
 
-const ingredientsText = product.ingredients_text || "No ingredient text available.";
-const productName = product.product_name || "Unknown Product";
 
 // --- NEW CODE FOR NOVA CLASSIFICATION ---
 const novaGroup = product.nova_group || "Not Classified";
