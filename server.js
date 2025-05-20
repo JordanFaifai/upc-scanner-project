@@ -394,7 +394,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
         }
 
         const data = await response.json(); // Parse the JSON response
-        // console.log('Raw data from Open Food Facts API:', JSON.stringify(data, null, 2)); // Uncomment for deep debugging if needed
+        console.log('Raw data from Open Food Facts API:', JSON.stringify(data, null, 2)); // Uncomment for deep debugging if needed
 
         // Check if product data was found
         if (data.status === 1 && data.product) {
