@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const ingredients = data.ingredients || 'No ingredient text available.';
             const novaGroup = data.novaGroup || 'Unknown';
             const novaExplanation = data.novaExplanation || 'Information not available.';
-             const novaGroupForClass = String(novaGroup).replace(' ', '-'); 
+            const novaGroupForClass = String(novaGroup).replace(' ', '-');
             const imageUrl = data.image || 'no_image.png'; // Provide a default image if none
             const source = data.source || 'Open Food Facts';
             const nutrition = data.nutrition_facts; // This is an object
@@ -85,29 +85,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
             // --- Additives Processing ---
-            // client.js
-// ... (keep the existing lines above this section)
-
-            // --- Additives Processing ---
             let additivesHtml = '';
             if (additives && additives.length > 0) {
-                additivesHtml = '<h3>Food Additives</h3><ul class="additive-list">';
-                additives.forEach(additive => {
-                    // Display only E-number, Name, and Type, as requested.
-                    // Risk level and explanation are deliberately omitted from the UI.
-                    additivesHtml += `
+                const additiveListItems = additives.map(additive => {
+                    const eNumber = additive.eNumber || 'N/A'; // Corrected from e_number to eNumber
+                    const name = additive.name || 'Unknown Additive';
+                    const type = additive.type ? `(${additive.type})` : '';
+                    const status = additive.status || 'Status Unknown';
+
+                    // Assign a class based on the status for styling (re-added for clarity)
+                    let statusClass = '';
+                    if (status.includes('Banned')) {
+                        statusClass = 'additive-status-banned';
+                    } else if (status.includes('requires warning')) {
+                        statusClass = 'additive-status-warning';
+                    } else {
+                        statusClass = 'additive-status-ok'; // Default for not banned
+                    }
+
+                    return `
                         <li>
-                            <strong>${additive.name}</strong> (${additive.e_number || 'N/A'})
-                            <p>Type: ${additive.type || 'N/A'}</p>
+                            <strong>${eNumber} - ${name} ${type}</strong>
+                            <p class="${statusClass}">${status}</p>
                         </li>
                     `;
-                });
-                additivesHtml += '</ul>'; // The disclaimer paragraph is also removed.
+                }).join('');
+                additivesHtml = `<h3>Food Additives</h3><ul class="additive-list">${additiveListItems}</ul>`;
             } else {
-                additivesHtml = '<p>No specific food additives found.</p>';
+                additivesHtml = `<p>No specific food additives listed or found in our database.</p>`;
             }
-
-// ... (rest of your client.js code remains the same)
 
             // Helper function to format nutrition data
             const formatNutrition = (nutriment, unit = '') => {
