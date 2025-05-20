@@ -405,9 +405,9 @@ const additives = product.additives_tags
     ? product.additives_tags.map(tag => {
         const eNumber = tag.toUpperCase().replace(/^EN:/, '');
         const additiveInfo = additiveMap[eNumber];
-        return additiveInfo
-    ? `<span class="math-inline">\{eNumber\} \(</span>{additiveInfo.name}, ${additiveInfo.type})` // This is the corrected format
-    : `${eNumber} (Unknown Type)`;
+       return additiveInfo
+            ? `${eNumber} (${additiveInfo.name}, ${additiveInfo.type})` // THIS IS THE CORRECTED LINE
+            : `${eNumber} (Unknown Type)`;
     })
     : [];
 
