@@ -399,40 +399,64 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 // --- NEW CODE FOR NOVA CLASSIFICATION ---
 const novaGroup = product.nova_group || "Not Classified";
 let novaExplanation = "Information not available.";
+
+// Make sure 'additives' array is defined here, as it's used below
+const additives = product.additives_tags
+    ? product.additives_tags.map(tag => {
+        const eNumber = tag.toUpperCase().replace(/^EN:/, '');
+        const additiveInfo = additiveMap[eNumber];
+        return additiveInfo
+            return additiveInfo ? `<span class="math-inline">\{eNumber\} \(</span>{additiveInfo.name}, ${additiveInfo.type})` : `${eNumber} (Unknown Type)`;
+            : `${eNumber} (Unknown Type)`;
+    })
+    : [];
+
+// Assign 'additives' to 'data.additives' here BEFORE the switch, so it's available
+// (This might already be happening in your res.json, but explicitly define it for clarity)
+// If you already have 'const additives = ...' before the switch, keep it.
+// If you need to make it available for the switch, you might assign it to a local const, like:
+const productAdditives = additives; // Use the 'additives' variable defined above
+
 switch (novaGroup) {
     case 1:
-        novaExplanation = "Group 1: Unprocessed or Minimally Processed Foods (e.g., fresh fruits, vegetables, meat, eggs).";
+        novaExplanation = "Group 1: **Unprocessed or Minimally Processed Foods.** These foods are typically consumed in their natural state or with minor alterations like drying, crushing, roasting, or pasteurization. They are free from added sugars, fats, or industrial food additives. They represent the basis of a healthy diet.";
         break;
     case 2:
-        novaExplanation = "Group 2: Processed Culinary Ingredients (e.g., oils, butter, sugar, salt, flour).";
+        novaExplanation = "Group 2: **Processed Culinary Ingredients.** These are substances like oils, butter, sugar, salt, and flour, obtained directly from Group 1 foods by processes such as pressing, grinding, pulverizing, or refining. They are not meant to be consumed on their own but are used in kitchens to prepare Group 1 foods into meals.";
         break;
     case 3:
-        novaExplanation = "Group 3: Processed Foods (e.g., canned vegetables, simple cheeses, homemade bread, cured meats). Contain few ingredients.";
+        novaExplanation = "Group 3: **Processed Foods.** These are relatively simple products made by adding Group 2 ingredients (like salt, sugar, oil) to Group 1 foods. Examples include canned vegetables, simple cheeses, and cured meats. They are processed to increase shelf life or palatability, but typically contain few ingredients and no 'cosmetic' additives.";
         break;
     case 4:
-        novaExplanation = "Group 4: Ultra-Processed Foods (e.g., soft drinks, packaged snacks, instant noodles, industrial breads). Often contain many additives, flavors, colors, and emulsifiers, and are designed for convenience and hyper-palatability. Generally associated with negative health outcomes.";
+        novaExplanation = "Group 4: **Ultra-Processed Foods.** These are industrial formulations often containing many ingredients including industrial additives and substances extracted from foods. They are designed for convenience, hyper-palatability, and long shelf-life, and are generally associated with adverse health outcomes due to high levels of added sugar, unhealthy fats, and sodium.";
+
+        if (productAdditives && productAdditives.length > 0) {
+            const detectedAdditiveTypes = new Set();
+            productAdditives.forEach(additiveString => {
+                // Extract the type from strings like "E100 (Curcumin, Color)"
+                const match = additiveString.match(/\(([^,]+), ([^)]+)\)/);
+                if (match && match[2]) {
+                    detectedAdditiveTypes.add(match[2].trim());
+                } else if (additiveString.includes("Unknown Type")) {
+                    // For additives not found in our map, just add a generic type
+                    detectedAdditiveTypes.add("Various Industrial Additives");
+                }
+            });
+
+            // Filter out the generic type if specific types are found
+            let typesList = Array.from(detectedAdditiveTypes).filter(type => type !== "Various Industrial Additives").join(', ');
+
+            if (typesList) {
+                novaExplanation += ` This classification is often driven by the presence of industrial food additives such as **${typesList}**.`;
+            } else if (detectedAdditiveTypes.has("Various Industrial Additives")) {
+                 novaExplanation += ` This classification is often driven by the presence of various industrial food additives.`;
+            }
+        }
         break;
     default:
-        novaExplanation = "NOVA classification not available or unknown for this product.";
+        novaExplanation = "NOVA classification not available or unknown for this product. The NOVA system classifies foods based on the nature, extent, and purpose of their industrial processing.";
 }
 
-// --- NEW CODE FOR ADDITIVES ---
-const additivesTags = product.additives_tags || []; // Get the raw tags
-const additives = additivesTags.map(tag => {
-    const cleanedTag = tag.replace(/^en:/, '').toUpperCase(); // E.g., "E262" or "LECITHINS"
-    const additiveInfo = additiveMap[cleanedTag]; // Look up in our map (additiveMap should be at the top of your server.js)
-
-    if (additiveInfo) {
-        // **THIS IS THE CORRECTED LINE to show Name (Type) without E-number**
-        return `${additiveInfo.name} (${additiveInfo.type})`;
-    } else if (cleanedTag.startsWith('E')) {
-        // If it's an E-number but not in our map, display as "E-number (Unknown Type)"
-        return `${cleanedTag} (Unknown Type)`;
-    } else {
-        // If it's not an E-number (e.g., a common name like "SOY-LECITHIN" not in map)
-        return `${cleanedTag} (Uncategorized Additive)`;
-    }
-});
             // Send the ingredient data back to your frontend
             res.json({
                  upc: upc,
