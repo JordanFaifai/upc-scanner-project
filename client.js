@@ -61,7 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
     <h3>${data.productName}</h3>
     <p><strong>Ingredients:</strong> ${ingredients}</p>
 
-    <hr> <h4>NOVA Group: <span class="math-inline">\{data\.novaGroup\}</h4\>
+    <hr>
+<h4>NOVA Group: ${data.novaGroup}</h4>
 <p>${data.novaExplanation}</p> <h4>Food Additives:</h4>
                 <p>${data.additives.length > 0 ? data.additives.join(', ') : 'No additives listed.'}</p>
 
