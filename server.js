@@ -385,110 +385,119 @@ app.get('/api/ingredients/:upc', async (req, res) => {
     try {
         // Make a request to the Open Food Facts API
         const response = await fetch(OF_API_URL);
+
+        if (!response.ok) { // Check if the HTTP response was successful
+            const errorText = await response.text();
+            console.error('Open Food Facts API response not OK (HTTP status:', response.status, '). Error text:', errorText);
+            // Send a more informative error from the server
+            return res.status(response.status).json({ message: `Error from Open Food Facts API: ${response.status} - ${errorText.substring(0, 100)}...` });
+        }
+
         const data = await response.json(); // Parse the JSON response
+        // console.log('Raw data from Open Food Facts API:', JSON.stringify(data, null, 2)); // Uncomment for deep debugging if needed
 
         // Check if product data was found
         if (data.status === 1 && data.product) {
             const product = data.product;
-                       const ingredientsText = product.ingredients_text || "No ingredient text available.";
+            const ingredientsText = product.ingredients_text || "No ingredient text available.";
             const productName = product.product_name || "Unknown Product";
-// server.js - Inside the 'if (data.status === 1 && data.product)' block
 
+            // --- NOVA CLASSIFICATION ---
+            const novaGroup = product.nova_group || "Unknown"; // Default to "Unknown" if not classified
+            let novaExplanation = "Information not available.";
 
+            // Define source
+            const source = product.product_url ? `Open Food Facts (${product.product_url})` : "Open Food Facts";
 
-// --- NEW CODE FOR NOVA CLASSIFICATION ---
-const novaGroup = product.nova_group || "Not Classified";
-let novaExplanation = "Information not available.";
+            // Map NOVA group to explanation
+            switch (novaGroup) {
+                case 1:
+                    novaExplanation = "Group 1: **Unprocessed or Minimally Processed Foods.** These foods are typically consumed in their natural state or with minor alterations like drying, crushing, roasting, or pasteurization. They are free from added sugars, fats, or industrial food additives. They represent the basis of a healthy diet.";
+                    break;
+                case 2:
+                    novaExplanation = "Group 2: **Processed Culinary Ingredients.** These are substances like oils, butter, sugar, salt, and flour, obtained directly from Group 1 foods by processes such as pressing, grinding, pulverizing, or refining. They are not meant to be consumed on their own but are used in kitchens to prepare Group 1 foods into meals.";
+                    break;
+                case 3:
+                    novaExplanation = "Group 3: **Processed Foods.** These are relatively simple products made by adding Group 2 ingredients (like salt, sugar, oil) to Group 1 foods. Examples include canned vegetables, simple cheeses, and cured meats. They are processed to increase shelf life or palatability, but typically contain few ingredients and no 'cosmetic' additives.";
+                    break;
+                case 4:
+                    let baseNova4Explanation = "Group 4: **Ultra-Processed Foods.** These are industrial formulations often containing many ingredients including industrial additives and substances extracted from foods. They are designed for convenience, hyper-palatability, and long shelf-life, and are generally associated with adverse health outcomes due to high levels of added sugar, unhealthy fats, and sodium.";
 
-// Make sure 'additives' array is defined here, as it's used below
-const additives = product.additives_tags
-    ? product.additives_tags.map(tag => {
-        const eNumber = tag.toUpperCase().replace(/^EN:/, '');
-        const additiveInfo = additiveMap[eNumber];
-       return additiveInfo
-            ? `${eNumber} (${additiveInfo.name}, ${additiveInfo.type})` // THIS IS THE CORRECTED LINE
-            : `${eNumber} (Unknown Type)`;
-    })
-    : [];
+                    // Extract E-numbers and get detailed additive info for NOVA Group 4 explanation
+                    const rawAdditives = product.additives_tags || [];
+                    const additives = rawAdditives.map(tag => {
+                        const eNumber = tag.toUpperCase().replace(/^EN:/, '');
+                        const additiveInfo = additiveMap[eNumber];
+                        return additiveInfo
+                            ? { eNumber: eNumber, name: additiveInfo.name, type: additiveInfo.type }
+                            : { eNumber: eNumber, name: 'Unknown Additive', type: 'Unknown Type' };
+                    });
 
-// Assign 'additives' to 'data.additives' here BEFORE the switch, so it's available
-// (This might already be happening in your res.json, but explicitly define it for clarity)
-// If you already have 'const additives = ...' before the switch, keep it.
-// If you need to make it available for the switch, you might assign it to a local const, like:
-const productAdditives = additives; // Use the 'additives' variable defined above
+                    if (additives && additives.length > 0) {
+                        const detectedAdditiveNames = new Set();
+                        additives.forEach(additive => {
+                            if (additive.name !== 'Unknown Additive') {
+                                detectedAdditiveNames.add(additive.name);
+                            } else {
+                                detectedAdditiveNames.add("Various Unspecified Additives");
+                            }
+                        });
 
-switch (novaGroup) {
-    case 1:
-        novaExplanation = "Group 1: **Unprocessed or Minimally Processed Foods.** These foods are typically consumed in their natural state or with minor alterations like drying, crushing, roasting, or pasteurization. They are free from added sugars, fats, or industrial food additives. They represent the basis of a healthy diet.";
-        break;
-    case 2:
-        novaExplanation = "Group 2: **Processed Culinary Ingredients.** These are substances like oils, butter, sugar, salt, and flour, obtained directly from Group 1 foods by processes such as pressing, grinding, pulverizing, or refining. They are not meant to be consumed on their own but are used in kitchens to prepare Group 1 foods into meals.";
-        break;
-    case 3:
-        novaExplanation = "Group 3: **Processed Foods.** These are relatively simple products made by adding Group 2 ingredients (like salt, sugar, oil) to Group 1 foods. Examples include canned vegetables, simple cheeses, and cured meats. They are processed to increase shelf life or palatability, but typically contain few ingredients and no 'cosmetic' additives.";
-        break;
-    case 4:
-    let baseNova4Explanation = "Group 4: **Ultra-Processed Foods.** These are industrial formulations often containing many ingredients including industrial additives and substances extracted from foods. They are designed for convenience, hyper-palatability, and long shelf-life, and are generally associated with adverse health outcomes due to high levels of added sugar, unhealthy fats, and sodium.";
+                        let namesList = Array.from(detectedAdditiveNames).filter(name =>
+                            name !== "Various Unspecified Additives"
+                        ).join(', ');
 
-    if (productAdditives && productAdditives.length > 0) {
-        const detectedAdditiveNames = new Set(); // NOW COLLECTING UNIQUE NAMES
-        productAdditives.forEach(additiveString => {
-            // The regex now correctly extracts the NAME from "E100 (Curcumin, Color)"
-            // It looks for any characters after the opening parenthesis, up to the first comma
-            const match = additiveString.match(/\(([^,]+),/);
-            if (match && match[1]) {
-                detectedAdditiveNames.add(match[1].trim()); // Add the extracted NAME to the Set
-            } else if (additiveString.includes("Unknown Type")) {
-                detectedAdditiveNames.add("Various Unspecified Additives");
+                        if (namesList) {
+                            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, primarily due to the presence of industrial food additives such as **${namesList}**. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
+                        } else if (detectedAdditiveNames.has("Various Unspecified Additives")) {
+                            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, likely due to the presence of various industrial food additives. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
+                        } else {
+                            novaExplanation = baseNova4Explanation;
+                        }
+                    } else {
+                        novaExplanation = baseNova4Explanation;
+                    }
+                    break;
+                default:
+                    novaExplanation = "Information not available for this NOVA group.";
             }
-        });
 
-        // Convert the Set of unique names to an array and join them
-        let namesList = Array.from(detectedAdditiveNames).filter(name =>
-            name !== "Various Unspecified Additives" // Filter out the generic fallback if specific names are found
-        ).join(', ');
+            // Extract additives for the 'Additives' section
+            const productAdditivesForDisplay = product.additives_tags
+                ? product.additives_tags.map(tag => {
+                    const eNumber = tag.toUpperCase().replace(/^EN:/, '');
+                    const additiveInfo = additiveMap[eNumber];
+                    return additiveInfo
+                        ? { eNumber: eNumber, name: additiveInfo.name, type: additiveInfo.type }
+                        : { eNumber: eNumber, name: 'Unknown Additive', type: 'Unknown Type' };
+                })
+                : [];
 
-        if (namesList) {
-            // Updated phrasing to state these additives are the reason, and include unique names
-            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, primarily due to the presence of industrial food additives such as **${namesList}**. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
-        } else if (detectedAdditiveNames.has("Various Unspecified Additives")) {
-            // Fallback if specific names couldn't be extracted but generic types were caught
-            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, likely due to the presence of various industrial food additives. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
-        } else {
-            // Fallback if there are additives but we somehow couldn't parse any names (shouldn't happen with fixed input)
-            novaExplanation = baseNova4Explanation;
-        }
-    } else {
-        // If no additives are present (or detected) but it's still Group 4
-        // (e.g., highly processed without common additives listed in OF database)
-        novaExplanation = baseNova4Explanation;
-    }
-    break; // Don't forget the break!
-    default:
-        novaExplanation = "NOVA classification not available or unknown for this product. The NOVA system classifies foods based on the nature, extent, and purpose of their industrial processing.";
-}
-
-            // Send the ingredient data back to your frontend
+            // Send product information back to the client
             res.json({
-                 upc: upc,
-    productName: productName,
-    ingredients: ingredientsText,
-    novaGroup: novaGroup,          // <-- NEW
-    novaExplanation: novaExplanation, // <-- NEW
-    additives: additives,         // <-- NEW
-    source: "Open Food Facts"
+                productName: productName,
+                ingredients: ingredientsText,
+                novaGroup: novaGroup,
+                novaExplanation: novaExplanation,
+                additives: productAdditivesForDisplay, // Ensure this sends the structured additive data
+                source: source
             });
+
         } else {
-            console.log(`Product not found for UPC: ${upc}`);
-            // Send a 404 Not Found status if product data isn't there
-            res.status(404).json({ message: `Product not found or no data for UPC: ${upc}.` });
+            // Product not found or no product data
+            console.log(`Product not found on OFF for UPC: ${upc}`);
+            res.status(404).json({ message: `Product not found for UPC: ${upc}.` });
         }
 
     } catch (error) {
-        console.error(`Error fetching data for UPC ${upc}:`, error);
-        // Send a 500 Internal Server Error if something goes wrong
-        res.status(500).json({ message: 'Error fetching ingredients from external API.', error: error.message });
+        console.error(`Error fetching product info for UPC ${upc}:`, error);
+        res.status(500).json({ message: 'Error fetching product info from external API.', error: error.message });
     }
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
 
 // Start the server and listen for incoming requests
