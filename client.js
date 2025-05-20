@@ -85,23 +85,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
             // --- Additives Processing ---
+            // client.js
+// ... (keep the existing lines above this section)
+
+            // --- Additives Processing ---
             let additivesHtml = '';
             if (additives && additives.length > 0) {
                 additivesHtml = '<h3>Food Additives</h3><ul class="additive-list">';
                 additives.forEach(additive => {
-                    const levelClass = additive.risk_level ? `risk-level-${additive.risk_level.toLowerCase()}` : '';
+                    // Display only E-number, Name, and Type, as requested.
+                    // Risk level and explanation are deliberately omitted from the UI.
                     additivesHtml += `
                         <li>
                             <strong>${additive.name}</strong> (${additive.e_number || 'N/A'})
-                            <span class="additive-risk-badge ${levelClass}">${additive.risk_level || 'Unknown Risk'}</span>
-                            <p>${additive.explanation || 'No explanation available.'}</p>
+                            <p>Type: ${additive.type || 'N/A'}</p>
                         </li>
                     `;
                 });
-                additivesHtml += '</ul><p class="additive-disclaimer"><em>Note: Additive risk levels are based on available research and may vary.</em></p>';
+                additivesHtml += '</ul>'; // The disclaimer paragraph is also removed.
             } else {
                 additivesHtml = '<p>No specific food additives found.</p>';
             }
+
+// ... (rest of your client.js code remains the same)
 
             // Helper function to format nutrition data
             const formatNutrition = (nutriment, unit = '') => {
