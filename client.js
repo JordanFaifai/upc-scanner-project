@@ -43,45 +43,50 @@ document.addEventListener('DOMContentLoaded', function() {
         productInfoDiv.innerHTML = 'Fetching product info...';
         clearResultsBtn.style.display = 'none'; // Hide clear button while fetching
         try {
-            // !! IMPORTANT: THIS URL NEEDS TO BE UPDATED TO YOUR RENDER URL !!
-            // Example: const response = await fetch(`https://upc-scanner-project.onrender.com/api/ingredients/${upc}`);
-            const response = await fetch(`/api/ingredients/${upc}`); // THIS IS THE LINE THAT NEEDS YOUR RENDER URL
+            console.log('Inside fetchProductInfo. Making API request to:', `/api/ingredients/${upc}`); // ADD OR MODIFY THIS LINE
+        const response = await fetch(`/api/ingredients/${upc}`);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-            }
-            const data = await response.json();
-
-            if (data.product && data.product.product_name) {
-                let ingredients = data.product.ingredients_text || 'No ingredients listed.';
-                if (data.product.ingredients_text_debug) {
-                    ingredients += `<br><small>(Debug: ${data.product.ingredients_text_debug})</small>`;
-                }
-                productInfoDiv.innerHTML = `
-                    <h3>${data.product.product_name}</h3>
-                    <p><strong>Ingredients:</strong> ${ingredients}</p>
-                `;
-            } else {
-                productInfoDiv.innerHTML = `<p>No product found for UPC: ${upc}</p>`;
-            }
-        } catch (error) {
-            console.error('Error fetching product info:', error);
-            productInfoDiv.innerHTML = `<p class="error">Error fetching product info: ${error.message}. Please try again or check the UPC.</p>`;
-        } finally {
-            clearResultsBtn.style.display = 'block'; // Show clear button after fetching (whether successful or not)
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API response not OK (HTTP status:', response.status, '). Error text:', errorText); // ADD OR MODIFY THIS LINE
+            throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
         }
+        const data = await response.json();
+        console.log('Successfully fetched product data:', data); // ADD OR MODIFY THIS LINE
+
+        if (data.product && data.product.product_name) {
+            // ... rest of your success display logic
+            let ingredients = data.product.ingredients_text || 'No ingredients listed.';
+            if (data.product.ingredients_text_debug) {
+                ingredients += `<br><small>(Debug: ${data.product.ingredients_text_debug})</small>`;
+            }
+            productInfoDiv.innerHTML = `
+                <h3>${data.product.product_name}</h3>
+                <p><strong>Ingredients:</strong> ${ingredients}</p>
+            `;
+        } else {
+            console.warn('API returned no product data or product name for UPC:', upc, data); // ADD OR MODIFY THIS LINE
+            productInfoDiv.innerHTML = `<p>No product found for UPC: ${upc}</p>`;
+        }
+    } catch (error) {
+        console.error('Error fetching product info (from catch block):', error); // ADD OR MODIFY THIS LINE
+        productInfoDiv.innerHTML = `<p class="error">Error fetching product info: ${error.message}. Please try again or check the UPC.</p>`;
+    } finally {
+        clearResultsBtn.style.display = 'block'; // Show clear button after fetching (whether successful or not)
     }
+}
 
     // Manual UPC fetch
     fetchUpcBtn.addEventListener('click', async function() {
         const upc = upcInput.value.trim();
         if (upc) {
-            displayMessage('Fetching product for ' + upc + '...');
-            await fetchProductInfo(upc);
-            upcInput.value = ''; // Clear input field
+            console.log('Manual fetch button clicked. Attempting to fetch product for UPC:', upc); // ADD OR MODIFY THIS LINE
+        displayMessage('Fetching product for ' + upc + '...');
+        await fetchProductInfo(upc);
+        upcInput.value = ''; // Clear input field
         } else {
             displayMessage('Please enter a UPC.', 'warning');
+            console.warn('Manual UPC input is empty. Not fetching.');
         }
     });
 
