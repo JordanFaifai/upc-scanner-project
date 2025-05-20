@@ -40,31 +40,122 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to fetch product info
     async function fetchProductInfo(upc) {
-        productInfoDiv.innerHTML = 'Fetching product info...';
-        clearResultsBtn.style.display = 'none'; // Hide clear button while fetching
-        try {
-            console.log('Inside fetchProductInfo. Making API request to:', `/api/ingredients/${upc}`); // ADD OR MODIFY THIS LINE
+    productInfoDiv.innerHTML = '<p class="message info">Fetching product info...</p>'; // Improved loading message
+    clearResultsBtn.style.display = 'none'; // Hide clear button while fetching
+    try {
+        console.log('Inside fetchProductInfo. Making API request to:', `/api/ingredients/${upc}`);
         const response = await fetch(`/api/ingredients/${upc}`);
 
         if (!response.ok) {
-            const errorText = await response.text();
-            console.error('API response not OK (HTTP status:', response.status, '). Error text:', errorText); // ADD OR MODIFY THIS LINE
-            throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+            const errorData = await response.json(); // Try to parse error as JSON if available
+            const errorMessage = errorData.message || errorData.error || `HTTP error! status: ${response.status}`;
+            console.error('API response not OK (HTTP status:', response.status, '). Error data:', errorData);
+            throw new Error(errorMessage);
         }
         const data = await response.json();
-        console.log('Successfully fetched product data:', data); // ADD OR MODIFY THIS LINE
+        console.log('Successfully fetched product data:', data);
 
-        if (data.productName && data.ingredients) { let ingredients = data.ingredients || 'No ingredient text available.';
-let novaGroup = data.novaGroup || 'Unknown';
-// ... (many more lines of HTML string building and the JavaScript for collapsible sections) ...} else {
-            console.warn('API returned no product data or product name for UPC:', upc, data); // ADD OR MODIFY THIS LINE
-            productInfoDiv.innerHTML = `<p>No product found for UPC: ${upc}</p>`;
+        // Check if product data was found (server sends data.name, not data.productName)
+        if (data.name) {
+            const productName = data.name;
+            const ingredients = data.ingredients || 'No ingredient text available.';
+            const novaGroup = data.novaGroup || 'Unknown';
+            const novaExplanation = data.novaExplanation || 'Information not available.';
+            const imageUrl = data.image || 'no_image.png'; // Provide a default image if none
+            const allergens = data.allergens || 'No allergens specified.';
+            const source = data.source || 'Open Food Facts';
+            const nutrition = data.nutrition_facts; // This is an object
+
+            // Helper function to format nutrition data
+            const formatNutrition = (nutriment, unit = '') => {
+                return nutriment !== 'N/A' && nutriment !== undefined ? `${nutriment}${unit}` : 'N/A';
+            };
+
+            let nutritionHtml = '';
+            if (nutrition && nutrition !== 'N/A') {
+                nutritionHtml = `
+                    <h3>Nutrition Facts (per 100g)</h3>
+                    <ul>
+                        <li><strong>Calories:</strong> ${formatNutrition(nutrition.calories, 'kcal')}</li>
+                        <li><strong>Protein:</strong> ${formatNutrition(nutrition.protein, 'g')}</li>
+                        <li><strong>Carbohydrates:</strong> ${formatNutrition(nutrition.carbohydrates, 'g')}</li>
+                        <li><strong>Fat:</strong> ${formatNutrition(nutrition.fat, 'g')}</li>
+                    </ul>
+                `;
+            } else {
+                nutritionHtml = '<p>Nutrition information not available.</p>';
+            }
+
+            // Construct the HTML to display
+            productInfoDiv.innerHTML = `
+                <div class="product-card">
+                    <img src="${imageUrl}" alt="${productName}" class="product-image">
+                    <h2>${productName}</h2>
+
+                    <div class="collapsible-section">
+                        <button class="collapsible-header">Ingredients</button>
+                        <div class="collapsible-content">
+                            <p>${ingredients}</p>
+                        </div>
+                    </div>
+
+                    <div class="collapsible-section">
+                        <button class="collapsible-header">Allergens</button>
+                        <div class="collapsible-content">
+                            <p>${allergens}</p>
+                        </div>
+                    </div>
+
+                    <div class="collapsible-section">
+                        <button class="collapsible-header">NOVA Classification</button>
+                        <div class="collapsible-content">
+                            <p><strong>NOVA Group:</strong> ${novaGroup}</p>
+                            <p>${novaExplanation}</p>
+                        </div>
+                    </div>
+
+                    <div class="collapsible-section">
+                        <button class="collapsible-header">Nutrition Information</button>
+                        <div class="collapsible-content">
+                            ${nutritionHtml}
+                        </div>
+                    </div>
+
+                    <p class="source-info">Source: ${source}</p>
+                </div>
+            `;
+
+            // Initialize collapsible sections after they are added to the DOM
+            initCollapsibles();
+
+        } else {
+            console.warn('API returned no product name for UPC:', upc, data);
+            productInfoDiv.innerHTML = `<p class="message warning">No product found for UPC: ${upc}</p>`;
         }
     } catch (error) {
-        console.error('Error fetching product info (from catch block):', error); // ADD OR MODIFY THIS LINE
-        productInfoDiv.innerHTML = `<p class="error">Error fetching product info: ${error.message}. Please try again or check the UPC.</p>`;
+        console.error('Error fetching product info (from catch block):', error);
+        productInfoDiv.innerHTML = `<p class="message error">Error fetching product info: ${error.message}. Please try again or check the UPC.</p>`;
     } finally {
         clearResultsBtn.style.display = 'block'; // Show clear button after fetching (whether successful or not)
+    }
+}
+
+// Add this new function to handle the collapsible sections
+function initCollapsibles() {
+    const collapsibleHeaders = document.querySelectorAll('.collapsible-header');
+    collapsibleHeaders.forEach(header => {
+        header.removeEventListener('click', toggleCollapsible); // Remove old listeners to prevent duplicates
+        header.addEventListener('click', toggleCollapsible);
+    });
+}
+
+function toggleCollapsible(event) {
+    event.target.classList.toggle('active');
+    const content = event.target.nextElementSibling;
+    if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+    } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
     }
 }
 
