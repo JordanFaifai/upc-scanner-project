@@ -9,10 +9,7 @@ const PORT = process.env.PORT || 3000; // Your server will run on port 3000 by d
 // This makes your index.html and client.js available to the browser
 app.use(express.static(__dirname));
 
-// server.js
-// ... (keep the existing lines above this section, like const express, const fetch, etc.)
-
-// --- BEGIN NEW ADDITIVE MAP ---
+// --- BEGIN ADDITIVE MAP ---
 // This additiveMap is constructed from the comprehensive list you provided.
 // It includes E-number, name, type, and EU ban status.
 const additiveMap = {
@@ -284,18 +281,18 @@ const additiveMap = {
     'E1518': { name: 'Glyceryl Triacetate (Triacetin)', type: 'Humectant', status: 'Not banned in EU' },
     'E1520': { name: 'Propylene Glycol', type: 'Humectant', status: 'Not banned in EU' }
 };
-// --- END NEW ADDITIVE MAP ---
+// --- END ADDITIVE MAP ---
 
-// ... (rest of your server.js code remains the same)
 // Helper function to normalize additive codes for lookup
 function normalizeAdditiveCode(code) {
     if (!code) return '';
     let normalized = code.replace(/^en:/, '').toUpperCase();
     const eNumberMatch = normalized.match(/^(E\d+)([A-Z]*)?(?:\(|\s)*([IVXLC\d]*)?(?:\)|\s)*$/i);
     if (eNumberMatch) {
+        // Return only the E-number part (e.g., "E500" from "E500II" or "E330i")
         return eNumberMatch[1];
     }
-    return normalized;
+    return normalized; // Return as is if no E-number pattern is found
 }
 
 // API endpoint to fetch ingredients based on UPC
@@ -359,61 +356,58 @@ app.get('/api/ingredients/:upc', async (req, res) => {
                 const rawAdditivesTags = product.additives_tags || [];
                 const detectedAdditiveNames = new Set();
                 rawAdditivesTags.forEach(tag => {
-                    const eNumber = tag.toUpperCase().replace(/^EN:/, ''); // Clean up tag, e.g., "en:e100" -> "E100"
-                    const additiveInfo = additiveMap[eNumber];
-                    if (additiveInfo) {
+                    const normalizedENumber = normalizeAdditiveCode(tag);
+                    const additiveInfo = additiveMap[normalizedENumber];
+                    if (additiveInfo && additiveInfo.name) {
                         detectedAdditiveNames.add(additiveInfo.name);
-                    } else if (eNumber) { // Add unknown E-numbers if present
-                        detectedAdditiveNames.add(`Unknown Additive (${eNumber})`);
                     }
                 });
 
-                let namesList = Array.from(detectedAdditiveNames).filter(name => !name.includes("Unknown Additive")).join(', ');
-                if (namesList) {
-                    novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, primarily due to the presence of industrial food additives such as **${namesList}**. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
-                } else if (detectedAdditiveNames.size > 0) { // If only unknown additives were found
-                    novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, likely due to the presence of various industrial food additives including: ${Array.from(detectedAdditiveNames).join(', ')}. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
+                if (detectedAdditiveNames.size > 0) {
+                    novaExplanation = baseNova4Explanation + ` They often contain additives like: ${Array.from(detectedAdditiveNames).join(', ')}.`;
                 } else {
                     novaExplanation = baseNova4Explanation;
                 }
                 break;
             default:
-                novaExplanation = "NOVA Classification information is not available for this product, or it is not classified.";
+                novaExplanation = "NOVA Group information is not available for this product.";
         }
 
+
         // --- ALLERGENS ---
-        // Allergens come as an array of tags (e.g., ["en:milk", "en:gluten"])
-        const allergens = product.allergens_tags || []; // Pass as is, client will process
+        const allergens = (product.allergens_tags || [])
+            .map(tag => tag.replace(/^en:/, '').replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '))
+            .filter(allergen => allergen.trim() !== ''); // Filter out empty strings
+
 
         // --- ADDITIVES ---
-        // Your existing additive mapping is good. We need to pass the processed list to the client.
-        const processedAdditives = (product.additives_tags || []).map(tag => {
-            const eNumber = tag.toUpperCase().replace(/^EN:/, '');
-            const additiveInfo = additiveMap[eNumber];
-            return additiveInfo
-                ? {
+        // Process additive tags to get detailed info from additiveMap
+        const rawAdditivesTags = product.additives_tags || [];
+        const processedAdditives = rawAdditivesTags.map(tag => {
+            const normalizedTag = normalizeAdditiveCode(tag);
+            const additiveInfo = additiveMap[normalizedTag];
+            if (additiveInfo) {
+                return {
                     name: additiveInfo.name,
-                    e_number: eNumber,
-                    risk_level: 'Unknown', // Your map doesn't provide risk, set as unknown
-                    type: additiveInfo.type || 'Unknown Type',
-                    explanation: '' // No explanation in your map, so leave empty
-                }
-                : {
-                    name: `E${eNumber}`, // Use E-number as name if not in map
-                    e_number: eNumber,
-                    risk_level: 'Unknown',
-                    type: 'Unknown Type',
-                    explanation: 'Details for this additive are not in our database.'
+                    eNumber: normalizedTag, // Use the normalized E-number
+                    type: additiveInfo.type,
+                    status: additiveInfo.status
                 };
+            } else {
+                // Fallback for unknown additives, retaining the original tag
+                return {
+                    name: tag.toUpperCase().replace(/^EN:/, ''),
+                    eNumber: tag.toUpperCase().replace(/^EN:/, ''),
+                    type: 'Unknown Type',
+                    status: 'Details for this additive are not in our database.'
+                };
+            }
         });
 
-        // --- NUTRITION FACTS ---
-        // Nutrition facts are typically nested under 'nutriments'
+        // --- NUTRITION FACTS (Simplified) ---
         const nutriments = product.nutriments || {};
         const nutrition_facts = {
-            calories: nutriments.energy_value || nutriments['energy-kcal_100g'] || 'N/A', // Try both common keys
-            protein: nutriments.proteins_100g || 'N/A',
-            carbohydrates: nutriments.carbohydrates_100g || 'N/A',
+            energy_kcal: nutriments['energy-kcal_100g'] || 'N/A',
             fat: nutriments.fat_100g || 'N/A',
             // Add more if needed, e.g., fiber, sugar, salt
             sugar: nutriments.sugars_100g || 'N/A',
@@ -448,5 +442,5 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`[SERVER] Server running on port ${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
