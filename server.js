@@ -375,128 +375,152 @@ const additiveMap = {
 // API endpoint to fetch ingredients based on UPC
 // When your frontend asks for /api/ingredients/12345, this code runs
 app.get('/api/ingredients/:upc', async (req, res) => {
-    const upc = req.params.upc; // Get the UPC number from the URL
-    const OF_API_URL = `https://world.openfoodfacts.org/api/v0/product/${upc}.json`;
+    const upc = req.params.upc;
+    // IMPORTANT: Open Food Facts API v2 is recommended.
+    // Your code uses v0, which is deprecated and might have missing fields.
+    // Change to v2:
+    const OF_API_URL = `https://world.openfoodfacts.org/api/v2/product/${upc}.json`;
 
-    console.log(`Received request for UPC: ${upc}`);
-    console.log(`Querying Open Food Facts API: ${OF_API_URL}`);
+    console.log(`[SERVER] Received request for UPC: ${upc}`);
+    console.log(`[SERVER] Querying Open Food Facts API: ${OF_API_URL}`);
 
     try {
-        // Make a request to the Open Food Facts API
         const response = await fetch(OF_API_URL);
 
-        if (!response.ok) { // Check if the HTTP response was successful
+        if (!response.ok) {
             const errorText = await response.text();
-            console.error('Open Food Facts API response not OK (HTTP status:', response.status, '). Error text:', errorText);
-            // Send a more informative error from the server
+            console.error(`[SERVER] Open Food Facts API response not OK (HTTP status: ${response.status}). Error text: ${errorText.substring(0, 200)}`);
             return res.status(response.status).json({ message: `Error from Open Food Facts API: ${response.status} - ${errorText.substring(0, 100)}...` });
         }
 
-        const data = await response.json(); // Parse the JSON response
-        console.log('Raw data from Open Food Facts API:', JSON.stringify(data, null, 2)); // Uncomment for deep debugging if needed
+        const data = await response.json();
+        // --- CRUCIAL LOG: See the raw data your server receives from OFF ---
+        console.log('[SERVER] Raw data from Open Food Facts API:', JSON.stringify(data, null, 2));
 
-        // Check if product data was found
-        if (data.status === 1 && data.product) {
-            const product = data.product;
-            // Add this line to log the extracted product object
-            console.log('Extracted product object:', JSON.stringify(product, null, 2));
-
-            const ingredientsText = product.ingredients_text || "No ingredient text available.";
-            const productName = product.product_name || "Unknown Product";
-
-            // --- NOVA CLASSIFICATION ---
-            const novaGroup = product.nova_group || "Unknown"; // Default to "Unknown" if not classified
-            let novaExplanation = "Information not available.";
-
-            // Define source
-            const source = product.product_url ? `Open Food Facts (${product.product_url})` : "Open Food Facts";
-
-            // Map NOVA group to explanation
-            switch (novaGroup) {
-                case 1:
-                    novaExplanation = "Group 1: **Unprocessed or Minimally Processed Foods.** These foods are typically consumed in their natural state or with minor alterations like drying, crushing, roasting, or pasteurization. They are free from added sugars, fats, or industrial food additives. They represent the basis of a healthy diet.";
-                    break;
-                case 2:
-                    novaExplanation = "Group 2: **Processed Culinary Ingredients.** These are substances like oils, butter, sugar, salt, and flour, obtained directly from Group 1 foods by processes such as pressing, grinding, pulverizing, or refining. They are not meant to be consumed on their own but are used in kitchens to prepare Group 1 foods into meals.";
-                    break;
-                case 3:
-                    novaExplanation = "Group 3: **Processed Foods.** These are relatively simple products made by adding Group 2 ingredients (like salt, sugar, oil) to Group 1 foods. Examples include canned vegetables, simple cheeses, and cured meats. They are processed to increase shelf life or palatability, but typically contain few ingredients and no 'cosmetic' additives.";
-                    break;
-                case 4:
-                    let baseNova4Explanation = "Group 4: **Ultra-Processed Foods.** These are industrial formulations often containing many ingredients including industrial additives and substances extracted from foods. They are designed for convenience, hyper-palatability, and long shelf-life, and are generally associated with adverse health outcomes due to high levels of added sugar, unhealthy fats, and sodium.";
-
-                    // Extract E-numbers and get detailed additive info for NOVA Group 4 explanation
-                    const rawAdditives = product.additives_tags || [];
-                    const additives = rawAdditives.map(tag => {
-                        const eNumber = tag.toUpperCase().replace(/^EN:/, '');
-                        const additiveInfo = additiveMap[eNumber];
-                        return additiveInfo
-                            ? { eNumber: eNumber, name: additiveInfo.name, type: additiveInfo.type }
-                            : { eNumber: eNumber, name: 'Unknown Additive', type: 'Unknown Type' };
-                    });
-
-                    if (additives && additives.length > 0) {
-                        const detectedAdditiveNames = new Set();
-                        additives.forEach(additive => {
-                            if (additive.name !== 'Unknown Additive') {
-                                detectedAdditiveNames.add(additive.name);
-                            } else {
-                                detectedAdditiveNames.add("Various Unspecified Additives");
-                            }
-                        });
-
-                        let namesList = Array.from(detectedAdditiveNames).filter(name =>
-                            name !== "Various Unspecified Additives"
-                        ).join(', ');
-
-                        if (namesList) {
-                            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, primarily due to the presence of industrial food additives such as **${namesList}**. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
-                        } else if (detectedAdditiveNames.has("Various Unspecified Additives")) {
-                            novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, likely due to the presence of various industrial food additives. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
-                        } else {
-                            novaExplanation = baseNova4Explanation; // Fallback if no specific additives are found but it's still NOVA 4
-                        }
-                    } else {
-                        novaExplanation = baseNova4Explanation; // Default for NOVA 4 if no additive tags are present
-                    }
-                    break;
-                default:
-                    novaExplanation = "Information not available or not classified by NOVA. The NOVA classification system categorizes foods based on the nature, extent, and purpose of industrial processing.";
-                    break;
-            }
-
-            const simplifiedProduct = {
-                name: productName, // Using your new productName variable
-                image: product.image_front_url || 'N/A',
-                ingredients: ingredientsText, // Using your new ingredientsText variable
-                allergens: product.allergens_from_ingredients || 'N/A',
-                novaGroup: novaGroup, // Include novaGroup
-                novaExplanation: novaExplanation, // Include novaExplanation
-                source: source, // Include source
-                nutrition_facts: product.nutriments ? {
-                    calories: product.nutriments.energy_value || 'N/A',
-                    protein: product.nutriments.proteins_100g || 'N/A',
-                    carbohydrates: product.nutriments.carbohydrates_100g || 'N/A',
-                    fat: product.nutriments.fat_100g || 'N/A'
-                } : 'N/A'
-            };
-
-            // Log the simplified product object that will be sent to the client
-            console.log('Simplified product object sent to client:', JSON.stringify(simplifiedProduct, null, 2));
-
-            res.json(simplifiedProduct); // Send the simplified product data
-        } else {
-            console.log('No product found for UPC:', upc);
-            res.status(404).json({ error: 'No product found for UPC ' + upc });
+        if (data.status !== 1 || !data.product) {
+            console.warn(`[SERVER] Product not found (status: ${data.status}) or 'product' object missing for UPC: ${upc}`);
+            return res.status(404).json({ message: `No product found for UPC: ${upc} on Open Food Facts. It might not be in the database.` });
         }
 
+        const product = data.product;
+        // --- CRUCIAL LOG: See the specific 'product' object extracted ---
+        console.log('[SERVER] Extracted product object from OFF response:', JSON.stringify(product, null, 2));
+
+
+        // --- DATA EXTRACTION FOR CLIENT ---
+        const productName = product.product_name || product.product_name_en || 'Product Name Not Available';
+        const ingredientsText = product.ingredients_text || product.ingredients_text_en || 'No ingredient text available.';
+        const imageUrl = product.image_front_url || product.image_url || 'no_image.png'; // Default image if none
+
+        // --- NOVA CLASSIFICATION ---
+        // Ensure novaGroup is a string before sending (for client-side .replace() safety)
+        const novaGroup = product.nova_group ? String(product.nova_group) : "Unknown";
+        let novaExplanation = "Information not available.";
+
+        switch (novaGroup) { // Note: novaGroup is now a string here, but switch handles it
+            case "1": // Use string "1" for comparison
+                novaExplanation = "Group 1: **Unprocessed or Minimally Processed Foods.** These foods are typically consumed in their natural state or with minor alterations like drying, crushing, roasting, or pasteurization. They are free from added sugars, fats, or industrial food additives. They represent the basis of a healthy diet.";
+                break;
+            case "2": // Use string "2"
+                novaExplanation = "Group 2: **Processed Culinary Ingredients.** These are substances like oils, butter, sugar, salt, and flour, obtained directly from Group 1 foods by processes such as pressing, grinding, pulverizing, or refining. They are not meant to be consumed on their own but are used in kitchens to prepare Group 1 foods into meals.";
+                break;
+            case "3": // Use string "3"
+                novaExplanation = "Group 3: **Processed Foods.** These are relatively simple products made by adding Group 2 ingredients (like salt, sugar, oil) to Group 1 foods. Examples include canned vegetables, simple cheeses, and cured meats. They are processed to increase shelf life or palatability, but typically contain few ingredients and no 'cosmetic' additives.";
+                break;
+            case "4": // Use string "4"
+                let baseNova4Explanation = "Group 4: **Ultra-Processed Foods.** These are industrial formulations often containing many ingredients including industrial additives and substances extracted from foods. They are designed for convenience, hyper-palatability, and long shelf-life, and are generally associated with adverse health outcomes due to high levels of added sugar, unhealthy fats, and sodium.";
+
+                const rawAdditivesTags = product.additives_tags || [];
+                const detectedAdditiveNames = new Set();
+                rawAdditivesTags.forEach(tag => {
+                    const eNumber = tag.toUpperCase().replace(/^EN:/, ''); // Clean up tag, e.g., "en:e100" -> "E100"
+                    const additiveInfo = additiveMap[eNumber];
+                    if (additiveInfo) {
+                        detectedAdditiveNames.add(additiveInfo.name);
+                    } else if (eNumber) { // Add unknown E-numbers if present
+                        detectedAdditiveNames.add(`Unknown Additive (${eNumber})`);
+                    }
+                });
+
+                let namesList = Array.from(detectedAdditiveNames).filter(name => !name.includes("Unknown Additive")).join(', ');
+                if (namesList) {
+                    novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, primarily due to the presence of industrial food additives such as **${namesList}**. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
+                } else if (detectedAdditiveNames.size > 0) { // If only unknown additives were found
+                    novaExplanation = `Group 4: **Ultra-Processed Foods.** This product is classified as ultra-processed, likely due to the presence of various industrial food additives including: ${Array.from(detectedAdditiveNames).join(', ')}. ${baseNova4Explanation.replace('Group 4: **Ultra-Processed Foods.** ', '')}`;
+                } else {
+                    novaExplanation = baseNova4Explanation;
+                }
+                break;
+            default:
+                novaExplanation = "NOVA Classification information is not available for this product, or it is not classified.";
+        }
+
+        // --- ALLERGENS ---
+        // Allergens come as an array of tags (e.g., ["en:milk", "en:gluten"])
+        const allergens = product.allergens_tags || []; // Pass as is, client will process
+
+        // --- ADDITIVES ---
+        // Your existing additive mapping is good. We need to pass the processed list to the client.
+        const processedAdditives = (product.additives_tags || []).map(tag => {
+            const eNumber = tag.toUpperCase().replace(/^EN:/, '');
+            const additiveInfo = additiveMap[eNumber];
+            return additiveInfo
+                ? {
+                    name: additiveInfo.name,
+                    e_number: eNumber,
+                    risk_level: 'Unknown', // Your map doesn't provide risk, set as unknown
+                    type: additiveInfo.type || 'Unknown Type',
+                    explanation: '' // No explanation in your map, so leave empty
+                }
+                : {
+                    name: `E${eNumber}`, // Use E-number as name if not in map
+                    e_number: eNumber,
+                    risk_level: 'Unknown',
+                    type: 'Unknown Type',
+                    explanation: 'Details for this additive are not in our database.'
+                };
+        });
+
+        // --- NUTRITION FACTS ---
+        // Nutrition facts are typically nested under 'nutriments'
+        const nutriments = product.nutriments || {};
+        const nutrition_facts = {
+            calories: nutriments.energy_value || nutriments['energy-kcal_100g'] || 'N/A', // Try both common keys
+            protein: nutriments.proteins_100g || 'N/A',
+            carbohydrates: nutriments.carbohydrates_100g || 'N/A',
+            fat: nutriments.fat_100g || 'N/A',
+            // Add more if needed, e.g., fiber, sugar, salt
+            sugar: nutriments.sugars_100g || 'N/A',
+            salt: nutriments.salt_100g || 'N/A',
+            fiber: nutriments.fiber_100g || 'N/A'
+        };
+
+
+        // --- CONSTRUCT THE FINAL OBJECT TO SEND TO CLIENT ---
+        const simplifiedProduct = {
+            name: productName,
+            ingredients: ingredientsText,
+            novaGroup: novaGroup, // Send as string
+            novaExplanation: novaExplanation,
+            image: imageUrl,
+            source: product.product_url ? `Open Food Facts (${product.product_url})` : "Open Food Facts",
+            allergens: allergens, // Send raw tags, client will process
+            additives: processedAdditives, // Send processed additive objects
+            nutrition_facts: nutrition_facts // Send the nutrition object
+        };
+
+        // --- CRUCIAL LOG: See what your server is sending to the client ---
+        console.log('[SERVER] Sending simplified product to client:', JSON.stringify(simplifiedProduct, null, 2));
+
+        res.json(simplifiedProduct);
+
     } catch (error) {
-        console.error('Error fetching data from Open Food Facts API:', error);
-        res.status(500).json({ error: 'Failed to fetch product data' });
+        console.error('[SERVER] Caught server error fetching product data:', error);
+        res.status(500).json({ message: 'Internal server error fetching product data. Please check server logs.' });
     }
 });
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`[SERVER] Server running on port ${PORT}`);
 });

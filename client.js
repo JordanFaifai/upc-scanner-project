@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const ingredients = data.ingredients || 'No ingredient text available.';
             const novaGroup = data.novaGroup || 'Unknown';
             const novaExplanation = data.novaExplanation || 'Information not available.';
+             const novaGroupForClass = String(novaGroup).replace(' ', '-'); 
             const imageUrl = data.image || 'no_image.png'; // Provide a default image if none
             const source = data.source || 'Open Food Facts';
             const nutrition = data.nutrition_facts; // This is an object
@@ -145,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="collapsible-section">
                         <button class="collapsible-header">NOVA Classification</button>
                         <div class="collapsible-content">
-                            <p><strong>NOVA Group:</strong> <span class="nova-badge nova-group-${novaGroup.replace(' ', '-')}">${novaGroup}</span></p>
+                            <p><strong>NOVA Group:</strong> <span class="nova-badge nova-group-${novaGroupForClass}">${novaGroup}</span></p>
                             <p>${novaExplanation}</p>
                         </div>
                     </div>
