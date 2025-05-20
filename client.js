@@ -56,13 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (data.productName && data.ingredients) { // Check directly for productName
             // ... rest of your success display logic
-            let ingredients = data.product.ingredients_text || 'No ingredients listed.';
-            if (data.product.ingredients_text_debug) {
-                ingredients += `<br><small>(Debug: ${data.product.ingredients_text_debug})</small>`;
-            }
+            let ingredients = data.ingredients || 'No ingredients listed.'; // Corrected ingredient access
             productInfoDiv.innerHTML = `
                 <h3>${data.productName}</h3>
-                <p><strong>Ingredients:</strong> ${data.ingredients}</p>
+                <p><strong>Ingredients:</strong> ${ingredients}</p>
                 <p><small>Source: ${data.source}</small></p>
             `;
         } else {
