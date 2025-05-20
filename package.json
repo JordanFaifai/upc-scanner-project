@@ -1,0 +1,16 @@
+{
+  "name": "upc-scanner-backend",
+  "version": "1.0.0",
+  "description": "Backend for UPC ingredient scanner",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-fetch": "^2.6.1"
+  }
+}
