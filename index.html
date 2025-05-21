@@ -3,38 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UPC Food Scanner</title>
+    <title>UPC Product Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;606;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
     <header>
-        <h1>UPC Food Scanner</h1>
-        <p>Scan or enter a UPC to get detailed food information.</p>
+        <h1>UPC Product Scanner</h1>
+        <p>Scan product barcodes or enter UPCs manually to get detailed ingredient, nutrition, and additive information.</p>
     </header>
 
     <main class="container">
         <section class="section-card controls">
-            <h2>Barcode Scanner</h2>
+            <h2>Scan Product</h2>
             <div id="scanner-container">
                 <p>Click "Start Scanner" to activate your camera.</p>
             </div>
-            <div class="scanner-buttons">
+            <p id="scanner-message" class="message info">Awaiting camera activation.</p>
+            <div class="flex justify-center flex-wrap">
                 <button id="startScannerBtn">Start Scanner</button>
                 <button id="stopScannerBtn" style="display: none;">Stop Scanner</button>
             </div>
-            <p id="scanner-message" class="message info">Scanner is ready.</p>
         </section>
 
         <section id="manualScanSection" class="section-card" style="display: none;">
             <h2>Manual UPC Entry</h2>
-            <input type="text" id="upcInput" placeholder="Enter UPC code (e.g., 049000051877)">
-            <button id="fetchUpcBtn">Fetch Product Info</button>
+            <input type="text" id="upcInput" placeholder="Enter UPC code (e.g., 049000000427)">
+            <button id="fetchUpcBtn">Get Product Info</button>
         </section>
-        <button id="toggleManualScanBtn">Show Manual Scan</button>
+        <div class="flex justify-center">
+            <button id="toggleManualScanBtn">Show Manual Scan</button>
+        </div>
+
+
+        <section id="dietaryPreferencesSection" class="section-card">
+            <button class="accordion-header">
+                <h2>Dietary Preferences <span class="arrow">▼</span></h2>
+            </button>
+            <div class="accordion-content show"> <div class="preference-group">
+                    <h3>General Dietary Needs</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="prefVegetarian">
+                        <label for="prefVegetarian">Vegetarian</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="prefVegan">
+                        <label for="prefVegan">Vegan</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="prefGlutenFree">
+                        <label for="prefGlutenFree">Gluten-Free</label>
+                    </div>
+                </div>
+
+                <div class="preference-group">
+                    <h3>Allergens to Avoid (comma-separated)</h3>
+                    <textarea id="allergensToAvoid" rows="3" placeholder="e.g., peanuts, dairy, soy, tree nuts"></textarea>
+                </div>
+
+                <p id="preferenceMessage" class="message info" style="display: none;"></p>
+                <div class="flex justify-center flex-wrap">
+                    <button id="savePreferencesBtn" class="save-button">Save Preferences</button>
+                    <button id="clearPreferencesBtn" class="save-button" style="background-image: linear-gradient(to right, #f39c12, #f5b041);">Clear Preferences</button>
+                </div>
+            </div>
+        </section>
 
         <section id="productInfo" class="section-card">
             <h2>Product Details</h2>
@@ -43,45 +77,28 @@
         </section>
 
         <section id="scanHistorySection" class="section-card">
-            <h2>Recent Scans</h2>
-            <ul id="scanHistoryList" class="scan-history-list">
-                </ul>
-            <button id="clearHistoryBtn" style="display: none;">Clear History</button>
-        </section>
-
-        <section id="dietaryPreferencesSection" class="section-card">
             <button class="accordion-header">
-                <h2>Dietary Preferences <span class="arrow">▼</span></h2>
+                <h2>Scan History <span class="arrow">▼</span></h2>
             </button>
             <div class="accordion-content">
-                <div class="preference-group">
-                    <h3>Dietary Filters:</h3>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="prefVegetarian" value="vegetarian">
-                        <label for="prefVegetarian">Vegetarian</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="prefVegan" value="vegan">
-                        <label for="prefVegan">Vegan</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="prefGlutenFree" value="gluten-free">
-                        <label for="prefGlutenFree">Gluten-Free</label>
-                    </div>
+                <ul id="scanHistoryList" class="scan-history-list">
+                    </ul>
+                <div class="flex justify-center">
+                    <button id="clearHistoryBtn" style="display: none;">Clear History</button>
                 </div>
-
-                <div class="preference-group">
-                    <h3>Allergens to Avoid (comma-separated):</h3>
-                    <input type="text" id="allergensToAvoid" placeholder="e.g., milk, nuts, soy">
-                    <p class="text-xs text-gray-500 mt-1">Enter common allergens you wish to avoid, separated by commas.</p>
-                </div>
-
-                <button id="savePreferencesBtn" class="save-button">Save Preferences</button>
-                <p id="preferenceMessage" class="message info" style="display: none;"></p>
             </div>
         </section>
-
     </main>
+
+    <div id="customConfirmModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <p id="customConfirmMessage"></p>
+            <div class="custom-modal-buttons">
+                <button id="customConfirmYes" class="modal-button-yes">Yes</button>
+                <button id="customConfirmNo" class="modal-button-no">No</button>
+            </div>
+        </div>
+    </div>
 
     <script src="client.js"></script>
 </body>

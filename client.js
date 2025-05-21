@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const prefGlutenFree = document.getElementById('prefGlutenFree');
     const allergensToAvoid = document.getElementById('allergensToAvoid');
     const savePreferencesBtn = document.getElementById('savePreferencesBtn');
+    const clearPreferencesBtn = document.getElementById('clearPreferencesBtn'); // NEW: Get the clear preferences button
     const preferenceMessage = document.getElementById('preferenceMessage');
 
     let isScannerRunning = false;
@@ -65,9 +66,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // NEW: Function to clear preferences
+    function clearPreferences() {
+        showCustomConfirm('Are you sure you want to clear all your dietary preferences?', () => {
+            localStorage.removeItem('dietaryPreferences');
+            // Reset form fields
+            prefVegetarian.checked = false;
+            prefVegan.checked = false;
+            prefGlutenFree.checked = false;
+            allergensToAvoid.value = '';
+
+            preferenceMessage.textContent = 'Preferences cleared!';
+            preferenceMessage.className = 'message info';
+            preferenceMessage.style.display = 'block';
+            setTimeout(() => { preferenceMessage.style.display = 'none'; }, 3000);
+
+            // Re-render product info if any is displayed, to reflect cleared preferences
+            if (productInfoDiv.innerHTML.includes('product-header')) { // Simple check if product info is visible
+                const currentUpc = upcInput.value.trim();
+                if (currentUpc) {
+                    fetchUpcBtn.click(); // Re-fetch/re-display current product with new preferences
+                }
+            }
+        });
+    }
+
+
     // Initial load of preferences
     loadPreferences();
     savePreferencesBtn.addEventListener('click', savePreferences);
+    clearPreferencesBtn.addEventListener('click', clearPreferences); // NEW: Attach event listener
 
 
     // --- Scan History Functions ---
