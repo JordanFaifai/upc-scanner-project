@@ -39,8 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clearResultsBtn.style.display = 'none'; // Hide clear button until new results show
             
             try {
-const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com/api/ingredients/${upc}'; // Use your actual backend URL here!
-// Make sure the fetch call uses backticks (`) and correctly interpolates the BACKEND_URL and upc
+const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com';// Make sure the fetch call uses backticks (`) and correctly interpolates the BACKEND_URL and upc
 const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
                 const data = await response.json(); // 'data' now directly contains the product object (e.g., {name: "...", ingredients: "...", ...})
 
