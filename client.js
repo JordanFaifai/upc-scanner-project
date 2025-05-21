@@ -317,7 +317,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Get current preferences for highlighting
         const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
-        const allergensToAvoidList = preferences.allergens || [];
+        const allergensToAvoidList = preferences.allergens || []; // already lowercased and trimmed
+
+        // NEW: Define common general terms and their specific mappings for better matching
+        const generalAllergenMappings = {
+            'nuts': ['almond', 'brazil nut', 'cashew', 'hazelnut', 'macadamia', 'pecan', 'pistachio', 'walnut', 'nut'],
+            'peanuts': ['peanut'], // Explicitly handle 'peanuts' if user types it
+            'dairy': ['milk', 'lactose', 'whey', 'casein', 'butter', 'cheese'],
+            'gluten': ['wheat', 'barley', 'rye', 'oats'], // 'oats' can be tricky, but common
+            'soy': ['soy', 'soya'],
+            'egg': ['egg'],
+            'fish': ['fish'],
+            'shellfish': ['shellfish', 'shrimp', 'crab', 'lobster', 'mussel', 'oyster', 'clam', 'scallop'],
+            'sesame': ['sesame'],
+            'mustard': ['mustard'],
+            'celery': ['celery'],
+            'sulfites': ['sulfite', 'sulphite'],
+            'lupin': ['lupin'],
+            'molluscs': ['mollusc'],
+            // Add more as needed based on common user input vs. product data
+        };
+
 
         // --- Product Header (Name and Image) ---
         html += `
@@ -343,15 +363,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
 
-        // Check for Allergens to Avoid
-        let foundAvoidedAllergens = [];
+        // NEW: Enhanced Allergen Matching Logic
+        let foundAvoidedAllergens = new Set(); // Use a Set to avoid duplicates
         if (allergensToAvoidList.length > 0 && product.allergens && product.allergens.length > 0) {
-            product.allergens.forEach(allergen => {
-                const cleanedAllergen = allergen.toLowerCase().replace(/en:|from:/g, '').trim();
-                if (allergensToAvoidList.includes(cleanedAllergen)) {
-                    foundAvoidedAllergens.push(allergen.replace(/en:|from:/g, '').replace(/-/g, ' ').trim());
+            const normalizedProductImagesAllergens = product.allergens.map(a => a.toLowerCase().replace(/en:|from:/g, '').replace(/-/g, ' ').trim());
+
+            allergensToAvoidList.forEach(avoidedTerm => {
+                let termsToCheck = [avoidedTerm]; // Start with the user's exact term
+
+                // If the user's term is a general one, add its specific mappings
+                if (generalAllergenMappings[avoidedTerm]) {
+                    termsToCheck = termsToCheck.concat(generalAllergenMappings[avoidedTerm]);
+                } else if (avoidedTerm.endsWith('s') && avoidedTerm.length > 2) {
+                    // Also check singular form if it's not a direct mapping key
+                    termsToCheck.push(avoidedTerm.slice(0, -1));
                 }
+
+                // Iterate through all terms to check (user's term + its mappings/singular form)
+                termsToCheck.forEach(checkTerm => {
+                    normalizedProductImagesAllergens.forEach(productAllergen => {
+                        // Check if the product allergen contains the current checkTerm
+                        // e.g., "peanuts" contains "peanut" or "nut"
+                        // e.g., "milk" contains "milk" or "dairy" (if 'dairy' is in checkTerms)
+                        if (productAllergen.includes(checkTerm) && !foundAvoidedAllergens.has(productAllergen)) {
+                            foundAvoidedAllergens.add(productAllergen); // Add the actual product allergen that matched
+                        }
+                    });
+                });
             });
+        }
+
+        if (foundAvoidedAllergens.size > 0) {
+            preferenceHighlights.push(`<span class="allergen-alert-badge">Contains: ${Array.from(foundAvoidedAllergens).join(', ')}</span>`);
         }
 
         if (preferenceHighlights.length > 0) {
