@@ -102,7 +102,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
- console.log(`[SERVER] Actual listening PORT: ${PORT}`); // <--- ADD THIS LINE
+app.listen(PORT, '0.0.0.0', () => { // <--- ADD '0.0.0.0' HERE
+    console.log(`Server is running on http://0.0.0.0:${PORT}`); // OPTIONAL: You can update this log message too
+    console.log(`[SERVER] Actual listening PORT: ${PORT}`);
 });
