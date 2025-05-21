@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const scanHistoryList = document.getElementById('scanHistoryList');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
-    // NEW: Dietary Preferences elements
+    // Dietary Preferences elements
     const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
     const prefVegetarian = document.getElementById('prefVegetarian');
     const prefVegan = document.getElementById('prefVegan');
@@ -132,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearScanHistory() {
-        // Using a custom modal for confirmation instead of browser's confirm()
         showCustomConfirm('Are you sure you want to clear your scan history?', () => {
             localStorage.removeItem('scanHistory');
             renderScanHistory();
@@ -142,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial render of history when page loads
     renderScanHistory();
-    clearHistoryBtn.addEventListener('click', clearScanHistory);
 
 
     // --- Custom Confirmation Modal (Replaces alert/confirm) ---
@@ -165,12 +163,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         document.getElementById('customConfirmMessage').textContent = message;
-        modal.style.display = 'flex'; // Show the modal
+        modal.style.display = 'flex';
 
         const confirmYes = document.getElementById('customConfirmYes');
         const confirmNo = document.getElementById('customConfirmNo');
 
-        // Clear previous listeners to prevent duplicates
         confirmYes.onclick = null;
         confirmNo.onclick = null;
 
@@ -225,7 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     productInfoDiv.innerHTML = `
                         <div class="info-card no-product">
                             <h2>Product Not Found or Incomplete Data</h2>
-                            <p>We received data for UPC: <strong>${upc}</strong>, but it does not appear to be a complete product record from Open Food Facts.</p>
                             <p>Try scanning a different product or check the UPC for typos.</p>
                             <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link">Search Open Food Facts directly for ${upc}</a></p>
                         </div>
@@ -534,6 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupAccordions() {
         const accordionHeaders = document.querySelectorAll('.accordion-header');
         accordionHeaders.forEach(header => {
+            // Remove existing listeners to prevent duplicates if called multiple times
             header.removeEventListener('click', toggleAccordion);
             header.addEventListener('click', toggleAccordion);
         });
@@ -548,6 +545,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+
+    // NEW: Call setupAccordions on initial page load
+    setupAccordions();
+
 
     // Quagga2 scanner integration (unchanged)
     function startScanner() {
