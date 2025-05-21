@@ -141,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial render of history when page loads
     renderScanHistory();
-    // FIX: Corrected event listener for clearHistoryBtn
     clearHistoryBtn.addEventListener('click', clearScanHistory);
 
 
@@ -566,8 +565,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Quagga2 scanner integration
     function startScanner() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // NEW: Clear container and show temporary message
-            scannerContainer.innerHTML = '<p class="text-center text-gray-500">Activating camera...</p>';
+            // NEW: Immediately clear the scanner container
+            scannerContainer.innerHTML = '';
             displayMessage('Activating camera, please wait...', 'info');
 
             Quagga.init({
@@ -586,13 +585,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (err) {
                     console.error(err);
                     displayMessage(`Error starting scanner: ${err.message}. Ensure camera access is granted.`, 'error');
-                    // NEW: Restore initial message if scanner fails to start
+                    // Restore initial message if scanner fails to start
                     scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
                     return;
                 }
                 Quagga.start();
                 isScannerRunning = true;
-                displayMessage('Scanner started. Point to a UPC code.', 'success'); // Changed to success
+                displayMessage('Scanner started. Point to a UPC code.', 'success');
                 startScannerBtn.style.display = 'none';
                 stopScannerBtn.style.display = 'inline-block';
             });
@@ -637,7 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
             Quagga.stop();
             isScannerRunning = false;
             displayMessage('Scanner stopped.');
-            // NEW: Restore initial message when scanner stops
+            // Restore initial message when scanner stops
             scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
             startScannerBtn.style.display = 'inline-block';
             stopScannerBtn.style.display = 'none';
