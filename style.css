@@ -57,12 +57,12 @@ header p {
     margin-bottom: 25px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07), 0 2px 5px rgba(0, 0, 0, 0.03); /* Layered, softer shadow */
     overflow: hidden; /* Important for accordion transitions */
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Increased transition duration for smoother effect */
 }
 
 .section-card:hover {
-    transform: translateY(-3px); /* Slight lift on hover */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
+    transform: translateY(-8px); /* Changed: More pronounced lift */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.08); /* Changed: Larger, more diffuse shadow */
 }
 
 .section-card h2 {
@@ -95,8 +95,8 @@ header p {
 #manualScanSection button:hover,
 #toggleManualScanBtn:hover {
     background-image: linear-gradient(to right, #43A047, #5cb85c); /* Darker green on hover */
-    transform: translateY(-2px); /* Lift effect */
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transform: translateY(-4px); /* Changed: More pronounced lift for buttons */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Changed: Larger, more diffuse shadow for buttons */
 }
 
 #stopScannerBtn, #clearResultsBtn {
