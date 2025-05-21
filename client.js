@@ -127,8 +127,9 @@ const BACKEND_URL = 'https://upc-scanner-api.onrender.com'; // <--- CORRECT BACK
 
         // --- Processing Level (NOVA Group) ---
         // Ensure product.novaGroup and product.novaExplanation are accessed directly
-        html += `
-            <div class="section-card nova-info nova-group-${(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
+       
+            html += `
+    <div class="section-card nova-info nova-group-${String(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
                 <h2>Processing Level: NOVA Group ${product.novaGroup || 'N/A'}</h2>
                 <p>This classification describes how much a food has been processed:</p>
                 <p>
