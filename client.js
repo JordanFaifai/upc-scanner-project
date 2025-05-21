@@ -141,7 +141,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial render of history when page loads
     renderScanHistory();
-    clearHistoryBtn.addEventListener('click', clearHistoryBtn);
+    // FIX: Corrected event listener for clearHistoryBtn
+    clearHistoryBtn.addEventListener('click', clearScanHistory);
 
 
     // --- Custom Confirmation Modal (Replaces alert/confirm) ---
