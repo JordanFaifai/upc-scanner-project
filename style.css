@@ -1,4 +1,4 @@
-/* style.css - Health-Oriented Theme */
+/* style.css - Health-Oriented Theme with Enhanced Cards */
 
 /* --- Base Body and General Page Styles --- */
 body {
@@ -49,13 +49,20 @@ header p {
 
 /* --- Section Cards (for main content blocks) --- */
 .section-card {
-    background-color: #ffffff; /* Explicitly white for internal cards */
+    /* Enhanced styling for the cards */
+    background: linear-gradient(145deg, #ffffff, #f9f9f9); /* Subtle gradient for depth */
     border: 1px solid #e0e0e0; /* Very subtle border */
-    border-radius: 10px; /* Consistent rounded corners */
-    padding: 25px;
+    border-radius: 12px; /* Consistent rounded corners, slightly more */
+    padding: 0; /* Padding handled by accordion headers/content */
     margin-bottom: 25px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Soft inner shadow */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07), 0 2px 5px rgba(0, 0, 0, 0.03); /* Layered, softer shadow */
     overflow: hidden; /* Important for accordion transitions */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+.section-card:hover {
+    transform: translateY(-3px); /* Slight lift on hover */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .section-card h2 {
@@ -63,8 +70,7 @@ header p {
     color: #34495e;
     margin-top: 0;
     margin-bottom: 15px;
-    border-bottom: 2px solid #e9f0f1; /* Lighter separator */
-    padding-bottom: 10px;
+    /* Border and padding handled by accordion-header or specific section-card padding */
     font-size: 1.6em;
 }
 
@@ -177,10 +183,13 @@ header p {
 #manualScanSection {
     /* Inherits section-card styles */
     text-align: center;
+    padding: 25px; /* Add padding back for this section */
 }
 
 #manualScanSection h2 {
     /* Inherits section-card h2 styles */
+    border-bottom: 2px solid #e9f0f1; /* Lighter separator */
+    padding-bottom: 10px;
 }
 
 #manualScanSection input[type="text"] {
@@ -197,6 +206,7 @@ header p {
 #productInfo {
     /* Inherits section-card styles */
     text-align: left;
+    padding: 25px; /* Add padding back for this section */
 }
 
 #productInfo h2, #productInfo h3 {
@@ -220,7 +230,7 @@ header p {
 }
 
 /* Additive List Specific Styles */
-/* NEW: Container for the scrollable additive list */
+/* Container for the scrollable additive list */
 .additive-list-container {
     max-height: 250px; /* Set a maximum height for the scrollable area */
     overflow-y: auto; /* Enable vertical scrolling when content exceeds max-height */
@@ -362,7 +372,7 @@ header p {
 
 /* --- Accordion Styling --- */
 .accordion-header {
-    background-color: #fcfcfc;
+    background-color: #fcfcfc; /* Lighter background for header */
     color: #34495e;
     cursor: pointer;
     padding: 15px 20px;
@@ -373,7 +383,7 @@ header p {
     font-size: 1.1em;
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0; /* Lighter separator */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -393,7 +403,7 @@ header p {
 }
 
 .accordion-header.active {
-    background-color: #e8f5e9;
+    background-color: #e8f5e9; /* Light green when active */
     color: #2e7d32;
 }
 
@@ -422,10 +432,20 @@ header p {
     padding: 20px;
 }
 
-.section-card {
-    padding: 0;
-    overflow: hidden;
+/* Ensure the section-card itself has no padding if using accordion-header/content */
+/* This is important for the accordion headers to span full width and have rounded corners */
+.section-card.controls, /* Apply padding to specific section cards that don't have accordions */
+.section-card#manualScanSection,
+.section-card#productInfo {
+    padding: 25px; /* Re-apply padding to these specific sections */
+    border-radius: 12px; /* Ensure consistent border-radius */
 }
+
+/* Override padding for section-cards that contain accordions */
+.section-card:has(.accordion-header) {
+    padding: 0; /* Remove padding for cards that use accordions */
+}
+
 
 /* External Links */
 .external-link {
@@ -453,7 +473,7 @@ header p {
         border-radius: 8px;
     }
     .section-card {
-        padding: 20px;
+        padding: 20px; /* Adjust padding for smaller screens */
         border-radius: 8px;
     }
     .controls button,
