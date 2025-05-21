@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial render of history when page loads
     renderScanHistory();
+    clearHistoryBtn.addEventListener('click', clearHistoryBtn);
 
 
     // --- Custom Confirmation Modal (Replaces alert/confirm) ---
@@ -353,10 +354,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        if (foundAvoidedAllergens.length > 0) {
-            preferenceHighlights.push(`<span class="allergen-alert-badge">Contains: ${foundAvoidedAllergens.join(', ')}</span>`);
-        }
-
         if (preferenceHighlights.length > 0) {
             html += `<div class="section-card preference-highlights">
                         <h3>Your Preferences:</h3>
@@ -448,12 +445,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (add.status && add.status.includes('Requires warning')) {
                     statusText = 'Requires warning';
                     statusClass += ' warning';
-                } else if (add.status && add.status !== 'Not banned in EU') {
+                } else if (add.status && add.status !== 'Not banned in EU' && add.status !== 'Unknown Status' && add.status !== 'Details from Wikipedia.') {
                     statusText = add.status;
                     statusClass += ' info';
+                } else if (add.status && (add.status === 'Unknown Status' || add.status === 'Details from Wikipedia.')) {
+                    statusText = 'Info limited'; // More generic for unknown/details from Wikipedia
+                    statusClass += ' info';
                 } else {
-                    statusClass = '';
+                    statusClass = ''; // No specific badge if no special status
                 }
+
 
                 html += `
                                 <li>
@@ -469,6 +470,12 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `
                             </ul>
                         </div>
+                        <p class="additive-lookup-note">
+                            <small>
+                                For more information on E-numbers, consult resources like
+                                <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link">Wikipedia's List of Food Additives</a>.
+                            </small>
+                        </p>
                     </div>
                 </div>
             `;
@@ -480,6 +487,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     </button>
                     <div class="accordion-content">
                         <p>No specific additives found or listed for this product.</p>
+                        <p class="additive-lookup-note">
+                            <small>
+                                For more information on E-numbers, consult resources like
+                                <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link">Wikipedia's List of Food Additives</a>.
+                            </small>
+                        </p>
                     </div>
                 </div>
             `;
@@ -530,7 +543,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupAccordions() {
         const accordionHeaders = document.querySelectorAll('.accordion-header');
         accordionHeaders.forEach(header => {
-            // Remove existing listeners to prevent duplicates if called multiple times
             header.removeEventListener('click', toggleAccordion);
             header.addEventListener('click', toggleAccordion);
         });
@@ -546,18 +558,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // NEW: Call setupAccordions on initial page load
+    // Call setupAccordions on initial page load
     setupAccordions();
 
 
-    // Quagga2 scanner integration (unchanged)
+    // Quagga2 scanner integration
     function startScanner() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // NEW: Clear container and show temporary message
+            scannerContainer.innerHTML = '<p class="text-center text-gray-500">Activating camera...</p>';
+            displayMessage('Activating camera, please wait...', 'info');
+
             Quagga.init({
                 inputStream: {
                     name: "Live",
                     type: "LiveStream",
-                    target: scannerContainer,
+                    target: scannerContainer, // Quagga will inject video/canvas here
                     constraints: {
                         facingMode: "environment"
                     }
@@ -568,12 +584,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }, function(err) {
                 if (err) {
                     console.error(err);
-                    displayMessage(`Error starting scanner: ${err.message}`, 'error');
+                    displayMessage(`Error starting scanner: ${err.message}. Ensure camera access is granted.`, 'error');
+                    // NEW: Restore initial message if scanner fails to start
+                    scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
                     return;
                 }
                 Quagga.start();
                 isScannerRunning = true;
-                displayMessage('Scanner started. Point to a UPC code.', 'info');
+                displayMessage('Scanner started. Point to a UPC code.', 'success'); // Changed to success
                 startScannerBtn.style.display = 'none';
                 stopScannerBtn.style.display = 'inline-block';
             });
@@ -618,7 +636,8 @@ document.addEventListener('DOMContentLoaded', function() {
             Quagga.stop();
             isScannerRunning = false;
             displayMessage('Scanner stopped.');
-            scannerContainer.innerHTML = '';
+            // NEW: Restore initial message when scanner stops
+            scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
             startScannerBtn.style.display = 'inline-block';
             stopScannerBtn.style.display = 'none';
         }
