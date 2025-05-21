@@ -54,7 +54,6 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 
         // --- Extract and Format Product Data ---
         const productName = productData.product_name || productData.product_name_en || 'Unknown Product';
-        // CHANGED: Prioritize ingredients_text_en over ingredients_text
         const ingredientsText = productData.ingredients_text_en || productData.ingredients_text || 'No ingredients listed.';
         const imageUrl = productData.image_front_url || productData.image_url || null;
         const allergens = productData.allergens_from_ingredients ?
@@ -97,13 +96,21 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 
         // --- Extract and Enrich Additives with EFSA data ---
         const additives = productData.additives_tags ? productData.additives_tags.map(tag => {
-            const eNumber = tag.replace('en:', '').toUpperCase();
-            const additiveInfo = efsaAdditiveDetails[eNumber] || { name: 'Unknown Additive', type: 'N/A', status: 'Not banned in EU' };
+            const fullENumber = tag.replace('en:', '').toUpperCase();
+            // NEW: Extract only the base E-number (e.g., E500 from E500II)
+            const baseENumber = fullENumber.match(/^E\d+/)?.[0] || fullENumber;
+
+            const additiveInfo = efsaAdditiveDetails[baseENumber]; // Look up using the base E-number
+
+            const name = additiveInfo ? additiveInfo.name : `${fullENumber} (Details Not Available)`;
+            const type = additiveInfo ? additiveInfo.type : 'N/A';
+            const status = additiveInfo ? additiveInfo.status : 'Unknown Status';
+
             return {
-                eNumber: eNumber,
-                name: additiveInfo.name,
-                type: additiveInfo.type,
-                status: additiveInfo.status
+                eNumber: fullENumber, // Keep the original full E-number for display
+                name: name,
+                type: type,
+                status: status
             };
         }) : [];
 
