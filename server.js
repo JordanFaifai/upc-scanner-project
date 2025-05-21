@@ -1,18 +1,17 @@
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios'); // Needed for making HTTP requests to external APIs
-const fs = require('fs');     // Needed to read local JSON file (efsa_additive_details.json)
-const path = require('path'); // Needed for resolving file paths
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors()); // Enable CORS for all routes, essential for frontend-backend communication
-app.use(express.json()); // Enable JSON body parsing for incoming requests (good practice for API)
+app.use(cors());
+app.use(express.json());
 
 // --- Load EFSA Additive Details ---
-// This will load the JSON file once when the server starts
 let efsaAdditiveDetails = {};
 try {
     const efsaPath = path.join(__dirname, 'efsa_additive_details.json');
@@ -21,8 +20,6 @@ try {
     console.log('[SERVER] EFSA Additive Details loaded successfully.');
 } catch (error) {
     console.error('[SERVER] Error loading EFSA Additive Details:', error.message);
-    // If the file is critical, you might want to exit the process or handle more robustly.
-    // For now, we'll continue, but additive info will be incomplete.
 }
 
 // --- API Routes ---
@@ -83,8 +80,13 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             }
         }
 
+        // NEW: Extract serving size and quantity
+        const servingSize = productData.serving_size || null;
+        const servingQuantity = productData.serving_quantity ? parseFloat(productData.serving_quantity) : null;
+
+
         const nutritionFacts = {
-            calories: productData.nutriments?.['energy-kcal_100g'], // Note the hyphen in 'energy-kcal_100g'
+            calories: productData.nutriments?.['energy-kcal_100g'],
             protein: productData.nutriments?.proteins_100g,
             carbohydrates: productData.nutriments?.carbohydrates_100g,
             fat: productData.nutriments?.fat_100g,
@@ -95,7 +97,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 
         // --- Extract and Enrich Additives with EFSA data ---
         const additives = productData.additives_tags ? productData.additives_tags.map(tag => {
-            const eNumber = tag.replace('en:', '').toUpperCase(); // e.g., 'en:e330' -> 'E330'
+            const eNumber = tag.replace('en:', '').toUpperCase();
             const additiveInfo = efsaAdditiveDetails[eNumber] || { name: 'Unknown Additive', type: 'N/A', status: 'Not banned in EU' };
             return {
                 eNumber: eNumber,
@@ -116,6 +118,8 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             allergens: allergens,
             additives: additives,
             nutrition_facts: nutritionFacts,
+            serving_size: servingSize,       // NEW: Include serving size
+            serving_quantity: servingQuantity, // NEW: Include serving quantity (e.g., 38 for 38g)
             source: 'Open Food Facts'
         };
 
@@ -126,23 +130,18 @@ app.get('/api/ingredients/:upc', async (req, res) => {
         console.error(`[SERVER] Error fetching or processing UPC ${upc}:`, error.message);
         if (axios.isAxiosError(error)) {
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx (e.g., 404 from Open Food Facts)
                 console.error(`[SERVER] Open Food Facts response error. Status: ${error.response.status}, Data:`, error.response.data);
                 res.status(error.response.status).json({
                     message: `Error from Open Food Facts API: ${error.response.status} - ${error.response.data?.status_verbose || 'Unknown error'}`,
                 });
             } else if (error.request) {
-                // The request was made but no response was received (e.g., network error)
                 console.error(`[SERVER] No response received from Open Food Facts API for UPC ${upc}.`);
                 res.status(503).json({ message: 'No response received from external API. Open Food Facts might be down or unreachable.' });
             } else {
-                // Something happened in setting up the request that triggered an Error
                 console.error(`[SERVER] Error setting up Axios request for UPC ${upc}:`, error.message);
                 res.status(500).json({ message: `Server error creating API request: ${error.message}` });
             }
         } else {
-            // Other non-Axios errors
             console.error(`[SERVER] Unexpected server error for UPC ${upc}:`, error);
             res.status(500).json({ message: `An unexpected server error occurred.` });
         }
@@ -150,15 +149,12 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 });
 
 // --- 404 Catch-all Middleware ---
-// THIS MUST BE PLACED *AFTER* ALL YOUR SPECIFIC ROUTES (like /test and /api/ingredients/:upc)
-// Any request that doesn't match a route above will fall into this.
 app.use((req, res) => {
     console.log(`[SERVER] No specific route found for: ${req.method} ${req.url}`);
     res.status(404).json({ message: 'API endpoint not found (simple test server)' });
 });
 
 // --- Start the Server ---
-// Explicitly bind to '0.0.0.0' for Render deployments
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on http://0.0.0.0:${PORT}`);
     console.log(`[SERVER] Backend API server listening on PORT: ${PORT}`);

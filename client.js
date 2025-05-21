@@ -39,9 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clearResultsBtn.style.display = 'none'; // Hide clear button until new results show
 
             try {
-                // Corrected BACKEND_URL to only be the base URL of your backend service
                 const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com';
-
                 const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
                 const data = await response.json();
 
@@ -100,51 +98,61 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- Helper function to determine nutrient status class ---
-    // Thresholds are general guidelines per 100g/ml, often inspired by UK traffic light system.
     function getNutrientStatusClass(nutrientName, value) {
         if (value === null || isNaN(value)) {
-            return ''; // No class if value is missing or not a number
+            return '';
         }
-
-        value = parseFloat(value); // Ensure value is a number
+        value = parseFloat(value);
 
         switch (nutrientName.toLowerCase()) {
-            case 'calories': // Energy in kcal
-                if (value < 150) return 'nutrient-low'; // Green
-                if (value >= 150 && value <= 400) return 'nutrient-moderate'; // Orange
-                return 'nutrient-high'; // Red
+            case 'calories':
+                if (value < 150) return 'nutrient-low';
+                if (value >= 150 && value <= 400) return 'nutrient-moderate';
+                return 'nutrient-high';
             case 'sugar':
-                if (value < 5) return 'nutrient-low'; // Green
-                if (value >= 5 && value <= 22.5) return 'nutrient-moderate'; // Orange
-                return 'nutrient-high'; // Red
+                if (value < 5) return 'nutrient-low';
+                if (value >= 5 && value <= 22.5) return 'nutrient-moderate';
+                return 'nutrient-high';
             case 'fat':
-                if (value < 3) return 'nutrient-low'; // Green
-                if (value >= 3 && value <= 17.5) return 'nutrient-moderate'; // Orange
-                return 'nutrient-high'; // Red
+                if (value < 3) return 'nutrient-low';
+                if (value >= 3 && value <= 17.5) return 'nutrient-moderate';
+                return 'nutrient-high';
             case 'salt':
-                if (value < 0.3) return 'nutrient-low'; // Green
-                if (value >= 0.3 && value <= 1.5) return 'nutrient-moderate'; // Orange
-                return 'nutrient-high'; // Red
-            case 'protein': // More protein is generally good
-                if (value >= 10) return 'nutrient-good'; // Green
-                if (value < 5) return 'nutrient-low'; // Red for very low protein
-                return 'nutrient-moderate'; // Neutral/orange for moderate
-            case 'fiber': // More fiber is generally good
-                if (value >= 6) return 'nutrient-good'; // Green
-                if (value < 3) return 'nutrient-low'; // Red for very low fiber
-                return 'nutrient-moderate'; // Neutral/orange for moderate
-            case 'carbohydrates': // Can be complex, but general high/low
-                if (value < 10) return 'nutrient-low'; // Green (often for low-carb diets, or if it's mostly fiber)
-                if (value >= 10 && value <= 45) return 'nutrient-moderate'; // Orange
-                return 'nutrient-high'; // Red
+                if (value < 0.3) return 'nutrient-low';
+                if (value >= 0.3 && value <= 1.5) return 'nutrient-moderate';
+                return 'nutrient-high';
+            case 'protein':
+                if (value >= 10) return 'nutrient-good';
+                if (value < 5) return 'nutrient-low';
+                return 'nutrient-moderate';
+            case 'fiber':
+                if (value >= 6) return 'nutrient-good';
+                if (value < 3) return 'nutrient-low';
+                return 'nutrient-moderate';
+            case 'carbohydrates':
+                if (value < 10) return 'nutrient-low';
+                if (value >= 10 && value <= 45) return 'nutrient-moderate';
+                return 'nutrient-high';
             default:
-                return ''; // No specific classification
+                return '';
         }
     }
 
-    // --- CRITICAL CHANGE: 'product' parameter now directly IS the product object ---
+    // --- Function to display product information ---
     function displayProductInfo(product) {
-        let html = ''; // Initialize the HTML string
+        let html = '';
+
+        // Determine if we have serving size data
+        const hasServingData = product.serving_quantity && product.serving_quantity > 0;
+        const servingSizeText = hasServingData ? `per serving (${product.serving_size || product.serving_quantity + 'g'})` : 'per 100g/ml';
+
+        // Function to calculate value per serving
+        const getPerServingValue = (valuePer100g) => {
+            if (!hasServingData || valuePer100g === null || isNaN(valuePer100g)) {
+                return valuePer100g; // Return original if no serving data or invalid value
+            }
+            return ((parseFloat(valuePer100g) / 100) * product.serving_quantity).toFixed(1); // Calculate and fix to 1 decimal place
+        };
 
         // --- Product Header (Name and Image) ---
         html += `
@@ -154,8 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // --- Processing Level (NOVA Group) - This section is NOT collapsible ---
-        // It remains a static card for immediate visibility
+        // --- Processing Level (NOVA Group) ---
         html += `
             <div class="section-card nova-info nova-group-${String(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
                 <h2>Processing Level: NOVA Group ${product.novaGroup || 'N/A'}</h2>
@@ -177,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // Add a note about additives if they are present (moved after NOVA source note for better flow)
         if (product.additives && product.additives.length > 0) {
             const additiveCount = product.additives.length;
             let additiveNote = '';
@@ -185,12 +191,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 additiveNote = `It contains ${additiveCount} food additive${additiveCount !== 1 ? 's' : ''}, which are characteristic of ultra-processed foods.`;
             } else if (product.novaGroup === '3') {
                 additiveNote = `It contains ${additiveCount} food additive${additiveCount !== 1 ? 's' : ''}. Additives are sometimes used in processed foods to preserve or enhance flavor/texture.`;
-            } else { // For NOVA Group 1 or 2
+            } else {
                 additiveNote = `It contains ${additiveCount} food additive${additiveCount !== 1 ? 's' : ''}.`;
             }
             html += `<p class="additive-nova-note">${additiveNote}</p>`;
         }
-
 
         // --- Ingredients (Collapsible) ---
         html += `
@@ -219,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // --- Additives (Collapsible and now Scrollable) ---
+        // --- Additives (Collapsible and Scrollable) ---
         if (product.additives && product.additives.length > 0) {
             html += `
                 <div class="section-card">
@@ -227,7 +232,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <h2>Additives <span class="arrow">▼</span></h2>
                     </button>
                     <div class="accordion-content">
-                        <div class="additive-list-container"> <ul class="additive-list">
+                        <div class="additive-list-container">
+                            <ul class="additive-list">
             `;
             product.additives.forEach(add => {
                 let statusText = '';
@@ -259,7 +265,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             html += `
                             </ul>
-                        </div> </div>
+                        </div>
+                    </div>
                 </div>
             `;
         } else {
@@ -280,17 +287,17 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `
                 <div class="section-card">
                     <button class="accordion-header">
-                        <h2>Nutrition Facts <small>(per 100g/ml)</small> <span class="arrow">▼</span></h2>
+                        <h2>Nutrition Facts <small>${servingSizeText}</small> <span class="arrow">▼</span></h2>
                     </button>
                     <div class="accordion-content">
                         <div class="nutrition-grid">
-                            <p><strong>Calories:</strong> <span class="${getNutrientStatusClass('calories', product.nutrition_facts.calories)}">${product.nutrition_facts.calories || 'N/A'} kcal</span></p>
-                            <p><strong>Protein:</strong> <span class="${getNutrientStatusClass('protein', product.nutrition_facts.protein)}">${product.nutrition_facts.protein || 'N/A'} g</span></p>
-                            <p><strong>Carbohydrates:</strong> <span class="${getNutrientStatusClass('carbohydrates', product.nutrition_facts.carbohydrates)}">${product.nutrition_facts.carbohydrates || 'N/A'} g</span></p>
-                            <p><strong>Fat:</strong> <span class="${getNutrientStatusClass('fat', product.nutrition_facts.fat)}">${product.nutrition_facts.fat || 'N/A'} g</span></p>
-                            <p><strong>Sugar:</strong> <span class="${getNutrientStatusClass('sugar', product.nutrition_facts.sugar)}">${product.nutrition_facts.sugar || 'N/A'} g</span></p>
-                            <p><strong>Salt:</strong> <span class="${getNutrientStatusClass('salt', product.nutrition_facts.salt)}">${product.nutrition_facts.salt || 'N/A'} g</span></p>
-                            <p><strong>Fiber:</strong> <span class="${getNutrientStatusClass('fiber', product.nutrition_facts.fiber)}">${product.nutrition_facts.fiber || 'N/A'} g</span></p>
+                            <p><strong>Calories:</strong> <span class="${getNutrientStatusClass('calories', getPerServingValue(product.nutrition_facts.calories))}">${getPerServingValue(product.nutrition_facts.calories) || 'N/A'} kcal</span></p>
+                            <p><strong>Protein:</strong> <span class="${getNutrientStatusClass('protein', getPerServingValue(product.nutrition_facts.protein))}">${getPerServingValue(product.nutrition_facts.protein) || 'N/A'} g</span></p>
+                            <p><strong>Carbohydrates:</strong> <span class="${getNutrientStatusClass('carbohydrates', getPerServingValue(product.nutrition_facts.carbohydrates))}">${getPerServingValue(product.nutrition_facts.carbohydrates) || 'N/A'} g</span></p>
+                            <p><strong>Fat:</strong> <span class="${getNutrientStatusClass('fat', getPerServingValue(product.nutrition_facts.fat))}">${getPerServingValue(product.nutrition_facts.fat) || 'N/A'} g</span></p>
+                            <p><strong>Sugar:</strong> <span class="${getNutrientStatusClass('sugar', getPerServingValue(product.nutrition_facts.sugar))}">${getPerServingValue(product.nutrition_facts.sugar) || 'N/A'} g</span></p>
+                            <p><strong>Salt:</strong> <span class="${getNutrientStatusClass('salt', getPerServingValue(product.nutrition_facts.salt))}">${getPerServingValue(product.nutrition_facts.salt) || 'N/A'} g</span></p>
+                            <p><strong>Fiber:</strong> <span class="${getNutrientStatusClass('fiber', getPerServingValue(product.nutrition_facts.fiber))}">${getPerServingValue(product.nutrition_facts.fiber) || 'N/A'} g</span></p>
                         </div>
                     </div>
                 </div>
@@ -317,38 +324,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Accordion Logic ---
-    // This function will set up the accordion behavior each time product info is displayed
     function setupAccordions() {
         const accordionHeaders = document.querySelectorAll('.accordion-header');
-
         accordionHeaders.forEach(header => {
-            // Remove previous event listeners to prevent duplicates if displayProductInfo is called multiple times
             header.removeEventListener('click', toggleAccordion);
             header.addEventListener('click', toggleAccordion);
         });
 
         function toggleAccordion() {
-            this.classList.toggle('active'); // Toggle 'active' class on the header
-            const content = this.nextElementSibling; // Get the next sibling element (which is the content div)
-
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
             if (content.classList.contains('show')) {
-                // If it's currently open, close it
                 content.classList.remove('show');
             } else {
-                // If it's currently closed, open it
                 content.classList.add('show');
             }
         }
-
-        // Optional: Open the first content section by default if desired
-        // if (accordionHeaders.length > 0) {
-        //     accordionHeaders[0].classList.add('active');
-        //     accordionHeaders[0].nextElementSibling.classList.add('show');
-        // }
     }
 
-
-    // Quagga2 scanner integration
+    // Quagga2 scanner integration (unchanged)
     function startScanner() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             Quagga.init({
@@ -357,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     type: "LiveStream",
                     target: scannerContainer,
                     constraints: {
-                        facingMode: "environment" // Use the back camera
+                        facingMode: "environment"
                     }
                 },
                 decoder: {
@@ -379,37 +373,27 @@ document.addEventListener('DOMContentLoaded', function() {
             Quagga.onDetected(function(result) {
                 if (result && result.codeResult && result.codeResult.code) {
                     const upcCode = result.codeResult.code;
-                    upcInput.value = upcCode; // Populate the manual input field
-                    stopScanner(); // Stop the scanner automatically on detection
-                    fetchUpcBtn.click(); // Trigger the fetch for the detected UPC
+                    upcInput.value = upcCode;
+                    stopScanner();
+                    fetchUpcBtn.click();
                 }
             });
 
             Quagga.onProcessed(function(result) {
                 var drawingCtx = Quagga.canvas.ctx.overlay;
                 var drawingCanvas = Quagga.canvas.dom.overlay;
-
                 if (result) {
                     if (result.boxes) {
-                        drawingCtx.clearRect(
-                            0,
-                            0,
-                            parseInt(drawingCanvas.width),
-                            parseInt(drawingCanvas.height)
-                        );
-                        result.boxes
-                            .filter(function(box) {
-                                return box !== result.box;
-                            })
-                            .forEach(function(box) {
-                                Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
-                            });
+                        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.width), parseInt(drawingCanvas.height));
+                        result.boxes.filter(function(box) {
+                            return box !== result.box;
+                        }).forEach(function(box) {
+                            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                        });
                     }
-
                     if (result.box) {
                         Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "blue", lineWidth: 2 });
                     }
-
                     if (result.codeResult && result.codeResult.code) {
                         Quagga.ImageDebug.drawPath(result.line, { x: "x", y: "y" }, drawingCtx, { color: "red", lineWidth: 3 });
                     }
@@ -426,7 +410,6 @@ document.addEventListener('DOMContentLoaded', function() {
             Quagga.stop();
             isScannerRunning = false;
             displayMessage('Scanner stopped.');
-            // Clear the scanner container content
             scannerContainer.innerHTML = '';
             startScannerBtn.style.display = 'inline-block';
             stopScannerBtn.style.display = 'none';
