@@ -1,1717 +1,2587 @@
 {
   "E100": {
-    "name": "Curcumin",
-    "type": "Color",
-    "status": ""
+    "name": "Curcumin (from turmeric)",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E101": {
-    "name": "Riboflavin",
-    "type": "Color",
-    "status": ""
+    "name": "Riboflavin (Vitamin B2), formerly called lactoflavin",
+    "type": "Colour",
+    "status": "Approved in EU and US."
+  },
+  "E101a": {
+    "name": "Riboflavin-5'-Phosphate",
+    "type": "Colour",
+    "status": "Approved in EU."
   },
   "E102": {
-    "name": "Tartrazine",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
+    "name": "Tartrazine (FD&C Yellow 5)",
+    "type": "Colour",
+    "status": "Approved in EU and US."
+  },
+  "E103": {
+    "name": "Alkannin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E104": {
-    "name": "Quinoline Yellow",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
+    "name": "Quinoline Yellow WS",
+    "type": "Colour",
+    "status": "Restricted use approved in EU."
+  },
+  "E105": {
+    "name": "Fast Yellow AB",
+    "type": "Colour",
+    "status": "Forbidden in EU and US."
+  },
+  "E106": {
+    "name": "Riboflavin-5-Sodium Phosphate",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E107": {
+    "name": "Yellow 2G",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E110": {
-    "name": "Sunset Yellow FCF",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
+    "name": "Sunset Yellow FCF (Orange Yellow S, FD&C Yellow 6)",
+    "type": "Colour",
+    "status": "Restricted use EU, Banned Norway, EU warnings/phasing out, Approved US."
+  },
+  "E111": {
+    "name": "Orange GGN",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E120": {
-    "name": "Cochineal, Carminic Acid, Carmines",
-    "type": "Color",
-    "status": ""
+    "name": "Cochineal, Carminic acid, Carmine (Natural Red 4)",
+    "type": "Colour",
+    "status": "Approved in EU and US."
+  },
+  "E121": {
+    "name": "Citrus Red 2",
+    "type": "Colour",
+    "status": "Approved in US only for colouring orange skin."
   },
   "E122": {
-    "name": "Azorubine, Carmoisine",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
+    "name": "Carmoisine (azorubine)",
+    "type": "Colour",
+    "status": "Approved in EU. Banned in Canada, Japan, Norway, USA. EU evaluating health risks."
   },
   "E123": {
-    "name": "Amaranth",
-    "type": "Color",
-    "status": ""
+    "name": "Amaranth (FD&C Red 2)",
+    "type": "Colour",
+    "status": "Approved in EU. Banned in United States."
   },
   "E124": {
-    "name": "Ponceau 4R, Cochineal Red A",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
+    "name": "Ponceau 4R (Cochineal Red A, Brilliant Scarlet 4R)",
+    "type": "Colour",
+    "status": "Restricted use approved in EU."
+  },
+  "E125": {
+    "name": "Ponceau SX, Scarlet GN",
+    "type": "Colour",
+    "status": "Only permitted for externally applied drugs and cosmetics in the US."
+  },
+  "E126": {
+    "name": "Ponceau 6R",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E127": {
+    "name": "Erythrosine (FD&C Red 3)",
+    "type": "Colour",
+    "status": "Approved in EU. Banned in the US."
+  },
+  "E128": {
+    "name": "Red 2G",
+    "type": "Colour",
+    "status": "Not approved in EU."
   },
   "E129": {
-    "name": "Allura Red AC",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
+    "name": "Allura Red AC (FD&C Red 40)",
+    "type": "Colour",
+    "status": "Approved in EU and US. Banned in Switzerland. Undergoing voluntary phase out in UK."
+  },
+  "E130": {
+    "name": "Indanthrene blue RS",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E131": {
     "name": "Patent Blue V",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU. Banned in US and Australia."
   },
   "E132": {
-    "name": "Indigotine, Indigo Carmine",
-    "type": "Color",
-    "status": ""
+    "name": "Indigo carmine (indigotine, FD&C Blue 2)",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E133": {
-    "name": "Brilliant Blue FCF",
-    "type": "Color",
-    "status": ""
+    "name": "Brilliant blue FCF (FD&C Blue 1)",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E140": {
-    "name": "Chlorophylls, Chlorophyllins",
-    "type": "Color",
-    "status": ""
+    "name": "Chlorophylls and Chlorophyllins",
+    "type": "Colour",
+    "status": "Approved in EU."
   },
   "E141": {
-    "name": "Copper Complexes of Chlorophylls",
-    "type": "Color",
-    "status": ""
+    "name": "Copper complexes of chlorophylls and chlorophyllins",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E142": {
     "name": "Green S",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU."
+  },
+  "E143": {
+    "name": "Fast Green FCF (FD&C Green 3)",
+    "type": "Colour",
+    "status": "Approved in US. Banned in the EU."
   },
   "E150a": {
-    "name": "Plain Caramel",
-    "type": "Color",
-    "status": ""
+    "name": "Plain caramel",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E150b": {
-    "name": "Caustic Sulphite Caramel",
-    "type": "Color",
-    "status": ""
+    "name": "Caustic sulfite caramel",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E150c": {
-    "name": "Ammonia Caramel",
-    "type": "Color",
-    "status": ""
+    "name": "Ammonia caramel",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E150d": {
-    "name": "Sulphite Ammonia Caramel",
-    "type": "Color",
-    "status": ""
+    "name": "Sulfite ammonia caramel",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E151": {
-    "name": "Brilliant Black BN",
-    "type": "Color",
-    "status": ""
+    "name": "Black PN, Brilliant Black BN",
+    "type": "Colour",
+    "status": "Approved in EU."
+  },
+  "E152": {
+    "name": "Carbon black (hydrocarbon)",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E153": {
-    "name": "Vegetable Carbon",
-    "type": "Color",
-    "status": ""
+    "name": "Vegetable carbon",
+    "type": "Colour",
+    "status": "Approved in EU. Banned in the US."
+  },
+  "E154": {
+    "name": "Brown FK (kipper brown)",
+    "type": "Colour",
+    "status": "Approval withdrawn in EU (November 2011)."
+  },
+  "E155": {
+    "name": "Brown HT (chocolate brown HT)",
+    "type": "Colour",
+    "status": "Approved in EU."
   },
   "E160a": {
-    "name": "Carotenes",
-    "type": "Color",
-    "status": ""
+    "name": "Alpha-carotene, Beta-carotene, Gamma-carotene",
+    "type": "Colour",
+    "status": "Approved in EU. Only beta-carotene approved in US."
   },
   "E160b": {
-    "name": "Annatto, Bixin, Norbixin",
-    "type": "Color",
-    "status": ""
+    "name": "Annatto, bixin, norbixin",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E160c": {
-    "name": "Paprika Extract, Capsanthin, Capsorubin",
-    "type": "Color",
-    "status": ""
+    "name": "Paprika oleoresin: (i) capsanthin, (ii) capsorubin",
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E160d": {
     "name": "Lycopene",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Restricted use approved in EU. Approved in US."
+  },
+  "E160e": {
+    "name": "Beta-apo-8'-carotenal (C 30)",
+    "type": "Colour",
+    "status": "Approved in EU and US."
+  },
+  "E160f": {
+    "name": "Ethyl ester of beta-apo-8'-carotenic acid (C 30)",
+    "type": "Colour",
+    "status": "Not approved in EU."
+  },
+  "E161a": {
+    "name": "Flavoxanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E161b": {
     "name": "Lutein",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU."
+  },
+  "E161c": {
+    "name": "Cryptoxanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E161d": {
+    "name": "Rubixanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E161e": {
+    "name": "Violaxanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E161f": {
+    "name": "Rhodoxanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E161g": {
+    "name": "Canthaxanthin",
+    "type": "Colour",
+    "status": "Not approved in EU. Approved in US."
+  },
+  "E161h": {
+    "name": "Zeaxanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E161i": {
+    "name": "Citranaxanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E161j": {
+    "name": "Astaxanthin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E162": {
     "name": "Beetroot Red, Betanin",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU and US."
   },
   "E163": {
     "name": "Anthocyanins",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU."
+  },
+  "E164": {
+    "name": "Saffron",
+    "type": "Colour",
+    "status": "Approved in US."
   },
   "E170": {
-    "name": "Calcium Carbonate",
-    "type": "Color, Acidity Regulator",
-    "status": ""
+    "name": "Calcium carbonate, Chalk",
+    "type": "Colour",
+    "status": "Approved in EU."
   },
   "E171": {
-    "name": "Titanium Dioxide",
-    "type": "Color",
-    "status": "BANNED in EU"
+    "name": "Titanium dioxide",
+    "type": "Colour",
+    "status": "No longer approved in EU (June 2022) due to potential carcinogenic effects. Approved in US."
   },
   "E172": {
-    "name": "Iron Oxides and Hydroxides",
-    "type": "Color",
-    "status": ""
+    "name": "Iron oxides and iron hydroxides",
+    "type": "Colour",
+    "status": "Approved in EU. Approved in US for sausage casings."
   },
   "E173": {
     "name": "Aluminium",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU."
   },
   "E174": {
     "name": "Silver",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU."
   },
   "E175": {
     "name": "Gold",
-    "type": "Color",
-    "status": ""
+    "type": "Colour",
+    "status": "Approved in EU."
   },
   "E180": {
-    "name": "Litholrubine BK",
-    "type": "Color",
-    "status": ""
+    "name": "Pigment Rubine, Lithol Rubine BK",
+    "type": "Colour",
+    "status": "Approved in EU."
+  },
+  "E181": {
+    "name": "Tannin",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
+  },
+  "E182": {
+    "name": "Orcein, Orchil",
+    "type": "Colour",
+    "status": "Details from Wikipedia."
   },
   "E200": {
-    "name": "Sorbic Acid",
+    "name": "Sorbic acid",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E201": {
+    "name": "Sodium sorbate",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
   },
   "E202": {
-    "name": "Potassium Sorbate",
+    "name": "Potassium sorbate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E203": {
-    "name": "Calcium Sorbate",
+    "name": "Calcium sorbate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E209": {
+    "name": "Heptyl p-hydroxybenzoate",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
   },
   "E210": {
-    "name": "Benzoic Acid",
+    "name": "Benzoic acid",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E211": {
-    "name": "Sodium Benzoate",
+    "name": "Sodium benzoate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E212": {
-    "name": "Potassium Benzoate",
+    "name": "Potassium benzoate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E213": {
-    "name": "Calcium Benzoate",
+    "name": "Calcium benzoate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E214": {
-    "name": "Ethyl p-Hydroxybenzoate",
+    "name": "Ethylparaben (ethyl para-hydroxybenzoate)",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E215": {
-    "name": "Sodium Ethyl p-Hydroxybenzoate",
+    "name": "Sodium ethyl para-hydroxybenzoate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E216": {
-    "name": "Propylparaben",
+    "name": "Propylparaben (propyl para-hydroxybenzoate)",
     "type": "Preservative",
-    "status": "BANNED in EU"
+    "status": "Details from Wikipedia."
   },
   "E217": {
-    "name": "Sodium Propylparaben",
+    "name": "Sodium propyl para-hydroxybenzoate",
     "type": "Preservative",
-    "status": "BANNED in EU"
+    "status": "Details from Wikipedia."
   },
   "E218": {
-    "name": "Methyl p-Hydroxybenzoate",
+    "name": "Methylparaben (methyl para-hydroxybenzoate)",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E219": {
-    "name": "Sodium Methyl p-Hydroxybenzoate",
+    "name": "Sodium methyl para-hydroxybenzoate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E220": {
-    "name": "Sulphur Dioxide",
+    "name": "Sulfur dioxide",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E221": {
-    "name": "Sodium Sulphite",
+    "name": "Sodium sulfite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E222": {
-    "name": "Sodium Bisulphite",
+    "name": "Sodium bisulfite (sodium hydrogen sulfite)",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E223": {
-    "name": "Sodium Metabisulphite",
+    "name": "Sodium metabisulfite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E224": {
-    "name": "Potassium Metabisulphite",
+    "name": "Potassium metabisulfite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E225": {
+    "name": "Potassium sulfite",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
   },
   "E226": {
-    "name": "Calcium Sulphite",
+    "name": "Calcium sulfite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E227": {
-    "name": "Calcium Bisulphite",
+    "name": "Calcium hydrogen sulfite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E228": {
-    "name": "Potassium Bisulphite",
+    "name": "Potassium hydrogen sulfite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E230": {
+    "name": "Biphenyl, diphenyl",
+    "type": "Preservative",
+    "status": "Not approved in EU."
+  },
+  "E231": {
+    "name": "Orthophenyl phenol",
+    "type": "Preservative",
+    "status": "Not approved in EU."
+  },
+  "E232": {
+    "name": "Sodium orthophenyl phenol",
+    "type": "Preservative",
+    "status": "Not approved in EU."
+  },
+  "E233": {
+    "name": "Thiabendazole",
+    "type": "Preservative",
+    "status": "Not approved in EU."
   },
   "E234": {
     "name": "Nisin",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E235": {
-    "name": "Natamycin",
+    "name": "Natamycin, Pimaracin",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E236": {
+    "name": "Formic acid",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
+  },
+  "E237": {
+    "name": "Sodium formate",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
+  },
+  "E238": {
+    "name": "Calcium formate",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
   },
   "E239": {
-    "name": "Hexamethylene Tetramine",
+    "name": "Hexamine (hexamethylene tetramine)",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E240": {
+    "name": "Formaldehyde",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
   },
   "E242": {
-    "name": "Dimethyl Dicarbonate",
+    "name": "Dimethyl dicarbonate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E249": {
-    "name": "Potassium Nitrite",
+    "name": "Potassium nitrite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU. Described as 'cancer risk' by Yuka."
   },
   "E250": {
-    "name": "Sodium Nitrite",
+    "name": "Sodium nitrite",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E251": {
-    "name": "Sodium Nitrate",
+    "name": "Sodium nitrate (Chile saltpetre)",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E252": {
-    "name": "Potassium Nitrate",
+    "name": "Potassium nitrate (Saltpetre)",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E260": {
-    "name": "Acetic Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Acetic acid",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E261": {
-    "name": "Potassium Acetate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium acetate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E262": {
-    "name": "Sodium Acetates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium acetates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E263": {
-    "name": "Calcium Acetate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium acetate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
+  },
+  "E264": {
+    "name": "Ammonium acetate",
+    "type": "Preservative",
+    "status": "Approved in Australia and New Zealand."
+  },
+  "E265": {
+    "name": "Dehydroacetic acid",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
+  },
+  "E266": {
+    "name": "Sodium dehydroacetate",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
   },
   "E270": {
-    "name": "Lactic Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Lactic acid",
+    "type": "Antioxidant",
+    "status": "Approved in EU."
   },
   "E280": {
-    "name": "Propionic Acid",
+    "name": "Propionic acid",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E281": {
-    "name": "Sodium Propionate",
+    "name": "Sodium propionate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E282": {
-    "name": "Calcium Propionate",
+    "name": "Calcium propionate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E283": {
-    "name": "Potassium Propionate",
+    "name": "Potassium propionate",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E284": {
-    "name": "Boric Acid",
+    "name": "Boric acid",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E285": {
-    "name": "Sodium Tetraborate (Borax)",
+    "name": "Sodium tetraborate (borax)",
     "type": "Preservative",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E290": {
-    "name": "Carbon Dioxide",
-    "type": "Preservative, Gas",
-    "status": ""
+    "name": "Carbon dioxide",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E296": {
-    "name": "Malic Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Malic acid",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E297": {
-    "name": "Fumaric Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Fumaric acid",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E300": {
-    "name": "Ascorbic Acid (Vitamin C)",
+    "name": "Ascorbic acid (vitamin C)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E301": {
-    "name": "Sodium Ascorbate",
+    "name": "Sodium ascorbate",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E302": {
-    "name": "Calcium Ascorbate",
+    "name": "Calcium ascorbate",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E303": {
+    "name": "Potassium ascorbate",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
   },
   "E304": {
-    "name": "Fatty Acid Esters of Ascorbic Acid",
+    "name": "Fatty acid esters of ascorbic acid (Ascorbyl palmitate)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E305": {
+    "name": "Ascorbyl stearate",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
   },
   "E306": {
-    "name": "Tocopherols",
+    "name": "Tocopherols (Vitamin E, natural)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E307": {
-    "name": "Alpha-Tocopherol",
+    "name": "Alpha-Tocopherol (synthetic)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E308": {
-    "name": "Gamma-Tocopherol",
+    "name": "Gamma-Tocopherol (synthetic)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E309": {
-    "name": "Delta-Tocopherol",
+    "name": "Delta-Tocopherol (synthetic)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E310": {
-    "name": "Propyl Gallate",
+    "name": "Propyl gallate",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E311": {
-    "name": "Octyl Gallate",
+    "name": "Octyl gallate",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E312": {
-    "name": "Dodecyl Gallate",
+    "name": "Dodecyl gallate",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E313": {
+    "name": "Ethyl gallate",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
+  },
+  "E314": {
+    "name": "Guaiac resin",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
   },
   "E315": {
-    "name": "Erythorbic Acid",
+    "name": "Erythorbic acid",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E316": {
-    "name": "Sodium Erythorbate",
+    "name": "Sodium erythorbate",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E317": {
+    "name": "Erythorbin acid",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
+  },
+  "E318": {
+    "name": "Sodium erythorbin",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
   },
   "E319": {
-    "name": "Tertiary-Butylhydroquinone (TBHQ)",
+    "name": "tert-Butylhydroquinone (TBHQ)",
     "type": "Antioxidant",
-    "status": "Not authorized in EU"
+    "status": "Approved in EU."
   },
   "E320": {
-    "name": "Butylated Hydroxyanisole (BHA)",
+    "name": "Butylated hydroxyanisole (BHA)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E321": {
-    "name": "Butylated Hydroxytoluene (BHT)",
+    "name": "Butylated hydroxytoluene (BHT)",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E322": {
-    "name": "Lecithins",
+    "name": "Lecithin",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E323": {
+    "name": "Anoxomer",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
+  },
+  "E324": {
+    "name": "Ethoxyquin",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
   },
   "E325": {
-    "name": "Sodium Lactate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium lactate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E326": {
-    "name": "Potassium Lactate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium lactate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E327": {
-    "name": "Calcium Lactate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium lactate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
+  },
+  "E328": {
+    "name": "Ammonium lactate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E329": {
+    "name": "Magnesium lactate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
   },
   "E330": {
-    "name": "Citric Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Citric acid",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E331": {
-    "name": "Sodium Citrates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium citrates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E332": {
-    "name": "Potassium Citrates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium citrates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E333": {
-    "name": "Calcium Citrates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium citrates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E334": {
-    "name": "Tartaric Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Tartaric acid (L(+)-)",
+    "type": "Acid",
+    "status": "Approved in EU."
   },
   "E335": {
-    "name": "Sodium Tartrates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium tartrates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E336": {
-    "name": "Potassium Tartrates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium tartrates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E337": {
-    "name": "Sodium Potassium Tartrate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium potassium tartrate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E338": {
-    "name": "Phosphoric Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Phosphoric acid",
+    "type": "Acid",
+    "status": "Approved in EU."
   },
   "E339": {
-    "name": "Sodium Phosphates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium phosphates",
+    "type": "Antioxidant",
+    "status": "Approved in EU."
   },
   "E340": {
-    "name": "Potassium Phosphates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium phosphates",
+    "type": "Antioxidant",
+    "status": "Approved in EU."
   },
   "E341": {
-    "name": "Calcium Phosphates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium phosphates",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
+  },
+  "E342": {
+    "name": "Ammonium phosphates",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E343": {
-    "name": "Magnesium Phosphates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Magnesium phosphates",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU. Under discussion for future amendment."
+  },
+  "E344": {
+    "name": "Lecithin citrate",
+    "type": "Acidity regulator",
+    "status": "Not approved in UK."
+  },
+  "E345": {
+    "name": "Magnesium citrate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E349": {
+    "name": "Ammonium malate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
   },
   "E350": {
-    "name": "Sodium Malates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium malates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E351": {
-    "name": "Potassium Malate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium malate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E352": {
-    "name": "Calcium Malates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium malates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E353": {
-    "name": "Metatartaric Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Metatartaric acid",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E354": {
-    "name": "Calcium Tartrate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium tartrate",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E355": {
-    "name": "Adipic Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Adipic acid",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E356": {
-    "name": "Sodium Adipate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium adipate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E357": {
-    "name": "Potassium Adipate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium adipate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
+  },
+  "E359": {
+    "name": "Ammonium adipate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
   },
   "E363": {
-    "name": "Succinic Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Succinic acid",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
+  },
+  "E365": {
+    "name": "Monosodium fumarate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E366": {
+    "name": "Potassium fumarate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E367": {
+    "name": "Calcium fumarate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E368": {
+    "name": "Ammonium fumarate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E370": {
+    "name": "1,4-Heptonolactone",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E375": {
+    "name": "Niacin",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
   },
   "E380": {
-    "name": "Triammonium Citrate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Triammonium citrate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
+  },
+  "E381": {
+    "name": "Ammonium ferric citrate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E383": {
+    "name": "Calcium glycerylphosphate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
+  },
+  "E384": {
+    "name": "Isopropyl citrate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
   },
   "E385": {
-    "name": "Calcium Disodium EDTA",
-    "type": "Preservative",
-    "status": ""
+    "name": "Calcium disodium ethylene diamine tetraacetate, (Calcium disodium EDTA)",
+    "type": "Sequestrant",
+    "status": "Approved in EU."
+  },
+  "E386": {
+    "name": "Disodium ethylene diamine tetraacetate (Disodium EDTA)",
+    "type": "Sequestrant",
+    "status": "Details from Wikipedia."
+  },
+  "E387": {
+    "name": "Oxystearin",
+    "type": "Stabiliser",
+    "status": "Details from Wikipedia."
+  },
+  "E388": {
+    "name": "Thiodipropionic acid",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E389": {
+    "name": "Dilauryl thiodipropionate",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E390": {
+    "name": "Distearyl thiodipropionate",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E391": {
+    "name": "Phytic acid",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E392": {
+    "name": "Carnosic acid",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in 2010."
+  },
+  "E399": {
+    "name": "Calcium lactobionate",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E400": {
-    "name": "Alginic Acid",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Alginic acid",
+    "type": "Thickener, Stabiliser, Gelling agent, Emulsifier",
+    "status": "Approved in EU."
   },
   "E401": {
-    "name": "Sodium Alginate",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Sodium alginate",
+    "type": "Thickener, Stabiliser, Gelling agent, Emulsifier",
+    "status": "Approved in EU."
   },
   "E402": {
-    "name": "Potassium Alginate",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Potassium alginate",
+    "type": "Thickener, Stabiliser, Gelling agent, Emulsifier",
+    "status": "Approved in EU."
   },
   "E403": {
-    "name": "Ammonium Alginate",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Ammonium alginate",
+    "type": "Thickener, Stabiliser, Emulsifier",
+    "status": "Approved in EU."
   },
   "E404": {
-    "name": "Calcium Alginate",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Calcium alginate",
+    "type": "Thickener, Stabiliser, Gelling agent, Emulsifier",
+    "status": "Approved in EU."
   },
   "E405": {
-    "name": "Propane-1,2-Diol Alginate",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Propane-1,2-diol alginate (Propylene glycol alginate)",
+    "type": "Thickener, Stabiliser, Emulsifier",
+    "status": "Approved in EU."
   },
   "E406": {
     "name": "Agar",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "type": "Thickener, Gelling agent, Stabiliser",
+    "status": "Approved in EU."
   },
   "E407": {
     "name": "Carrageenan",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "type": "Thickener, Stabiliser, Gelling agent, Emulsifier",
+    "status": "Approved in EU."
   },
   "E407a": {
-    "name": "Processed Eucheuma Seaweed",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Processed eucheuma seaweed",
+    "type": "Thickener, Stabiliser, Gelling agent, Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E408": {
+    "name": "Bakers yeast glycan",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E409": {
+    "name": "Arabinogalactan",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E410": {
-    "name": "Locust Bean Gum",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Locust bean gum (Carob gum)",
+    "type": "Thickener, Stabiliser, Gelling agent, Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E411": {
+    "name": "Oat gum",
+    "type": "Thickener, Stabiliser",
+    "status": "Details from Wikipedia."
   },
   "E412": {
-    "name": "Guar Gum",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Guar gum",
+    "type": "Thickener, Stabiliser",
+    "status": "Approved in EU."
   },
   "E413": {
     "name": "Tragacanth",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "type": "Thickener, Stabiliser, Emulsifier",
+    "status": "Approved in EU."
   },
   "E414": {
-    "name": "Acacia Gum (Gum Arabic)",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Acacia gum (gum arabic)",
+    "type": "Thickener, Stabiliser, Emulsifier",
+    "status": "Approved in EU."
   },
   "E415": {
-    "name": "Xanthan Gum",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Xanthan gum",
+    "type": "Thickener, Stabiliser",
+    "status": "Approved in EU."
   },
   "E416": {
-    "name": "Karaya Gum",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Karaya gum",
+    "type": "Thickener, Stabiliser, Emulsifier",
+    "status": "Approved in EU."
   },
   "E417": {
-    "name": "Tara Gum",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Tara gum",
+    "type": "Thickener, Stabiliser",
+    "status": "Approved in EU."
   },
   "E418": {
-    "name": "Gellan Gum",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Gellan gum",
+    "type": "Thickener, Stabiliser, Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E419": {
+    "name": "Gum ghatti",
+    "type": "Thickener, Stabiliser, Emulsifier",
+    "status": "Details from Wikipedia."
   },
   "E420": {
     "name": "Sorbitol",
-    "type": "Sweetener, Humectant",
-    "status": ""
+    "type": "Emulsifier, Sweetener, Humectant",
+    "status": "Approved in EU."
   },
   "E421": {
     "name": "Mannitol",
-    "type": "Sweetener, Humectant",
-    "status": ""
+    "type": "Anti-caking agent, Sweetener",
+    "status": "Approved in EU."
   },
   "E422": {
     "name": "Glycerol",
-    "type": "Humectant",
-    "status": ""
+    "type": "Emulsifier, Sweetener",
+    "status": "Approved in EU."
+  },
+  "E424": {
+    "name": "Curdlan",
+    "type": "Gelling agent",
+    "status": "Details from Wikipedia."
   },
   "E425": {
-    "name": "Konjac Gum",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Konjac",
+    "type": "Emulsifier",
+    "status": "Approved in EU. May not be used in confectionery due to choking risk."
   },
   "E426": {
-    "name": "Soybean Hemicellulose",
-    "type": "Thickener",
-    "status": ""
+    "name": "Soybean hemicellulose",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in EU."
   },
   "E427": {
-    "name": "Cassia Gum",
-    "type": "Thickener",
-    "status": ""
+    "name": "Cassia gum",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in 2010."
+  },
+  "E428": {
+    "name": "Gelatin",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E429": {
+    "name": "Peptones",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E430": {
+    "name": "Polyoxyethene (8) stearate",
+    "type": "Emulsifier, Stabiliser",
+    "status": "Details from Wikipedia."
+  },
+  "E431": {
+    "name": "Polyoxyethene (40) stearate",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E432": {
-    "name": "Polyoxyethylene Sorbitan Monolaurate (Polysorbate 20)",
+    "name": "Polyoxyethene (20) sorbitan monolaurate (polysorbate 20)",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E433": {
-    "name": "Polyoxyethylene Sorbitan Monooleate (Polysorbate 80)",
+    "name": "Polyoxyethene (20) sorbitan monooleate (polysorbate 80)",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E434": {
-    "name": "Polyoxyethylene Sorbitan Monopalmitate (Polysorbate 40)",
+    "name": "Polyoxyethene (20) sorbitan monopalmitate (polysorbate 40)",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E435": {
-    "name": "Polyoxyethylene Sorbitan Monostearate (Polysorbate 60)",
+    "name": "Polyoxyethene (20) sorbitan monostearate (polysorbate 60)",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E436": {
-    "name": "Polyoxyethylene Sorbitan Tristearate (Polysorbate 65)",
+    "name": "Polyoxyethene (20) sorbitan tristearate (polysorbate 65)",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E440": {
     "name": "Pectins",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "type": "Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E441": {
+    "name": "Gelatine",
+    "type": "Emulsifier, Gelling agent",
+    "status": "Details from Wikipedia."
   },
   "E442": {
-    "name": "Ammonium Phosphatides",
+    "name": "Ammonium phosphatides",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E443": {
-    "name": "Brominated Vegetable Oil (BVO)",
+    "name": "Brominated vegetable oil",
     "type": "Emulsifier",
-    "status": "BANNED in EU"
+    "status": "Details from Wikipedia."
   },
   "E444": {
-    "name": "Sucrose Acetate Isobutyrate",
+    "name": "Sucrose acetate isobutyrate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Details from Wikipedia."
   },
   "E445": {
-    "name": "Glycerol Esters of Wood Rosins",
+    "name": "Glycerol esters of wood rosins",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E446": {
+    "name": "Succistearin",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E450": {
     "name": "Diphosphates",
-    "type": "Acidity Regulator, Emulsifier",
-    "status": ""
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E451": {
     "name": "Triphosphates",
-    "type": "Acidity Regulator, Emulsifier",
-    "status": ""
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E452": {
     "name": "Polyphosphates",
-    "type": "Acidity Regulator, Emulsifier",
-    "status": ""
+    "type": "Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E459": {
+    "name": "Beta-cyclodextrin",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E460": {
     "name": "Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E461": {
-    "name": "Methyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Methyl cellulose",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E462": {
-    "name": "Ethyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Ethyl cellulose",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E463": {
-    "name": "Hydroxypropyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Hydroxypropyl cellulose",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E464": {
-    "name": "Hydroxypropyl Methyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Hypromellose (hydroxypropyl methylcellulose)",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E465": {
-    "name": "Ethyl Methyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Ethyl methyl cellulose",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E466": {
-    "name": "Carboxymethyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Carboxymethyl cellulose, Sodium carboxymethyl cellulose",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E467": {
+    "name": "Ethyl hydroxyethyl cellulose",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E468": {
-    "name": "Cross-Linked Sodium Carboxymethyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Crosslinked sodium carboxymethyl cellulose (Croscarmellose)",
+    "type": "Emulsifier",
+    "status": "Approved in EU. Under discussion for future amendment."
   },
   "E469": {
-    "name": "Enzymatically Hydrolysed Carboxymethyl Cellulose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "name": "Enzymically hydrolysed carboxymethylcellulose",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E470a": {
-    "name": "Sodium, Potassium, and Calcium Salts of Fatty Acids",
-    "type": "Emulsifier, Stabilizer",
-    "status": ""
+    "name": "Sodium, potassium and calcium salts of fatty acids",
+    "type": "Emulsifier, Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E470b": {
-    "name": "Magnesium Salts of Fatty Acids",
-    "type": "Emulsifier, Stabilizer",
-    "status": ""
+    "name": "Magnesium salts of fatty acids",
+    "type": "Emulsifier, Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E471": {
-    "name": "Mono- and Diglycerides of Fatty Acids",
-    "type": "Emulsifier, Stabilizer",
-    "status": ""
+    "name": "Mono- and diglycerides of fatty acids",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E472a": {
-    "name": "Acetic Acid Esters of Mono- and Diglycerides",
-    "type": "Emulsifier, Stabilizer",
-    "status": ""
+    "name": "Acetic acid esters of mono- and diglycerides of fatty acids",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E472b": {
-    "name": "Lactic Acid Esters of Mono- and Diglycerides",
-    "type": "Emulsifier, Stabilizer",
-    "status": ""
+    "name": "Lactic acid esters of mono- and diglycerides of fatty acids",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E472c": {
-    "name": "Citric Acid Esters of Mono- and Diglycerides",
-    "type": "Emulsifier, Stabilizer",
-    "status": ""
+    "name": "Citric acid esters of mono- and diglycerides of fatty acids",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E472d": {
+    "name": "Tartaric acid esters of mono- and diglycerides of fatty acids",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
   },
   "E472e": {
-    "name": "Mono- and Diacetyl Tartaric Acid Esters of Mono- and Diglycerides",
-    "type": "Emulsifier, Stabilizer",
-    "status": ""
+    "name": "Mono- and diacetyl tartaric acid esters of mono- and diglycerides of fatty acids",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E472f": {
+    "name": "Mixed acetic and tartaric acid esters of mono- and diglycerides of fatty acids",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E472g": {
+    "name": "Succinylated monoglycerides",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
   },
   "E473": {
-    "name": "Sucrose Esters of Fatty Acids",
+    "name": "Sucrose esters of fatty acids",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E474": {
     "name": "Sucroglycerides",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E475": {
-    "name": "Polyglycerol Esters of Fatty Acids",
+    "name": "Polyglycerol esters of fatty acids",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E476": {
-    "name": "Polyglycerol Polyricinoleate",
+    "name": "Polyglycerol polyricinoleate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E477": {
-    "name": "Propane-1,2-Diol Esters of Fatty Acids",
+    "name": "Propane-1,2-diol esters of fatty acids, propylene glycol esters of fatty acid",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E478": {
+    "name": "Lactylated fatty acid esters of glycerol and propane-1",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
   },
   "E479b": {
-    "name": "Thermally Oxidized Soya Bean Oil",
+    "name": "Thermally oxidized soya bean oil interacted with mono- and diglycerides of fatty acids",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E480": {
+    "name": "Dioctyl sodium sulfosuccinate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
   },
   "E481": {
-    "name": "Sodium Stearoyl-2-Lactylate",
+    "name": "Sodium stearoyl-2-lactylate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E482": {
-    "name": "Calcium Stearoyl-2-Lactylate",
+    "name": "Calcium stearoyl-2-lactylate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E483": {
-    "name": "Stearyl Tartrate",
+    "name": "Stearyl tartrate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E484": {
+    "name": "Stearyl citrate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E485": {
+    "name": "Sodium stearoyl fumarate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E486": {
+    "name": "Calcium stearoyl fumarate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E487": {
+    "name": "Sodium laurylsulfate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E488": {
+    "name": "Ethoxylated Mono- and Di-Glycerides",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E489": {
+    "name": "Methyl glucoside-coconut oil ester",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E490": {
+    "name": "Propane-1,2-diol",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E491": {
-    "name": "Sorbitan Monostearate",
+    "name": "Sorbitan monostearate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E492": {
-    "name": "Sorbitan Tristearate",
+    "name": "Sorbitan tristearate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E493": {
-    "name": "Sorbitan Monolaurate",
+    "name": "Sorbitan monolaurate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E494": {
-    "name": "Sorbitan Monooleate",
+    "name": "Sorbitan monooleate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E495": {
-    "name": "Sorbitan Monopalmitate",
+    "name": "Sorbitan monopalmitate",
     "type": "Emulsifier",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E496": {
+    "name": "Sorbitan trioleate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E497": {
+    "name": "Polyoxypropylene-polyoxyethylene polymers",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E498": {
+    "name": "Partial polyglycerol esters of polycondensed fatty acids of castor oil",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E499": {
+    "name": "Stigmasterol-rich plant sterols",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in EU."
   },
   "E500": {
-    "name": "Sodium Carbonates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium carbonates",
+    "type": "Acidity regulator, Raising agent",
+    "status": "Approved in EU."
   },
   "E501": {
-    "name": "Potassium Carbonates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium carbonates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E503": {
-    "name": "Ammonium Carbonates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Ammonium carbonates",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E504": {
-    "name": "Magnesium Carbonates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Magnesium carbonates",
+    "type": "Acidity regulator, Anti-caking agent",
+    "status": "Approved in EU."
+  },
+  "E505": {
+    "name": "Ferrous carbonate",
+    "type": "Acidity regulator",
+    "status": "Details from Wikipedia."
   },
   "E507": {
-    "name": "Hydrochloric Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Hydrochloric acid",
+    "type": "Acid",
+    "status": "Approved in EU."
   },
   "E508": {
-    "name": "Potassium Chloride",
-    "type": "Gelling Agent",
-    "status": ""
+    "name": "Potassium chloride",
+    "type": "Gelling agent, Seasoning",
+    "status": "Approved in EU."
   },
   "E509": {
-    "name": "Calcium Chloride",
-    "type": "Gelling Agent",
-    "status": ""
+    "name": "Calcium chloride",
+    "type": "Sequestrant, Firming agent",
+    "status": "Approved in EU."
+  },
+  "E510": {
+    "name": "Ammonium chloride, ammonia solution",
+    "type": "Acidity regulator, Improving agent",
+    "status": "Details from Wikipedia."
   },
   "E511": {
-    "name": "Magnesium Chloride",
-    "type": "Gelling Agent",
-    "status": ""
+    "name": "Magnesium chloride",
+    "type": "Firming agent",
+    "status": "Approved in EU."
   },
   "E512": {
-    "name": "Stannous Chloride",
-    "type": "Stabilizer",
-    "status": ""
+    "name": "Stannous chloride",
+    "type": "Antioxidant",
+    "status": "Approved in EU."
   },
   "E513": {
-    "name": "Sulphuric Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sulfuric acid",
+    "type": "Acid",
+    "status": "Approved in EU."
   },
   "E514": {
-    "name": "Sodium Sulphates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium sulfates",
+    "type": "Acid",
+    "status": "Approved in EU."
   },
   "E515": {
-    "name": "Potassium Sulphates",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium sulfates",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in EU."
   },
   "E516": {
-    "name": "Calcium Sulphate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium sulfate",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in EU."
   },
   "E517": {
-    "name": "Ammonium Sulphate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Ammonium sulfate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
+  },
+  "E518": {
+    "name": "Magnesium sulfate (Epsom salts)",
+    "type": "Acidity regulator, Firming agent",
+    "status": "Details from Wikipedia."
+  },
+  "E519": {
+    "name": "Copper(II) sulfate",
+    "type": "Preservative",
+    "status": "Details from Wikipedia."
   },
   "E520": {
-    "name": "Aluminium Sulphate",
-    "type": "Firming Agent",
-    "status": ""
+    "name": "Aluminium sulfate",
+    "type": "Firming agent",
+    "status": "Approved in EU."
   },
   "E521": {
-    "name": "Aluminium Sodium Sulphate",
-    "type": "Firming Agent",
-    "status": ""
+    "name": "Aluminium sodium sulfate",
+    "type": "Firming agent",
+    "status": "Approved in EU."
   },
   "E522": {
-    "name": "Aluminium Potassium Sulphate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Aluminium potassium sulfate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E523": {
-    "name": "Aluminium Ammonium Sulphate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Aluminium ammonium sulfate",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E524": {
-    "name": "Sodium Hydroxide",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium hydroxide",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E525": {
-    "name": "Potassium Hydroxide",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium hydroxide",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E526": {
-    "name": "Calcium Hydroxide",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium hydroxide",
+    "type": "Acidity regulator, Firming agent",
+    "status": "Approved in EU."
   },
   "E527": {
-    "name": "Ammonium Hydroxide",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Ammonium hydroxide",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E528": {
-    "name": "Magnesium Hydroxide",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Magnesium hydroxide",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E529": {
-    "name": "Calcium Oxide",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium oxide",
+    "type": "Acidity regulator, Improving agent",
+    "status": "Approved in EU."
   },
   "E530": {
-    "name": "Magnesium Oxide",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Magnesium oxide",
+    "type": "Acidity regulator, Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E535": {
-    "name": "Sodium Ferrocyanide",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Sodium ferrocyanide",
+    "type": "Acidity regulator, Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E536": {
-    "name": "Potassium Ferrocyanide",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Potassium ferrocyanide",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
+  },
+  "E537": {
+    "name": "Ferrous hexacyanomanganate",
+    "type": "Anti-caking agent",
+    "status": "Details from Wikipedia."
   },
   "E538": {
-    "name": "Calcium Ferrocyanide",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Calcium ferrocyanide",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
+  },
+  "E539": {
+    "name": "Sodium thiosulfate",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
+  },
+  "E540": {
+    "name": "Dicalcium diphosphate",
+    "type": "Acidity regulator, Emulsifier",
+    "status": "Details from Wikipedia."
   },
   "E541": {
-    "name": "Sodium Aluminium Phosphate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium aluminium phosphate",
+    "type": "Emulsifier",
+    "status": "Approved in EU."
+  },
+  "E542": {
+    "name": "Bone phosphate (Essentiale Calcium Phosphate, Tribasic)",
+    "type": "Anti-caking agent",
+    "status": "Details from Wikipedia."
+  },
+  "E543": {
+    "name": "Calcium sodium polyphosphate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E544": {
+    "name": "Calcium polyphosphate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E545": {
+    "name": "Ammonium polyphosphate",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E550": {
+    "name": "Sodium Silicates",
+    "type": "Anti-caking agent",
+    "status": "Details from Wikipedia."
   },
   "E551": {
-    "name": "Silicon Dioxide",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Silicon dioxide (Silica)",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E552": {
-    "name": "Calcium Silicate",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Calcium silicate",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E553a": {
-    "name": "Magnesium Silicate",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Magnesium silicate, Magnesium trisilicate",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E553b": {
     "name": "Talc",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E554": {
-    "name": "Sodium Aluminium Silicate",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Sodium aluminosilicate (sodium aluminium silicate)",
+    "type": "Anti-caking agent",
+    "status": "Removed from EU list (2012)."
   },
   "E555": {
-    "name": "Potassium Aluminium Silicate",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Potassium aluminium silicate (potassium aluminosilicate)",
+    "type": "Anti-caking agent",
+    "status": "Removed from EU list (2012)."
   },
   "E556": {
-    "name": "Calcium Aluminium Silicate",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Calcium aluminosilicate (calcium aluminium silicate)",
+    "type": "Anti-caking agent",
+    "status": "Removed from EU list (2012)."
+  },
+  "E557": {
+    "name": "Zinc silicate",
+    "type": "Anti-caking agent",
+    "status": "Removed from EU list (2012)."
   },
   "E558": {
     "name": "Bentonite",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "type": "Anti-caking agent",
+    "status": "Removed from EU list (2012)."
   },
   "E559": {
-    "name": "Aluminium Silicate (Kaolin)",
-    "type": "Anti-Caking Agent",
-    "status": ""
+    "name": "Aluminium silicate (Kaolin)",
+    "type": "Anti-caking agent",
+    "status": "Removed from EU list (2012)."
+  },
+  "E560": {
+    "name": "Potassium silicate",
+    "type": "Anti-caking agent",
+    "status": "Details from Wikipedia."
+  },
+  "E561": {
+    "name": "Vermiculite",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E562": {
+    "name": "Sepiolite",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E563": {
+    "name": "Sepiolitic clay",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E565": {
+    "name": "Lignosulfonates",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E566": {
+    "name": "Natrolite-phonolite",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E570": {
-    "name": "Fatty Acids",
-    "type": "Emulsifier",
-    "status": ""
+    "name": "Fatty acids",
+    "type": "Anti-caking agent",
+    "status": "Approved in EU."
+  },
+  "E572": {
+    "name": "Magnesium stearate, calcium stearate",
+    "type": "Emulsifier, Anti-caking agent",
+    "status": "Details from Wikipedia."
   },
   "E574": {
-    "name": "Gluconic Acid",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Gluconic acid",
+    "type": "Acidity regulator",
+    "status": "Approved in EU."
   },
   "E575": {
-    "name": "Glucono-Delta-Lactone",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Glucono delta-lactone",
+    "type": "Acidity regulator, Sequestrant",
+    "status": "Approved in EU."
   },
   "E576": {
-    "name": "Sodium Gluconate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Sodium gluconate",
+    "type": "Sequestrant",
+    "status": "Approved in EU."
   },
   "E577": {
-    "name": "Potassium Gluconate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Potassium gluconate",
+    "type": "Sequestrant",
+    "status": "Approved in EU."
   },
   "E578": {
-    "name": "Calcium Gluconate",
-    "type": "Acidity Regulator",
-    "status": ""
+    "name": "Calcium gluconate",
+    "type": "Firming agent",
+    "status": "Approved in EU."
   },
   "E579": {
-    "name": "Ferrous Gluconate",
-    "type": "Color Retention Agent",
-    "status": ""
+    "name": "Ferrous gluconate",
+    "type": "Food colouring",
+    "status": "Approved in EU."
+  },
+  "E580": {
+    "name": "Magnesium gluconate",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E585": {
-    "name": "Ferrous Lactate",
-    "type": "Color Retention Agent",
-    "status": ""
+    "name": "Ferrous lactate",
+    "type": "Food colouring",
+    "status": "Approved in EU."
   },
   "E586": {
     "name": "4-Hexylresorcinol",
     "type": "Antioxidant",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E598": {
+    "name": "Synthetic calcium aluminates",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E599": {
+    "name": "Perlite",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E620": {
-    "name": "Glutamic Acid",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Glutamic acid",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E621": {
-    "name": "Monosodium Glutamate (MSG)",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Monosodium glutamate (MSG)",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E622": {
-    "name": "Monopotassium Glutamate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Monopotassium glutamate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E623": {
-    "name": "Calcium Diglutamate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Calcium diglutamate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E624": {
-    "name": "Monoammonium Glutamate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Monoammonium glutamate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E625": {
-    "name": "Magnesium Diglutamate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Magnesium diglutamate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E626": {
-    "name": "Guanylic Acid",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Guanylic acid",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E627": {
-    "name": "Disodium Guanylate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Disodium guanylate, sodium guanylate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E628": {
-    "name": "Dipotassium Guanylate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Dipotassium guanylate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E629": {
-    "name": "Calcium Guanylate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Calcium guanylate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E630": {
-    "name": "Inosinic Acid",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Inosinic acid",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E631": {
-    "name": "Disodium Inosinate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Disodium inosinate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E632": {
-    "name": "Dipotassium Inosinate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Dipotassium inosinate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E633": {
-    "name": "Calcium Inosinate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Calcium inosinate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E634": {
-    "name": "Calcium 5'-Ribonucleotides",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Calcium 5'-ribonucleotides",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E635": {
-    "name": "Disodium 5'-Ribonucleotides",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Disodium 5'-ribonucleotides",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
+  },
+  "E636": {
+    "name": "Maltol",
+    "type": "Flavour enhancer",
+    "status": "Details from Wikipedia."
+  },
+  "E637": {
+    "name": "Ethyl maltol",
+    "type": "Flavour enhancer",
+    "status": "Details from Wikipedia."
   },
   "E640": {
-    "name": "Glycine and its Sodium Salt",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Glycine and its sodium salt",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E650": {
-    "name": "Zinc Acetate",
-    "type": "Flavor Enhancer",
-    "status": ""
+    "name": "Zinc acetate",
+    "type": "Flavour enhancer",
+    "status": "Approved in EU."
+  },
+  "E701": {
+    "name": "Tetracyclines",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E702": {
+    "name": "Chlortetracycline",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E703": {
+    "name": "Oxytetracycline",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E704": {
+    "name": "Oleandomycin",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E705": {
+    "name": "Penicillin G potassium",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E706": {
+    "name": "Penicillin G sodium",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E707": {
+    "name": "Penicillin G procaine",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E708": {
+    "name": "Penicillin G benzathine",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E710": {
+    "name": "Spiramycins",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E711": {
+    "name": "Virginiamycins",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E712": {
+    "name": "Flavomycin",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E713": {
+    "name": "Tylosin",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E714": {
+    "name": "Monensin A",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
   },
   "E715": {
     "name": "Avoparcin",
-    "type": "Antibiotic (Feed Additive)",
-    "status": "BANNED in EU"
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E716": {
+    "name": "Salinomycin",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
+  },
+  "E717": {
+    "name": "Avilamycin",
+    "type": "Antibiotic",
+    "status": "Details from Wikipedia."
   },
   "E900": {
-    "name": "Dimethylpolysiloxane",
-    "type": "Anti-Foaming Agent",
-    "status": ""
+    "name": "Dimethyl polysiloxane",
+    "type": "Anti-foaming agent, Anti-caking agent",
+    "status": "Approved in EU."
   },
   "E901": {
-    "name": "Beeswax",
-    "type": "Glazing Agent",
-    "status": ""
+    "name": "Beeswax, white and yellow",
+    "type": "Glazing agent",
+    "status": "Approved in EU."
   },
   "E902": {
-    "name": "Candelilla Wax",
-    "type": "Glazing Agent",
-    "status": ""
+    "name": "Candelilla wax",
+    "type": "Glazing agent",
+    "status": "Approved in EU."
   },
   "E903": {
-    "name": "Carnauba Wax",
-    "type": "Glazing Agent",
-    "status": ""
+    "name": "Carnauba wax",
+    "type": "Glazing agent",
+    "status": "Approved in EU."
   },
   "E904": {
     "name": "Shellac",
-    "type": "Glazing Agent",
-    "status": ""
+    "type": "Glazing agent",
+    "status": "Approved in EU."
   },
   "E905": {
-    "name": "Paraffin",
-    "type": "Glazing Agent",
-    "status": ""
+    "name": "Paraffins",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in EU."
+  },
+  "E905a": {
+    "name": "Mineral oil",
+    "type": "Anti-foaming agent",
+    "status": "Details from Wikipedia."
+  },
+  "E905b": {
+    "name": "Petrolatum",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E905c": {
+    "name": "Petroleum wax",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
+  },
+  "E906": {
+    "name": "Gum benzoic",
+    "type": "Flavour enhancer",
+    "status": "Details from Wikipedia."
   },
   "E907": {
-    "name": "Hydrogenated Poly-1-Decene",
-    "type": "Glazing Agent",
-    "status": ""
+    "name": "Crystalline wax",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
+  },
+  "E908": {
+    "name": "Rice bran wax",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
+  },
+  "E909": {
+    "name": "Spermaceti wax",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
+  },
+  "E910": {
+    "name": "Wax esters",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
+  },
+  "E911": {
+    "name": "Methyl esters of fatty acids",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
   },
   "E912": {
-    "name": "Montan Acid Esters",
-    "type": "Glazing Agent",
-    "status": ""
+    "name": "Montanic acid esters, Montan acid esters",
+    "type": "Glazing agent",
+    "status": "Approved in EU."
+  },
+  "E913": {
+    "name": "Lanolin, sheep wool grease",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
   },
   "E914": {
-    "name": "Oxidized Polyethylene Wax",
-    "type": "Glazing Agent",
-    "status": ""
+    "name": "Oxidized polyethylene wax, oxidized polyethylene",
+    "type": "Glazing agent",
+    "status": "Approved in EU."
+  },
+  "E915": {
+    "name": "Esters of colophony",
+    "type": "Glazing agent",
+    "status": "Details from Wikipedia."
+  },
+  "E916": {
+    "name": "Calcium iodate",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E917": {
+    "name": "Potassium iodate",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E918": {
+    "name": "Nitrogen oxides",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E919": {
+    "name": "Nitrosyl chloride",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E920": {
-    "name": "L-Cysteine",
-    "type": "Flour Treatment Agent",
-    "status": ""
+    "name": "L-cysteine",
+    "type": "Improving agent",
+    "status": "Approved in EU."
+  },
+  "E921": {
+    "name": "L-cystine",
+    "type": "Improving agent",
+    "status": "Details from Wikipedia."
+  },
+  "E922": {
+    "name": "Potassium persulfate",
+    "type": "Improving agent",
+    "status": "Details from Wikipedia."
+  },
+  "E923": {
+    "name": "Ammonium persulfate",
+    "type": "Improving agent",
+    "status": "Details from Wikipedia."
   },
   "E924": {
-    "name": "Potassium Bromate",
-    "type": "Flour Treatment Agent",
-    "status": "BANNED in EU"
+    "name": "Potassium bromate",
+    "type": "Improving agent",
+    "status": "Banned in EU; genotoxic carcinogen."
+  },
+  "E924b": {
+    "name": "Calcium bromate",
+    "type": "Improving agent",
+    "status": "Details from Wikipedia."
+  },
+  "E925": {
+    "name": "Chlorine",
+    "type": "Preservative, Bleach, Improving agent",
+    "status": "Details from Wikipedia."
+  },
+  "E926": {
+    "name": "Chlorine dioxide",
+    "type": "Preservative, Bleach",
+    "status": "Details from Wikipedia."
   },
   "E927a": {
     "name": "Azodicarbonamide",
-    "type": "Flour Treatment Agent",
-    "status": "BANNED in EU"
+    "type": "Improving agent",
+    "status": "Identified as a Substance of Very High Concern in EU."
   },
   "E927b": {
-    "name": "Carbamide (Urea)",
-    "type": "Stabilizer",
-    "status": ""
+    "name": "Carbamide (urea)",
+    "type": "Improving agent",
+    "status": "Approved in EU."
+  },
+  "E928": {
+    "name": "Benzoyl peroxide",
+    "type": "Improving agent, Bleach",
+    "status": "Details from Wikipedia."
+  },
+  "E929": {
+    "name": "Acetone peroxide",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E930": {
+    "name": "Calcium peroxide",
+    "type": "Improving agent, Bleach",
+    "status": "Details from Wikipedia."
   },
   "E938": {
     "name": "Argon",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Packaging gas",
+    "status": "Approved in EU."
   },
   "E939": {
     "name": "Helium",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Packaging gas",
+    "status": "Approved in EU."
+  },
+  "E940": {
+    "name": "Dichlorodifluoromethane",
+    "type": "Packaging gas",
+    "status": "Banned in all countries (Montreal Protocol)."
   },
   "E941": {
     "name": "Nitrogen",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Packaging gas, Propellant",
+    "status": "Approved in EU."
   },
   "E942": {
-    "name": "Nitrous Oxide",
-    "type": "Propellant Gas",
-    "status": ""
+    "name": "Nitrous oxide",
+    "type": "Propellant",
+    "status": "Approved in EU."
   },
   "E943a": {
     "name": "Butane",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Propellant",
+    "status": "Approved in EU."
   },
   "E943b": {
     "name": "Isobutane",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Propellant",
+    "status": "Approved in EU."
   },
   "E944": {
     "name": "Propane",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Propellant",
+    "status": "Approved in EU."
+  },
+  "E945": {
+    "name": "Chloropentafluoroethane",
+    "type": "Propellant",
+    "status": "Banned in all countries (Montreal Protocol)."
+  },
+  "E946": {
+    "name": "Octafluorocyclobutane",
+    "type": "Propellant",
+    "status": "Banned in all countries (Montreal Protocol)."
   },
   "E948": {
     "name": "Oxygen",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Packaging gas",
+    "status": "Approved in EU."
   },
   "E949": {
     "name": "Hydrogen",
-    "type": "Propellant Gas",
-    "status": ""
+    "type": "Packaging gas",
+    "status": "Approved in EU."
   },
   "E950": {
-    "name": "Acesulfame Potassium",
+    "name": "Acesulfame potassium",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E951": {
     "name": "Aspartame",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E952": {
-    "name": "Cyclamic Acid and its Salts",
+    "name": "Cyclamic acid and its sodium and calcium salts, also known as Cyclamate",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E953": {
-    "name": "Isomalt",
+    "name": "Isomalt, Isomaltitol",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E954": {
-    "name": "Saccharin and its Salts",
+    "name": "Saccharin and its sodium, potassium and calcium salts",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E955": {
-    "name": "Sucralose",
+    "name": "Sucralose (Trichlorogalactosucrose)",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
+  },
+  "E956": {
+    "name": "Alitame",
+    "type": "Sweetener",
+    "status": "Details from Wikipedia."
   },
   "E957": {
     "name": "Thaumatin",
-    "type": "Sweetener",
-    "status": ""
+    "type": "Sweetener, Flavour enhancer",
+    "status": "Approved in EU."
+  },
+  "E958": {
+    "name": "Glycyrrhizin",
+    "type": "Sweetener, Flavour enhancer",
+    "status": "Details from Wikipedia."
   },
   "E959": {
-    "name": "Neohesperidine DC",
-    "type": "Sweetener",
-    "status": ""
+    "name": "Neohesperidine dihydrochalcone",
+    "type": "Sweetener, Flavour enhancer",
+    "status": "Approved in EU."
   },
   "E960": {
-    "name": "Steviol Glycosides",
+    "name": "Steviol glycosides",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E961": {
     "name": "Neotame",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in 2010."
   },
   "E962": {
-    "name": "Aspartame-Acesulfame Salt",
+    "name": "Aspartame-acesulfame salt",
+    "type": "Sweetener, Stabiliser",
+    "status": "Approved in EU."
+  },
+  "E964": {
+    "name": "Polyglycitol syrup",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E965": {
     "name": "Maltitol",
-    "type": "Sweetener",
-    "status": ""
+    "type": "Sweetener, Stabiliser, Humectant",
+    "status": "Approved in EU."
   },
   "E966": {
     "name": "Lactitol",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E967": {
     "name": "Xylitol",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E968": {
     "name": "Erythritol",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E969": {
     "name": "Advantame",
     "type": "Sweetener",
-    "status": ""
+    "status": "Approved in EU."
   },
   "E999": {
-    "name": "Quillaia Extract",
-    "type": "Foaming Agent",
-    "status": ""
+    "name": "Quillaia extract",
+    "type": "Foaming agent",
+    "status": "Approved in EU."
+  },
+  "E1000": {
+    "name": "Cholic acid",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E1001": {
+    "name": "Choline salts",
+    "type": "Emulsifier",
+    "status": "Details from Wikipedia."
+  },
+  "E1100": {
+    "name": "Amylases",
+    "type": "Stabiliser, Flavour enhancer",
+    "status": "Details from Wikipedia."
   },
   "E1101": {
     "name": "Proteases",
-    "type": "Enzyme",
-    "status": ""
+    "type": "Stabiliser, Flavour enhancer",
+    "status": "Details from Wikipedia."
   },
   "E1102": {
-    "name": "Glucose Oxidase",
-    "type": "Enzyme",
-    "status": ""
+    "name": "Glucose oxidase",
+    "type": "Antioxidant",
+    "status": "Details from Wikipedia."
   },
   "E1103": {
     "name": "Invertase",
-    "type": "Enzyme",
-    "status": ""
+    "type": "Stabiliser",
+    "status": "Approved in EU."
   },
   "E1104": {
     "name": "Lipases",
-    "type": "Enzyme",
-    "status": ""
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E1105": {
     "name": "Lysozyme",
     "type": "Preservative",
-    "status": ""
+    "status": "Details from Wikipedia."
   },
   "E1200": {
     "name": "Polydextrose",
-    "type": "Thickener, Stabilizer",
-    "status": ""
+    "type": "Stabiliser, Thickening agent, Humectant, Carrier",
+    "status": "Approved in EU."
   },
   "E1201": {
     "name": "Polyvinylpyrrolidone",
-    "type": "Stabilizer",
-    "status": ""
+    "type": "Stabiliser",
+    "status": "Approved in EU."
   },
   "E1202": {
     "name": "Polyvinylpolypyrrolidone",
-    "type": "Stabilizer",
-    "status": ""
+    "type": "Carrier, Stabiliser",
+    "status": "Approved in EU."
   },
   "E1203": {
-    "name": "Polyvinyl Alcohol",
-    "type": "Stabilizer",
-    "status": ""
+    "name": "Polyvinyl alcohol",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in 2010."
   },
   "E1204": {
     "name": "Pullulan",
-    "type": "Thickener",
-    "status": ""
+    "type": "Details from Wikipedia.",
+    "status": "Approved in EU."
+  },
+  "E1400": {
+    "name": "Dextrin (Dextrins, roasted starch white and yellow)",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Details from Wikipedia."
+  },
+  "E1401": {
+    "name": "Modified starch (Acid-treated starch)",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Details from Wikipedia."
+  },
+  "E1402": {
+    "name": "Alkaline modified starch",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Details from Wikipedia."
+  },
+  "E1403": {
+    "name": "Bleached starch",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Details from Wikipedia."
   },
   "E1404": {
-    "name": "Oxidized Starch",
-    "type": "Thickener",
-    "status": ""
+    "name": "Oxidized starch",
+    "type": "Emulsifier, Thickening agent",
+    "status": "Approved in EU."
+  },
+  "E1405": {
+    "name": "Enzyme treated starch",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E1410": {
-    "name": "Monostarch Phosphate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Monostarch phosphate",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Approved in EU."
+  },
+  "E1411": {
+    "name": "Distarch glycerol",
+    "type": "Thickening agent, Emulsifier",
+    "status": "Details from Wikipedia."
   },
   "E1412": {
-    "name": "Distarch Phosphate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Distarch phosphate",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Approved in EU."
   },
   "E1413": {
-    "name": "Phosphated Distarch Phosphate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Phosphated distarch phosphate",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Approved in EU."
   },
   "E1414": {
-    "name": "Acetylated Distarch Phosphate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Acetylated distarch phosphate",
+    "type": "Emulsifier, Thickening agent",
+    "status": "Approved in EU."
   },
   "E1420": {
-    "name": "Acetylated Starch",
-    "type": "Thickener",
-    "status": ""
+    "name": "Starch acetate esterified with acetic anhydride",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Approved in EU."
+  },
+  "E1421": {
+    "name": "Starch acetate esterified with vinyl acetate",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Details from Wikipedia."
   },
   "E1422": {
-    "name": "Acetylated Distarch Adipate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Acetylated distarch adipate",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Approved in EU."
+  },
+  "E1423": {
+    "name": "Acetylated distarch glycerol",
+    "type": "Thickening agent",
+    "status": "Details from Wikipedia."
+  },
+  "E1430": {
+    "name": "Distarch glycerine",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Details from Wikipedia."
   },
   "E1440": {
-    "name": "Hydroxypropyl Starch",
-    "type": "Thickener",
-    "status": ""
+    "name": "Hydroxy propyl starch",
+    "type": "Emulsifier, Thickening agent",
+    "status": "Approved in EU."
+  },
+  "E1441": {
+    "name": "Hydroxy propyl distarch glycerine",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Details from Wikipedia."
   },
   "E1442": {
-    "name": "Hydroxypropyl Distarch Phosphate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Hydroxy propyl distarch phosphate",
+    "type": "Stabiliser, Thickening agent",
+    "status": "Approved in EU."
+  },
+  "E1443": {
+    "name": "Hydroxy propyl distarch glycerol",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E1450": {
-    "name": "Starch Sodium Octenyl Succinate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Starch sodium octenyl succinate",
+    "type": "Emulsifier, Stabiliser, Thickening agent",
+    "status": "Approved in EU."
   },
   "E1451": {
-    "name": "Acetylated Oxidized Starch",
-    "type": "Thickener",
-    "status": ""
+    "name": "Acetylated oxidised starch",
+    "type": "Emulsifier, Thickening agent",
+    "status": "Approved in EU."
   },
   "E1452": {
-    "name": "Starch Aluminium Octenyl Succinate",
-    "type": "Thickener",
-    "status": ""
+    "name": "Starch aluminium octenyl succinate",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in EU."
+  },
+  "E1501": {
+    "name": "Benzylated hydrocarbons",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E1502": {
+    "name": "Butane-1, 3-diol",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E1503": {
-    "name": "Castor Oil",
-    "type": "Stabilizer",
-    "status": ""
+    "name": "Castor oil",
+    "type": "Resolving agent",
+    "status": "Details from Wikipedia."
+  },
+  "E1504": {
+    "name": "Ethyl acetate",
+    "type": "Flavour solvent",
+    "status": "Details from Wikipedia."
   },
   "E1505": {
-    "name": "Triethyl Citrate",
-    "type": "Stabilizer",
-    "status": ""
+    "name": "Triethyl citrate",
+    "type": "Foam stabiliser",
+    "status": "Approved in EU."
+  },
+  "E1510": {
+    "name": "Ethanol",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
+  },
+  "E1516": {
+    "name": "Glyceryl monoacetate",
+    "type": "Flavour solvent",
+    "status": "Details from Wikipedia."
   },
   "E1517": {
-    "name": "Glyceryl Diacetate (Diacetin)",
-    "type": "Humectant",
-    "status": ""
+    "name": "Glyceryl diacetate or diacetin",
+    "type": "Flavour solvent",
+    "status": "Details from Wikipedia."
   },
   "E1518": {
-    "name": "Glyceryl Triacetate (Triacetin)",
-    "type": "Humectant",
-    "status": ""
+    "name": "Glyceryl triacetate or triacetin",
+    "type": "Humectant, Flavour solvent",
+    "status": "Approved in EU."
   },
   "E1519": {
-    "name": "Benzyl Alcohol",
-    "type": "Preservative",
-    "status": ""
+    "name": "Benzyl alcohol",
+    "type": "Details from Wikipedia.",
+    "status": "Details from Wikipedia."
   },
   "E1520": {
-    "name": "Propylene Glycol",
-    "type": "Humectant",
-    "status": ""
+    "name": "Propylene glycol",
+    "type": "Humectant, Flavour solvent",
+    "status": "Approved in EU."
   },
   "E1521": {
-    "name": "Polyethylene Glycol",
-    "type": "Stabilizer",
-    "status": ""
+    "name": "Polyethylene glycol 8000",
+    "type": "Details from Wikipedia.",
+    "status": "Approved in 2010."
   },
-  "Acesulfame K": {
-    "name": "Acesulfame K",
-    "type": "Sweetener",
-    "status": ""
-  },
-  "Alitame": {
-    "name": "Alitame",
-    "type": "Sweetener",
-    "status": "Not authorized in EU"
-  },
-  "Amaranth (FD&C Red No. 2)": {
-    "name": "Amaranth (FD&C Red No. 2)",
-    "type": "Color",
-    "status": "Not authorized in EU"
-  },
-  "Beta-Apo-8'-Carotenal": {
-    "name": "Beta-Apo-8'-Carotenal",
-    "type": "Color",
-    "status": ""
-  },
-  "Brilliant Blue FCF (FD&C Blue No. 1)": {
-    "name": "Brilliant Blue FCF (FD&C Blue No. 1)",
-    "type": "Color",
-    "status": ""
-  },
-  "Calcium Benzoate": {
-    "name": "Calcium Benzoate",
-    "type": "Preservative",
-    "status": ""
-  },
-  "Canthaxanthin": {
-    "name": "Canthaxanthin",
-    "type": "Color",
-    "status": "(used in animal feed, restricted in food)"
-  },
-  "Caramel Color (Class I-IV)": {
-    "name": "Caramel Color (Class I-IV)",
-    "type": "Color",
-    "status": ""
-  },
-  "Diacetyltartaric Acid Esters of Mono- and Diglycerides": {
-    "name": "Diacetyltartaric Acid Esters of Mono- and Diglycerides",
-    "type": "Emulsifier",
-    "status": ""
-  },
-  "Erythrosine (FD&C Red No. 3)": {
-    "name": "Erythrosine (FD&C Red No. 3)",
-    "type": "Color",
-    "status": "(limited use, E127)"
-  },
-  "Fast Green FCF (FD&C Green No. 3)": {
-    "name": "Fast Green FCF (FD&C Green No. 3)",
-    "type": "Color",
-    "status": "Not authorized in EU"
-  },
-  "High-Fructose Corn Syrup (HFCS)": {
-    "name": "High-Fructose Corn Syrup (HFCS)",
-    "type": "Sweetener",
-    "status": ""
-  },
-  "Indigotine (FD&C Blue No. 2)": {
-    "name": "Indigotine (FD&C Blue No. 2)",
-    "type": "Color",
-    "status": ""
-  },
-  "Potassium Bisulfate": {
-    "name": "Potassium Bisulfate",
-    "type": "Preservative",
-    "status": ""
-  },
-  "Potassium Sorbate": {
-    "name": "Potassium Sorbate",
-    "type": "Preservative",
-    "status": ""
-  },
-  "Red 40 (Allura Red)": {
-    "name": "Red 40 (Allura Red)",
-    "type": "Color",
-    "status": ""
-  },
-  "Sodium Benzoate": {
-    "name": "Sodium Benzoate",
-    "type": "Preservative",
-    "status": ""
-  },
-  "Sorbic Acid": {
-    "name": "Sorbic Acid",
-    "type": "Preservative",
-    "status": ""
-  },
-  "Yellow 5 (Tartrazine)": {
-    "name": "Yellow 5 (Tartrazine)",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
-  },
-  "Yellow 6 (Sunset Yellow)": {
-    "name": "Yellow 6 (Sunset Yellow)",
-    "type": "Color",
-    "status": "(requires warning for potential effects on children)"
+  "E1525": {
+    "name": "Hydroxyethyl cellulose",
+    "type": "Thickening agent",
+    "status": "Details from Wikipedia."
   }
 }
