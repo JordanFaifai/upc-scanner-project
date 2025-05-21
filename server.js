@@ -28,7 +28,14 @@ app.use(cors()); // <--- ADD THIS LINE - PLACE IT AFTER app = express(); and bef
 
 // API endpoint to fetch ingredients based on UPC
 // When your frontend asks for /api/ingredients/12345, this code runs
+// API endpoint to fetch ingredients based on UPC
+// When your frontend asks for /api/ingredients/12345, this code runs
+// API endpoint to fetch ingredients based on UPC
+// When your frontend asks for /api/ingredients/12345, this code runs
 app.get('/api/ingredients/:upc', async (req, res) => {
+    // THIS IS THE NEW LOG LINE
+    console.log(`[SERVER] Incoming request to /api/ingredients/${req.params.upc}`);
+
     const upc = req.params.upc;
     const OF_API_URL = `https://world.openfoodfacts.org/api/v2/product/${upc}.json`;
 
@@ -43,6 +50,7 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             return res.status(response.status).json({ message: `Failed to fetch product data from Open Food Facts: ${response.statusText}` });
         }
 
+        // THESE LINES MUST BE INSIDE THE TRY BLOCK
         const data = await response.json();
         console.log(`[SERVER] Received data for UPC ${upc}. Product found: ${!!data.product}`);
 
@@ -53,11 +61,41 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 
         const product = data.product;
 
-        // ... (rest of your product processing logic, which looks fine) ...
+        // Start of your product processing logic (already looks fine)
+        const ingredients = product.ingredients_text_en || product.ingredients_text || '';
+        const additives = product.additives_tags ? product.additives_tags.map(tag => tag.replace('en:', '')) : [];
+        const nutrientLevels = product.nutrient_levels || {};
+        const novaGroup = product.nova_group;
+
+        const processedAdditives = additives.map(additive => {
+            const detail = additiveMap[additive.toLowerCase()];
+            return {
+                code: additive,
+                name: detail ? detail.name : 'Unknown',
+                hazard_level: detail ? detail.hazard_level : 'Unknown',
+                description: detail ? detail.description : 'No detailed description available.'
+            };
+        });
+
+        const simplifiedProduct = {
+            productName: product.product_name || 'N/A',
+            imageUrl: product.image_url || 'N/A',
+            ingredients: ingredients,
+            additives: processedAdditives,
+            allergens: product.allergens_from_ingredients || 'N/A',
+            nutritionalInfo: {
+                sugar: nutrientLevels.sugars || 'N/A',
+                fat: nutrientLevels.fat || 'N/A',
+                'saturated-fat': nutrientLevels['saturated-fat'] || 'N/A',
+                salt: nutrientLevels.salt || 'N/A'
+            },
+            novaGroup: novaGroup ? String(novaGroup) : 'N/A' // Convert to string
+        };
+        // End of product processing logic
 
         res.json(simplifiedProduct); // This will send the data to your frontend
 
-    } catch (error) {
+    } catch (error) { // This is the single catch block for the entire try above
         console.error('[SERVER] Caught server error fetching product data:', error);
         res.status(500).json({ message: 'Internal server error fetching product data. Please check server logs.' });
     }
