@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const upcInput = document.getElementById('upcInput');
     const fetchUpcBtn = document.getElementById('fetchUpcBtn');
     const productInfoDiv = document.getElementById('productInfo');
-    const clearResultsBtn = document = document.getElementById('clearResultsBtn');
+    const clearResultsBtn = document.getElementById('clearResultsBtn');
     const manualScanSection = document.getElementById('manualScanSection');
     const toggleManualScanBtn = document.getElementById('toggleManualScanBtn');
 
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // --- Additives (Collapsible) ---
+        // --- Additives (Collapsible and now Scrollable) ---
         if (product.additives && product.additives.length > 0) {
             html += `
                 <div class="section-card">
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <h2>Additives <span class="arrow">▼</span></h2>
                     </button>
                     <div class="accordion-content">
-                        <ul class="additive-list">
+                        <div class="additive-list-container"> <ul class="additive-list">
             `;
             product.additives.forEach(add => {
                 let statusText = '';
@@ -204,19 +204,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 html += `
-                            <li>
-                                <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
-                                <br>
-                                <small>
-                                    Type: ${add.type || 'N/A'}
-                                    ${statusText ? ` | Status: <span class="${statusClass}">${statusText}</span>` : ''}
-                                </small>
-                            </li>
+                                <li>
+                                    <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
+                                    <br>
+                                    <small>
+                                        Type: ${add.type || 'N/A'}
+                                        ${statusText ? ` | Status: <span class="${statusClass}">${statusText}</span>` : ''}
+                                    </small>
+                                </li>
                 `;
             });
             html += `
-                        </ul>
-                    </div>
+                            </ul>
+                        </div> </div>
                 </div>
             `;
         } else {
