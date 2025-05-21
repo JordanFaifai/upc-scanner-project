@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <strong>${product.novaExplanation || 'No detailed NOVA group explanation available.'}</strong>
                 </p>
                 <p class="nova-description">
-                    <a href="https://en.wikipedia.org/wiki/NOVA_classification" target="_blank" class="external-link" title="Learn more about NOVA classification">
+                    <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" title="Learn more about NOVA classification">
                         Learn more about NOVA food classification
                     </a>
                 </p>
