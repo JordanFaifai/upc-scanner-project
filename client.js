@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
             clearResultsBtn.style.display = 'none'; // Hide clear button until new results show
             
             try {
-const BACKEND_URL = 'https://upc-scanner-project.onrender.com'; // <--- REPLACE THIS WITH YOUR ACTUAL BACKEND URL
-                const response = await fetch(`/api/ingredients/${upc}`);
+const BACKEND_URL = 'https://upc-scanner-api.onrender.com'; // <--- CORRECT BACKEND URL!
+                const response = await fetch(`<span class="math-inline">\{BACKEND\_URL\}/api/ingredients/</span>{upc}`); // <--- Use the absolute URL!
                 const data = await response.json(); // 'data' now directly contains the product object (e.g., {name: "...", ingredients: "...", ...})
 
                 if (!response.ok) {
