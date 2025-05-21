@@ -9,14 +9,99 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearResultsBtn = document.getElementById('clearResultsBtn');
     const manualScanSection = document.getElementById('manualScanSection');
     const toggleManualScanBtn = document.getElementById('toggleManualScanBtn');
+    const scanHistorySection = document.getElementById('scanHistorySection'); // New: History section
+    const scanHistoryList = document.getElementById('scanHistoryList');       // New: History list
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');       // New: Clear history button
 
     let isScannerRunning = false;
+    const MAX_HISTORY_ITEMS = 10; // Limit the number of items in history
 
     // Helper function to display messages
     function displayMessage(message, type = "info") {
         scannerMessage.textContent = message;
         scannerMessage.className = `message ${type}`;
     }
+
+    // --- Scan History Functions ---
+    function getScanHistory() {
+        try {
+            const history = JSON.parse(localStorage.getItem('scanHistory')) || [];
+            return history;
+        } catch (e) {
+            console.error("Error parsing scan history from localStorage:", e);
+            return [];
+        }
+    }
+
+    function saveScanToHistory(product) {
+        let history = getScanHistory();
+
+        // Remove existing entry for this UPC if it exists (to move it to top)
+        history = history.filter(item => item.upc !== product.upc);
+
+        // Add new product to the beginning of the array
+        history.unshift({
+            upc: product.upc,
+            name: product.name,
+            image: product.image,
+            timestamp: new Date().toISOString()
+        });
+
+        // Trim history to MAX_HISTORY_ITEMS
+        if (history.length > MAX_HISTORY_ITEMS) {
+            history = history.slice(0, MAX_HISTORY_ITEMS);
+        }
+
+        try {
+            localStorage.setItem('scanHistory', JSON.stringify(history));
+            renderScanHistory(); // Re-render history after saving
+        } catch (e) {
+            console.error("Error saving scan history to localStorage:", e);
+            displayMessage("Could not save scan to history (storage full?).", "warning");
+        }
+    }
+
+    function renderScanHistory() {
+        const history = getScanHistory();
+        scanHistoryList.innerHTML = ''; // Clear current list
+
+        if (history.length === 0) {
+            scanHistoryList.innerHTML = '<p class="text-center text-gray-500">No recent scans yet.</p>';
+            clearHistoryBtn.style.display = 'none';
+            return;
+        }
+
+        history.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'scan-history-item';
+            li.innerHTML = `
+                ${item.image ? `<img src="${item.image}" alt="${item.name}" class="history-item-image">` : ''}
+                <div class="history-item-details">
+                    <span class="history-item-name">${item.name}</span>
+                    <span class="history-item-upc">${item.upc}</span>
+                </div>
+            `;
+            li.addEventListener('click', () => {
+                upcInput.value = item.upc;
+                fetchUpcBtn.click();
+            });
+            scanHistoryList.appendChild(li);
+        });
+        clearHistoryBtn.style.display = 'block';
+    }
+
+    function clearScanHistory() {
+        if (confirm('Are you sure you want to clear your scan history?')) { // Using confirm for now, will replace with custom modal later
+            localStorage.removeItem('scanHistory');
+            renderScanHistory();
+            displayMessage('Scan history cleared.', 'info');
+        }
+    }
+
+    // Initial render of history when page loads
+    renderScanHistory();
+    clearHistoryBtn.addEventListener('click', clearScanHistory);
+
 
     // Toggle Manual Scan Section
     toggleManualScanBtn.addEventListener('click', function() {
@@ -34,9 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const upc = upcInput.value.trim();
         if (upc) {
             displayMessage('Fetching product information...', 'info');
-            // Clear previous results to prevent old data from showing while new is loading
             productInfoDiv.innerHTML = '<p>Loading product details...</p>';
-            clearResultsBtn.style.display = 'none'; // Hide clear button until new results show
+            clearResultsBtn.style.display = 'none';
 
             try {
                 const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com';
@@ -72,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayProductInfo(data);
                 displayMessage('Product information fetched successfully.', 'success');
                 clearResultsBtn.style.display = 'block';
+                saveScanToHistory(data); // NEW: Save product to history after successful fetch
 
             } catch (error) {
                 console.error('Error:', error);
@@ -142,16 +227,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayProductInfo(product) {
         let html = '';
 
-        // Determine if we have serving size data
         const hasServingData = product.serving_quantity && product.serving_quantity > 0;
         const servingSizeText = hasServingData ? `per serving (${product.serving_size || product.serving_quantity + 'g'})` : 'per 100g/ml';
 
-        // Function to calculate value per serving
         const getPerServingValue = (valuePer100g) => {
             if (!hasServingData || valuePer100g === null || isNaN(valuePer100g)) {
-                return valuePer100g; // Return original if no serving data or invalid value
+                return valuePer100g;
             }
-            return ((parseFloat(valuePer100g) / 100) * product.serving_quantity).toFixed(1); // Calculate and fix to 1 decimal place
+            return ((parseFloat(valuePer100g) / 100) * product.serving_quantity).toFixed(1);
         };
 
         // --- Product Header (Name and Image) ---

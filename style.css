@@ -1,4 +1,4 @@
-/* style.css - Health-Oriented Theme with Enhanced Cards and Nutrition Scale */
+/* style.css - Health-Oriented Theme with Enhanced Cards, Nutrition Scale, and Scan History */
 
 /* --- Base Body and General Page Styles --- */
 body {
@@ -95,15 +95,15 @@ header p {
 #manualScanSection button:hover,
 #toggleManualScanBtn:hover {
     background-image: linear-gradient(to right, #43A047, #5cb85c); /* Darker green on hover */
-    transform: translateY(-4px); /* Changed: More pronounced lift for buttons */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Changed: Larger, more diffuse shadow for buttons */
+    transform: translateY(-4px); /* More pronounced lift for buttons */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Larger, more diffuse shadow for buttons */
 }
 
-#stopScannerBtn, #clearResultsBtn {
+#stopScannerBtn, #clearResultsBtn, #clearHistoryBtn { /* Added #clearHistoryBtn */
     background-image: linear-gradient(to right, #e74c3c, #ef5350); /* Red gradient for destructive actions */
 }
 
-#stopScannerBtn:hover, #clearResultsBtn:hover {
+#stopScannerBtn:hover, #clearResultsBtn:hover, #clearHistoryBtn:hover { /* Added #clearHistoryBtn */
     background-image: linear-gradient(to right, #c0392b, #d32f2f);
 }
 
@@ -118,18 +118,18 @@ header p {
 /* --- Scanner Container and Message Styles --- */
 #scanner-container {
     width: 100%;
-    max-width: 350px; /* Adjusted: Even smaller max-width for camera */
-    height: 200px; /* Adjusted: Even smaller height for camera */
-    background-color: #f0f0f0; /* Light grey background */
-    border: 2px solid #a0d4a0; /* Soft green border */
+    max-width: 350px;
+    height: 200px;
+    background-color: #f0f0f0;
+    border: 2px solid #a0d4a0;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     position: relative;
-    margin: 20px auto; /* Centered with vertical margin */
+    margin: 20px auto;
     border-radius: 10px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.05); /* Inner shadow for depth */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
 }
 
 #scanner-container video {
@@ -150,68 +150,64 @@ header p {
     padding: 12px 20px;
     margin-bottom: 20px;
     border-radius: 6px;
-    font-weight: 600; /* Slightly bolder */
+    font-weight: 600;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .message.info {
-    background-color: #e0f2f7; /* Light blue */
-    color: #2196f3; /* Blue text */
+    background-color: #e0f2f7;
+    color: #2196f3;
     border: 1px solid #b3e5fc;
 }
 
 .message.success {
-    background-color: #e8f5e9; /* Light green */
-    color: #4CAF50; /* Green text */
+    background-color: #e8f5e9;
+    color: #4CAF50;
     border: 1px solid #c8e6c9;
 }
 
 .message.error {
-    background-color: #ffebee; /* Light red */
-    color: #f44336; /* Red text */
+    background-color: #ffebee;
+    color: #f44336;
     border: 1px solid #ef9a9a;
 }
 
 .message.warning {
-    background-color: #fffde7; /* Light yellow */
-    color: #FFC107; /* Orange text */
+    background-color: #fffde7;
+    color: #FFC107;
     border: 1px solid #fff59d;
 }
 
 /* --- Manual Scan Section Styles --- */
 #manualScanSection {
-    /* Inherits section-card styles */
     text-align: center;
-    padding: 25px; /* Add padding back for this section */
+    padding: 25px;
 }
 
 #manualScanSection h2 {
-    /* Inherits section-card h2 styles */
-    border-bottom: 2px solid #e9f0f1; /* Lighter separator */
+    border-bottom: 2px solid #e9f0f1;
     padding-bottom: 10px;
 }
 
 #manualScanSection input[type="text"] {
     width: calc(100% - 22px);
-    padding: 12px; /* More padding */
+    padding: 12px;
     margin-bottom: 15px;
-    border: 1px solid #dcdcdc; /* Lighter border */
+    border: 1px solid #dcdcdc;
     border-radius: 6px;
     font-size: 1em;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Inner shadow */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
 /* --- Product Info Display Styles --- */
 #productInfo {
-    /* Inherits section-card styles */
     text-align: left;
-    padding: 25px; /* Add padding back for this section */
+    padding: 25px;
 }
 
 #productInfo h2, #productInfo h3 {
-    /* Inherits section-card h2 styles */
-    border-bottom: 1px solid #f0f0f0; /* Very light separator */
+    border-bottom: 1px solid #f0f0f0;
     padding-bottom: 8px;
 }
 
@@ -230,25 +226,24 @@ header p {
 }
 
 /* Additive List Specific Styles */
-/* Container for the scrollable additive list */
 .additive-list-container {
-    max-height: 250px; /* Set a maximum height for the scrollable area */
-    overflow-y: auto; /* Enable vertical scrolling when content exceeds max-height */
-    border: 1px solid #e0e0e0; /* Optional: Add a subtle border to the scrollable area */
-    border-radius: 6px; /* Match card/button rounded corners */
-    padding-right: 10px; /* Add some padding on the right to prevent scrollbar from touching content */
-    margin-bottom: 15px; /* Space below the scrollable container */
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding-right: 10px;
+    margin-bottom: 15px;
 }
 
 .additive-list {
     list-style: none;
     padding: 0;
-    margin-top: 0; /* Remove top margin as container handles spacing */
-    margin-bottom: 0; /* Remove bottom margin */
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .additive-list li {
-    background-color: #fcfcfc; /* Even lighter background for list items */
+    background-color: #fcfcfc;
     border: 1px solid #f0f0f0;
     border-radius: 6px;
     padding: 12px 18px;
@@ -264,7 +259,7 @@ header p {
 }
 
 .additive-list li:last-child {
-    margin-bottom: 0; /* Ensure no extra margin at the very bottom of the list */
+    margin-bottom: 0;
 }
 
 .additive-list li strong {
@@ -436,7 +431,8 @@ header p {
 /* This is important for the accordion headers to span full width and have rounded corners */
 .section-card.controls, /* Apply padding to specific section cards that don't have accordions */
 .section-card#manualScanSection,
-.section-card#productInfo {
+.section-card#productInfo,
+.section-card#scanHistorySection { /* NEW: Added scanHistorySection */
     padding: 25px; /* Re-apply padding to these specific sections */
     border-radius: 12px; /* Ensure consistent border-radius */
 }
@@ -458,7 +454,7 @@ header p {
     text-decoration: underline;
 }
 
-/* --- NEW: Nutrition Scale Colors --- */
+/* --- Nutrition Scale Colors --- */
 .nutrient-low {
     color: #4CAF50; /* Green for low/good (e.g., low sugar, high fiber) */
     font-weight: bold;
@@ -477,6 +473,69 @@ header p {
 .nutrient-good { /* Explicitly for nutrients where more is good (protein, fiber) */
     color: #4CAF50; /* Green */
     font-weight: bold;
+}
+
+/* --- NEW: Scan History Specific Styles --- */
+.scan-history-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+    max-height: 300px; /* Make history list scrollable if it gets too long */
+    overflow-y: auto;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding-right: 5px; /* Space for scrollbar */
+}
+
+.scan-history-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background-color: #fcfcfc;
+    border: 1px solid #e9e9e9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scan-history-item:hover {
+    background-color: #f0f0f0;
+    transform: translateX(5px); /* Slight slide effect on hover */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.history-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 15px;
+    border: 1px solid #eee;
+}
+
+.history-item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-item-name {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 1em;
+}
+
+.history-item-upc {
+    font-size: 0.85em;
+    color: #7f8c8d;
+    margin-top: 3px;
+}
+
+.scan-history-list p.text-center { /* Style for "No recent scans" message */
+    color: #7f8c8d;
+    text-align: center;
+    padding: 20px;
 }
 
 
@@ -499,7 +558,8 @@ header p {
     }
     .controls button,
     #manualScanSection button,
-    #toggleManualScanBtn {
+    #toggleManualScanBtn,
+    #clearHistoryBtn { /* Added clearHistoryBtn */
         padding: 10px 20px;
         font-size: 0.95em;
     }
@@ -517,6 +577,15 @@ header p {
     .nutrition-grid p {
         flex: 1 1 100%;
     }
+    .scan-history-item {
+        flex-direction: column; /* Stack image and details on very small screens */
+        align-items: center;
+        text-align: center;
+    }
+    .history-item-image {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -528,7 +597,8 @@ header p {
     }
     .controls button,
     #manualScanSection button,
-    #toggleManualScanBtn {
+    #toggleManualScanBtn,
+    #clearHistoryBtn { /* Added clearHistoryBtn */
         font-size: 0.9em;
         padding: 8px 15px;
     }
