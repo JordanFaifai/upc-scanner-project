@@ -54,7 +54,8 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 
         // --- Extract and Format Product Data ---
         const productName = productData.product_name || productData.product_name_en || 'Unknown Product';
-        const ingredientsText = productData.ingredients_text || productData.ingredients_text_en || 'No ingredients listed.';
+        // CHANGED: Prioritize ingredients_text_en over ingredients_text
+        const ingredientsText = productData.ingredients_text_en || productData.ingredients_text || 'No ingredients listed.';
         const imageUrl = productData.image_front_url || productData.image_url || null;
         const allergens = productData.allergens_from_ingredients ?
             productData.allergens_from_ingredients.split(',').map(a => a.trim().replace(/^en:/, '').replace(/-/g, ' ')).filter(Boolean) : [];
@@ -80,7 +81,6 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             }
         }
 
-        // NEW: Extract serving size and quantity
         const servingSize = productData.serving_size || null;
         const servingQuantity = productData.serving_quantity ? parseFloat(productData.serving_quantity) : null;
 
@@ -118,8 +118,8 @@ app.get('/api/ingredients/:upc', async (req, res) => {
             allergens: allergens,
             additives: additives,
             nutrition_facts: nutritionFacts,
-            serving_size: servingSize,       // NEW: Include serving size
-            serving_quantity: servingQuantity, // NEW: Include serving quantity (e.g., 38 for 38g)
+            serving_size: servingSize,
+            serving_quantity: servingQuantity,
             source: 'Open Food Facts'
         };
 
