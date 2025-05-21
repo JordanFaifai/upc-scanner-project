@@ -120,8 +120,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p>
                     <strong>${product.novaExplanation || 'No detailed NOVA group explanation available.'}</strong>
                 </p>
+                <p class="nova-description">
+                    <a href="https://en.wikipedia.org/wiki/NOVA_classification" target="_blank" class="external-link" title="Learn more about NOVA classification">
+                        Learn more about NOVA food classification
+                    </a>
+                </p>
+                <p class="nova-source-note">
+                    <small>
+                        Classification provided by Open Food Facts. View product details on
+                        <a href="https://world.openfoodfacts.org/product/${product.upc}" target="_blank" class="external-link">Open Food Facts</a>.
+                    </small>
+                </p>
+            </div>
         `;
 
+        // Add a note about additives if they are present (moved after NOVA source note for better flow)
         if (product.additives && product.additives.length > 0) {
             const additiveCount = product.additives.length;
             let additiveNote = '';
@@ -135,14 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `<p class="additive-nova-note">${additiveNote}</p>`;
         }
 
-        html += `
-                <p class="nova-description">
-                    <a href="https://en.wikipedia.org/wiki/NOVA_classification" target="_blank" class="external-link" title="Learn more about NOVA classification">
-                        Learn more about NOVA food classification
-                    </a>
-                </p>
-            </div>
-        `;
 
         // --- Ingredients (Collapsible) ---
         html += `
