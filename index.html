@@ -48,6 +48,39 @@
                 </ul>
             <button id="clearHistoryBtn" style="display: none;">Clear History</button>
         </section>
+
+        <section id="dietaryPreferencesSection" class="section-card">
+            <button class="accordion-header">
+                <h2>Dietary Preferences <span class="arrow">▼</span></h2>
+            </button>
+            <div class="accordion-content">
+                <div class="preference-group">
+                    <h3>Dietary Filters:</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="prefVegetarian" value="vegetarian">
+                        <label for="prefVegetarian">Vegetarian</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="prefVegan" value="vegan">
+                        <label for="prefVegan">Vegan</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="prefGlutenFree" value="gluten-free">
+                        <label for="prefGlutenFree">Gluten-Free</label>
+                    </div>
+                </div>
+
+                <div class="preference-group">
+                    <h3>Allergens to Avoid (comma-separated):</h3>
+                    <input type="text" id="allergensToAvoid" placeholder="e.g., milk, nuts, soy">
+                    <p class="text-xs text-gray-500 mt-1">Enter common allergens you wish to avoid, separated by commas.</p>
+                </div>
+
+                <button id="savePreferencesBtn" class="save-button">Save Preferences</button>
+                <p id="preferenceMessage" class="message info" style="display: none;"></p>
+            </div>
+        </section>
+
     </main>
 
     <script src="client.js"></script>

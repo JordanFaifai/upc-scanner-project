@@ -9,18 +9,66 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearResultsBtn = document.getElementById('clearResultsBtn');
     const manualScanSection = document.getElementById('manualScanSection');
     const toggleManualScanBtn = document.getElementById('toggleManualScanBtn');
-    const scanHistorySection = document.getElementById('scanHistorySection'); // New: History section
-    const scanHistoryList = document.getElementById('scanHistoryList');       // New: History list
-    const clearHistoryBtn = document.getElementById('clearHistoryBtn');       // New: Clear history button
+    const scanHistorySection = document.getElementById('scanHistorySection');
+    const scanHistoryList = document.getElementById('scanHistoryList');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+    // NEW: Dietary Preferences elements
+    const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
+    const prefVegetarian = document.getElementById('prefVegetarian');
+    const prefVegan = document.getElementById('prefVegan');
+    const prefGlutenFree = document.getElementById('prefGlutenFree');
+    const allergensToAvoid = document.getElementById('allergensToAvoid');
+    const savePreferencesBtn = document.getElementById('savePreferencesBtn');
+    const preferenceMessage = document.getElementById('preferenceMessage');
 
     let isScannerRunning = false;
-    const MAX_HISTORY_ITEMS = 10; // Limit the number of items in history
+    const MAX_HISTORY_ITEMS = 10;
 
     // Helper function to display messages
     function displayMessage(message, type = "info") {
         scannerMessage.textContent = message;
         scannerMessage.className = `message ${type}`;
     }
+
+    // --- Dietary Preferences Functions ---
+    function loadPreferences() {
+        try {
+            const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
+            prefVegetarian.checked = preferences.vegetarian || false;
+            prefVegan.checked = preferences.vegan || false;
+            prefGlutenFree.checked = preferences.glutenFree || false;
+            allergensToAvoid.value = preferences.allergens ? preferences.allergens.join(', ') : '';
+        } catch (e) {
+            console.error("Error loading preferences from localStorage:", e);
+        }
+    }
+
+    function savePreferences() {
+        const preferences = {
+            vegetarian: prefVegetarian.checked,
+            vegan: prefVegan.checked,
+            glutenFree: prefGlutenFree.checked,
+            allergens: allergensToAvoid.value.split(',').map(a => a.trim().toLowerCase()).filter(Boolean)
+        };
+        try {
+            localStorage.setItem('dietaryPreferences', JSON.stringify(preferences));
+            preferenceMessage.textContent = 'Preferences saved!';
+            preferenceMessage.className = 'message success';
+            preferenceMessage.style.display = 'block';
+            setTimeout(() => { preferenceMessage.style.display = 'none'; }, 3000);
+        } catch (e) {
+            console.error("Error saving preferences to localStorage:", e);
+            preferenceMessage.textContent = 'Error saving preferences.';
+            preferenceMessage.className = 'message error';
+            preferenceMessage.style.display = 'block';
+        }
+    }
+
+    // Initial load of preferences
+    loadPreferences();
+    savePreferencesBtn.addEventListener('click', savePreferences);
+
 
     // --- Scan History Functions ---
     function getScanHistory() {
@@ -35,26 +83,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function saveScanToHistory(product) {
         let history = getScanHistory();
-
-        // Remove existing entry for this UPC if it exists (to move it to top)
         history = history.filter(item => item.upc !== product.upc);
-
-        // Add new product to the beginning of the array
         history.unshift({
             upc: product.upc,
             name: product.name,
             image: product.image,
             timestamp: new Date().toISOString()
         });
-
-        // Trim history to MAX_HISTORY_ITEMS
         if (history.length > MAX_HISTORY_ITEMS) {
             history = history.slice(0, MAX_HISTORY_ITEMS);
         }
-
         try {
             localStorage.setItem('scanHistory', JSON.stringify(history));
-            renderScanHistory(); // Re-render history after saving
+            renderScanHistory();
         } catch (e) {
             console.error("Error saving scan history to localStorage:", e);
             displayMessage("Could not save scan to history (storage full?).", "warning");
@@ -63,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderScanHistory() {
         const history = getScanHistory();
-        scanHistoryList.innerHTML = ''; // Clear current list
+        scanHistoryList.innerHTML = '';
 
         if (history.length === 0) {
             scanHistoryList.innerHTML = '<p class="text-center text-gray-500">No recent scans yet.</p>';
@@ -91,16 +132,56 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearScanHistory() {
-        if (confirm('Are you sure you want to clear your scan history?')) { // Using confirm for now, will replace with custom modal later
+        // Using a custom modal for confirmation instead of browser's confirm()
+        showCustomConfirm('Are you sure you want to clear your scan history?', () => {
             localStorage.removeItem('scanHistory');
             renderScanHistory();
             displayMessage('Scan history cleared.', 'info');
-        }
+        });
     }
 
     // Initial render of history when page loads
     renderScanHistory();
     clearHistoryBtn.addEventListener('click', clearScanHistory);
+
+
+    // --- Custom Confirmation Modal (Replaces alert/confirm) ---
+    function showCustomConfirm(message, onConfirm) {
+        let modal = document.getElementById('customConfirmModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'customConfirmModal';
+            modal.className = 'custom-modal';
+            modal.innerHTML = `
+                <div class="custom-modal-content">
+                    <p id="customConfirmMessage"></p>
+                    <div class="custom-modal-buttons">
+                        <button id="customConfirmYes" class="modal-button-yes">Yes</button>
+                        <button id="customConfirmNo" class="modal-button-no">No</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        document.getElementById('customConfirmMessage').textContent = message;
+        modal.style.display = 'flex'; // Show the modal
+
+        const confirmYes = document.getElementById('customConfirmYes');
+        const confirmNo = document.getElementById('customConfirmNo');
+
+        // Clear previous listeners to prevent duplicates
+        confirmYes.onclick = null;
+        confirmNo.onclick = null;
+
+        confirmYes.onclick = () => {
+            modal.style.display = 'none';
+            onConfirm();
+        };
+        confirmNo.onclick = () => {
+            modal.style.display = 'none';
+        };
+    }
 
 
     // Toggle Manual Scan Section
@@ -156,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayProductInfo(data);
                 displayMessage('Product information fetched successfully.', 'success');
                 clearResultsBtn.style.display = 'block';
-                saveScanToHistory(data); // NEW: Save product to history after successful fetch
+                saveScanToHistory(data);
 
             } catch (error) {
                 console.error('Error:', error);
@@ -237,6 +318,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return ((parseFloat(valuePer100g) / 100) * product.serving_quantity).toFixed(1);
         };
 
+        // Get current preferences for highlighting
+        const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
+        const allergensToAvoidList = preferences.allergens || [];
+
         // --- Product Header (Name and Image) ---
         html += `
             <div class="product-header">
@@ -244,6 +329,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 ${product.image ? `<img src="${product.image}" alt="${product.name || 'Product Image'}" class="product-image">` : ''}
             </div>
         `;
+
+        // --- Dietary Preference Highlights ---
+        let preferenceHighlights = [];
+
+        // Check for Vegetarian/Vegan
+        if (preferences.vegetarian && product.ingredients && !product.ingredients.toLowerCase().includes('meat') && !product.ingredients.toLowerCase().includes('fish')) {
+            preferenceHighlights.push('<span class="diet-badge diet-vegetarian">Vegetarian Friendly</span>');
+        }
+        if (preferences.vegan && product.ingredients && !product.ingredients.toLowerCase().includes('meat') && !product.ingredients.toLowerCase().includes('fish') && !product.ingredients.toLowerCase().includes('dairy') && !product.ingredients.toLowerCase().includes('egg')) {
+            preferenceHighlights.push('<span class="diet-badge diet-vegan">Vegan Friendly</span>');
+        }
+        // Basic Gluten-Free check (needs more robust ingredient parsing for accuracy)
+        if (preferences.glutenFree && product.ingredients && !product.ingredients.toLowerCase().includes('wheat') && !product.ingredients.toLowerCase().includes('barley') && !product.ingredients.toLowerCase().includes('rye')) {
+             preferenceHighlights.push('<span class="diet-badge diet-gluten-free">Potentially Gluten-Free</span>');
+        }
+
+
+        // Check for Allergens to Avoid
+        let foundAvoidedAllergens = [];
+        if (allergensToAvoidList.length > 0 && product.allergens && product.allergens.length > 0) {
+            product.allergens.forEach(allergen => {
+                const cleanedAllergen = allergen.toLowerCase().replace(/en:|from:/g, '').trim();
+                if (allergensToAvoidList.includes(cleanedAllergen)) {
+                    foundAvoidedAllergens.push(allergen.replace(/en:|from:/g, '').replace(/-/g, ' ').trim());
+                }
+            });
+        }
+
+        if (foundAvoidedAllergens.length > 0) {
+            preferenceHighlights.push(`<span class="allergen-alert-badge">Contains: ${foundAvoidedAllergens.join(', ')}</span>`);
+        }
+
+        if (preferenceHighlights.length > 0) {
+            html += `<div class="section-card preference-highlights">
+                        <h3>Your Preferences:</h3>
+                        <p>${preferenceHighlights.join(' ')}</p>
+                    </div>`;
+        }
+
 
         // --- Processing Level (NOVA Group) ---
         html += `

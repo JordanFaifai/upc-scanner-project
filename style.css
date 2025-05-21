@@ -1,4 +1,4 @@
-/* style.css - Health-Oriented Theme with Enhanced Cards, Nutrition Scale, and Scan History */
+/* style.css - Health-Oriented Theme with Enhanced Cards, Nutrition Scale, Scan History, and Dietary Preferences */
 
 /* --- Base Body and General Page Styles --- */
 body {
@@ -61,8 +61,8 @@ header p {
 }
 
 .section-card:hover {
-    transform: translateY(-8px); /* Changed: More pronounced lift */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.08); /* Changed: Larger, more diffuse shadow */
+    transform: translateY(-8px); /* More pronounced lift */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.08); /* Larger, more diffuse shadow */
 }
 
 .section-card h2 {
@@ -77,7 +77,8 @@ header p {
 /* --- Control Button Styles --- */
 .controls button,
 #manualScanSection button,
-#toggleManualScanBtn {
+#toggleManualScanBtn,
+.save-button { /* Added .save-button */
     color: white;
     border: none;
     padding: 12px 25px; /* More generous padding */
@@ -93,17 +94,18 @@ header p {
 
 .controls button:hover,
 #manualScanSection button:hover,
-#toggleManualScanBtn:hover {
+#toggleManualScanBtn:hover,
+.save-button:hover { /* Added .save-button */
     background-image: linear-gradient(to right, #43A047, #5cb85c); /* Darker green on hover */
     transform: translateY(-4px); /* More pronounced lift for buttons */
     box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Larger, more diffuse shadow for buttons */
 }
 
-#stopScannerBtn, #clearResultsBtn, #clearHistoryBtn { /* Added #clearHistoryBtn */
+#stopScannerBtn, #clearResultsBtn, #clearHistoryBtn {
     background-image: linear-gradient(to right, #e74c3c, #ef5350); /* Red gradient for destructive actions */
 }
 
-#stopScannerBtn:hover, #clearResultsBtn:hover, #clearHistoryBtn:hover { /* Added #clearHistoryBtn */
+#stopScannerBtn:hover, #clearResultsBtn:hover, #clearHistoryBtn:hover {
     background-image: linear-gradient(to right, #c0392b, #d32f2f);
 }
 
@@ -367,7 +369,7 @@ header p {
 
 /* --- Accordion Styling --- */
 .accordion-header {
-    background-color: #fcfcfc; /* Lighter background for header */
+    background-color: #fcfcfc;
     color: #34495e;
     cursor: pointer;
     padding: 15px 20px;
@@ -378,7 +380,7 @@ header p {
     font-size: 1.1em;
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease;
-    border-bottom: 1px solid #f0f0f0; /* Lighter separator */
+    border-bottom: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -398,7 +400,7 @@ header p {
 }
 
 .accordion-header.active {
-    background-color: #e8f5e9; /* Light green when active */
+    background-color: #e8f5e9;
     color: #2e7d32;
 }
 
@@ -429,10 +431,11 @@ header p {
 
 /* Ensure the section-card itself has no padding if using accordion-header/content */
 /* This is important for the accordion headers to span full width and have rounded corners */
-.section-card.controls, /* Apply padding to specific section cards that don't have accordions */
+.section-card.controls,
 .section-card#manualScanSection,
 .section-card#productInfo,
-.section-card#scanHistorySection { /* NEW: Added scanHistorySection */
+.section-card#scanHistorySection,
+.section-card#dietaryPreferencesSection { /* NEW: Added dietaryPreferencesSection */
     padding: 25px; /* Re-apply padding to these specific sections */
     border-radius: 12px; /* Ensure consistent border-radius */
 }
@@ -456,35 +459,35 @@ header p {
 
 /* --- Nutrition Scale Colors --- */
 .nutrient-low {
-    color: #4CAF50; /* Green for low/good (e.g., low sugar, high fiber) */
+    color: #4CAF50;
     font-weight: bold;
 }
 
 .nutrient-moderate {
-    color: #FFC107; /* Orange for moderate/caution */
+    color: #FFC107;
     font-weight: bold;
 }
 
 .nutrient-high {
-    color: #F44336; /* Red for high/warning */
+    color: #F44336;
     font-weight: bold;
 }
 
-.nutrient-good { /* Explicitly for nutrients where more is good (protein, fiber) */
-    color: #4CAF50; /* Green */
+.nutrient-good {
+    color: #4CAF50;
     font-weight: bold;
 }
 
-/* --- NEW: Scan History Specific Styles --- */
+/* --- Scan History Specific Styles --- */
 .scan-history-list {
     list-style: none;
     padding: 0;
     margin: 15px 0 0 0;
-    max-height: 300px; /* Make history list scrollable if it gets too long */
+    max-height: 300px;
     overflow-y: auto;
     border: 1px solid #f0f0f0;
     border-radius: 8px;
-    padding-right: 5px; /* Space for scrollbar */
+    padding-right: 5px;
 }
 
 .scan-history-item {
@@ -501,7 +504,7 @@ header p {
 
 .scan-history-item:hover {
     background-color: #f0f0f0;
-    transform: translateX(5px); /* Slight slide effect on hover */
+    transform: translateX(5px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
@@ -532,10 +535,197 @@ header p {
     margin-top: 3px;
 }
 
-.scan-history-list p.text-center { /* Style for "No recent scans" message */
+.scan-history-list p.text-center {
     color: #7f8c8d;
     text-align: center;
     padding: 20px;
+}
+
+/* --- NEW: Dietary Preferences Specific Styles --- */
+#dietaryPreferencesSection {
+    /* Inherits section-card styles */
+}
+
+#dietaryPreferencesSection .accordion-content {
+    padding: 20px; /* Ensure content inside accordion has padding */
+}
+
+.preference-group {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.preference-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.preference-group h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2em;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    accent-color: #4CAF50; /* Green accent for checkboxes */
+}
+
+.checkbox-group label {
+    color: #555;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#allergensToAvoid {
+    width: calc(100% - 22px); /* Adjust for padding/border */
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    font-size: 1em;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.save-button {
+    margin-top: 15px;
+    width: auto; /* Allow button to size naturally */
+    display: block; /* Make it a block element to take full width if needed or center */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Styles for preference highlights/alerts in product info */
+.preference-highlights {
+    background-color: #e3f2fd; /* Light blue background for this section */
+    border-left: 8px solid #2196f3; /* Blue border */
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.preference-highlights h3 {
+    font-size: 1.3em;
+    color: #1976D2;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #bbdefb;
+    padding-bottom: 5px;
+}
+.preference-highlights p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #3f51b5;
+}
+
+.diet-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    text-transform: capitalize;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.diet-vegetarian {
+    background-color: #c8e6c9; /* Light green */
+    color: #2e7d32; /* Dark green text */
+}
+.diet-vegan {
+    background-color: #b2dfdb; /* Light teal */
+    color: #00695c; /* Dark teal text */
+}
+.diet-gluten-free {
+    background-color: #ffecb3; /* Light yellow */
+    color: #ff8f00; /* Dark yellow text */
+}
+
+.allergen-alert-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    background-color: #ffcdd2; /* Light red */
+    color: #c62828; /* Dark red text */
+    margin-right: 8px;
+    margin-bottom: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #ef9a9a;
+}
+
+/* Custom Modal for Confirmation */
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none; /* Hidden by default */
+}
+
+.custom-modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.custom-modal-content p {
+    font-size: 1.1em;
+    color: #34495e;
+    margin-bottom: 25px;
+}
+
+.custom-modal-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0 10px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.custom-modal-buttons .modal-button-yes {
+    background-color: #4CAF50;
+    color: white;
+}
+.custom-modal-buttons .modal-button-yes:hover {
+    background-color: #43A047;
+    transform: translateY(-2px);
+}
+
+.custom-modal-buttons .modal-button-no {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+}
+.custom-modal-buttons .modal-button-no:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
 }
 
 
@@ -553,13 +743,14 @@ header p {
         border-radius: 8px;
     }
     .section-card {
-        padding: 20px; /* Adjust padding for smaller screens */
+        padding: 20px;
         border-radius: 8px;
     }
     .controls button,
     #manualScanSection button,
     #toggleManualScanBtn,
-    #clearHistoryBtn { /* Added clearHistoryBtn */
+    #clearHistoryBtn,
+    .save-button {
         padding: 10px 20px;
         font-size: 0.95em;
     }
@@ -578,13 +769,22 @@ header p {
         flex: 1 1 100%;
     }
     .scan-history-item {
-        flex-direction: column; /* Stack image and details on very small screens */
+        flex-direction: column;
         align-items: center;
         text-align: center;
     }
     .history-item-image {
         margin-right: 0;
         margin-bottom: 10px;
+    }
+    .preference-group h3 {
+        font-size: 1.1em;
+    }
+    .checkbox-group label {
+        font-size: 0.95em;
+    }
+    #allergensToAvoid {
+        width: calc(100% - 20px); /* Adjust for smaller screens */
     }
 }
 
@@ -598,7 +798,8 @@ header p {
     .controls button,
     #manualScanSection button,
     #toggleManualScanBtn,
-    #clearHistoryBtn { /* Added clearHistoryBtn */
+    #clearHistoryBtn,
+    .save-button {
         font-size: 0.9em;
         padding: 8px 15px;
     }
@@ -607,5 +808,12 @@ header p {
     }
     .section-card h2 {
         font-size: 1.4em;
+    }
+    .custom-modal-content {
+        padding: 20px;
+    }
+    .custom-modal-buttons button {
+        padding: 8px 15px;
+        font-size: 0.9em;
     }
 }
