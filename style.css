@@ -253,3 +253,138 @@ h1 {
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+/* --- NEW: NOVA Group Color Coordination --- */
+.nova-info {
+    text-align: center;
+    padding: 20px; /* Ensure padding for the card content */
+    margin-bottom: 25px; /* Space below the card */
+    border-radius: 8px; /* Rounded corners for the card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+/* Specific colors for each NOVA Group */
+.nova-group-1 {
+    background-color: #e6ffe6; /* Very light green */
+    border-left: 8px solid #28a745; /* Green border */
+    color: #1a5e2a; /* Darker green text */
+}
+
+.nova-group-2 {
+    background-color: #fffacd; /* Light yellowish */
+    border-left: 8px solid #ffc107; /* Yellow/Amber border */
+    color: #8a6d3b; /* Darker yellow/brown text */
+}
+
+.nova-group-3 {
+    background-color: #ffe0b3; /* Light orange */
+    border-left: 8px solid #fd7e14; /* Orange border */
+    color: #8c470a; /* Darker orange text */
+}
+
+.nova-group-4 {
+    background-color: #ffcccc; /* Light red */
+    border-left: 8px solid #dc3545; /* Red border */
+    color: #a72837; /* Darker red text */
+}
+
+.nova-group-unknown {
+    background-color: #f0f0f0; /* Light grey */
+    border-left: 8px solid #6c757d; /* Grey border */
+    color: #495057; /* Darker grey text */
+}
+
+/* Ensure text in NOVA group cards is readable */
+.nova-info p {
+    color: inherit; /* Inherit color from the specific group class */
+}
+
+/* --- NEW: Accordion Styling --- */
+.accordion-header {
+    background-color: #f8f8f8; /* Light background for header */
+    color: #333;
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+    border-bottom: 1px solid #eee; /* Separator */
+    display: flex; /* To align arrow */
+    justify-content: space-between; /* To push arrow to the right */
+    align-items: center;
+    border-radius: 8px 8px 0 0; /* Top rounded corners for the header button */
+}
+
+/* Style for the h2 inside the button */
+.accordion-header h2 {
+    margin: 0; /* Remove default margin */
+    font-size: 1.1em; /* Match button font size */
+    border-bottom: none; /* Remove border from the h2 itself */
+    padding-bottom: 0;
+}
+
+.accordion-header:hover {
+    background-color: #f1f1f1;
+}
+
+/* Arrow icon styling */
+.accordion-header .arrow {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+
+/* Rotate arrow when accordion is active/open */
+.accordion-header.active .arrow {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding: 0 15px; /* Initial padding is 0 on top/bottom when closed */
+    background-color: white;
+    max-height: 0; /* Initially hidden */
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
+    border-bottom-left-radius: 8px; /* Bottom rounded corners for content */
+    border-bottom-right-radius: 8px;
+}
+
+/* When the accordion content is 'show' */
+.accordion-content.show {
+    max-height: 1000px; /* A value large enough to contain your content */
+    padding: 15px; /* Restore padding when open */
+}
+
+/* Ensure the section-card itself has no padding if using accordion-header/content */
+.section-card {
+    padding: 0; /* Remove padding from the section-card itself */
+    overflow: hidden; /* Ensure content doesn't spill out during transition */
+}
+
+/* Adjustments for scanner container (optional, but good for visual consistency) */
+#scanner-container {
+    /* Existing styles */
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    .container {
+        padding: 15px;
+        margin: 10px auto;
+    }
+    header h1 {
+        font-size: 2em;
+    }
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .nutrition-grid p {
+        flex: 1 1 100%; /* Single column on small screens */
+    }
+}

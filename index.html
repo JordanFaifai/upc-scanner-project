@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UPC Ingredient Scanner</title>
-    
+    <title>UPC Food Scanner</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>UPC Ingredient Scanner</h1>
-    <p id="scanner-message" class="message">Scanner stopped. Click "Start Scanner" to begin.</p>
+    <header>
+        <h1>UPC Food Scanner</h1>
+        <p>Scan or enter a UPC to get detailed food information.</p>
+    </header>
 
-    <div class="controls">
-        <button id="startScannerBtn">Start Scanner</button>
-        <button id="stopScannerBtn" style="display:none;">Stop Scanner</button>
-    </div>
+    <main class="container">
+        <section class="section-card controls">
+            <h2>Barcode Scanner</h2>
+            <div id="scanner-container">
+                <p>Click "Start Scanner" to activate your camera.</p>
+            </div>
+            <div class="scanner-buttons">
+                <button id="startScannerBtn">Start Scanner</button>
+                <button id="stopScannerBtn" style="display: none;">Stop Scanner</button>
+            </div>
+            <p id="scanner-message" class="message info">Scanner is ready.</p>
+        </section>
 
-    <div id="scanner-container">
-        </div>
+        <section id="manualScanSection" class="section-card" style="display: none;">
+            <h2>Manual UPC Entry</h2>
+            <input type="text" id="upcInput" placeholder="Enter UPC code (e.g., 049000051877)">
+            <button id="fetchUpcBtn">Fetch Product Info</button>
+        </section>
+        <button id="toggleManualScanBtn">Show Manual Scan</button>
 
-    <button id="toggleManualScanBtn">Show Manual Scan</button>
+        <section id="productInfo" class="section-card">
+            <h2>Product Details</h2>
+            <p>Scan a UPC or enter it manually to see results.</p>
+            <button id="clearResultsBtn" style="display: none;">Clear Results</button>
+        </section>
+    </main>
 
-    <div id="manualScanSection" style="display: none;">
-        <h2>Manual UPC Scan</h2>
-        <input type="text" id="upcInput" placeholder="Enter UPC code">
-        <button id="fetchUpcBtn">Fetch Product</button>
-    </div>
-
-    <div id="productInfo">
-        <p>Scan a UPC or enter it manually to see results.</p>
-    </div>
-
-    <button id="clearResultsBtn" style="display: none;">Clear Results</button>
-
-    <script src="https://unpkg.com/@ericblade/quagga2@1.8.4/dist/quagga.min.js"></script>
     <script src="client.js"></script>
 </body>
 </html>

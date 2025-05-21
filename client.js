@@ -37,14 +37,15 @@ document.addEventListener('DOMContentLoaded', function() {
             // Clear previous results to prevent old data from showing while new is loading
             productInfoDiv.innerHTML = '<p>Loading product details...</p>';
             clearResultsBtn.style.display = 'none'; // Hide clear button until new results show
-            
+
             try {
-const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com';// Make sure the fetch call uses backticks (`) and correctly interpolates the BACKEND_URL and upc
-const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
-                const data = await response.json(); // 'data' now directly contains the product object (e.g., {name: "...", ingredients: "...", ...})
+                // Corrected BACKEND_URL to only be the base URL of your backend service
+                const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com';
+
+                const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
+                const data = await response.json();
 
                 if (!response.ok) {
-                    // Specific error handling for API response issues
                     displayMessage(data.message || 'Error fetching product information.', 'error');
                     productInfoDiv.innerHTML = `
                         <div class="info-card error-card">
@@ -53,12 +54,9 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
                             <p>Status: ${response.status}</p>
                         </div>
                     `;
-                    return; // Stop execution if there's an API error
+                    return;
                 }
 
-                // *** CRITICAL CHANGE HERE: Check if 'data' itself contains valid product info (e.g., a 'name') ***
-                // If the server returns product data directly, 'data.product' would be undefined.
-                // We check if 'data' is an object and has a 'name' property to consider it a valid product.
                 if (!data || typeof data !== 'object' || !data.name) {
                     displayMessage(`Product data incomplete or not found for UPC: ${upc}.`, 'warning');
                     productInfoDiv.innerHTML = `
@@ -69,15 +67,13 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
                             <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link">Search Open Food Facts directly for ${upc}</a></p>
                         </div>
                     `;
-                    clearResultsBtn.style.display = 'block'; // Allow clearing this message
-                    return; // Stop execution if product data is invalid
+                    clearResultsBtn.style.display = 'block';
+                    return;
                 }
 
-                // If product data is found and looks valid
-                // *** CRITICAL CHANGE HERE: Pass 'data' directly, as it IS the product object ***
                 displayProductInfo(data);
                 displayMessage('Product information fetched successfully.', 'success');
-                clearResultsBtn.style.display = 'block'; // Show clear button after successful fetch
+                clearResultsBtn.style.display = 'block';
 
             } catch (error) {
                 console.error('Error:', error);
@@ -98,15 +94,13 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
     // Clear Results button handler
     clearResultsBtn.addEventListener('click', function() {
         productInfoDiv.innerHTML = '<p>Scan a UPC or enter it manually to see results.</p>';
-        upcInput.value = ''; // Clear the input field
-        clearResultsBtn.style.display = 'none'; // Hide the clear button
+        upcInput.value = '';
+        clearResultsBtn.style.display = 'none';
         displayMessage('Results cleared.', 'info');
     });
 
-    // *** CRITICAL CHANGE HERE: 'product' parameter now directly IS the product object ***
-    function displayProductInfo(product) { 
-        // Removed: const product = productData.product; // This line is no longer needed
-        
+    // --- CRITICAL CHANGE: 'product' parameter now directly IS the product object ---
+    function displayProductInfo(product) {
         let html = ''; // Initialize the HTML string
 
         // --- Product Header (Name and Image) ---
@@ -117,19 +111,10 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
             </div>
         `;
 
-        // --- Ingredients ---
+        // --- Processing Level (NOVA Group) - This section is NOT collapsible ---
+        // It remains a static card for immediate visibility
         html += `
-            <div class="section-card">
-                <h2>Ingredients</h2>
-                <p>${product.ingredients || 'Ingredients list not available.'}</p>
-            </div>
-        `;
-
-        // --- Processing Level (NOVA Group) ---
-        // Ensure product.novaGroup and product.novaExplanation are accessed directly
-       
-            html += `
-    <div class="section-card nova-info nova-group-${String(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
+            <div class="section-card nova-info nova-group-${String(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
                 <h2>Processing Level: NOVA Group ${product.novaGroup || 'N/A'}</h2>
                 <p>This classification describes how much a food has been processed:</p>
                 <p>
@@ -137,7 +122,6 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
                 </p>
         `;
 
-        // Add a note about additives if they are present
         if (product.additives && product.additives.length > 0) {
             const additiveCount = product.additives.length;
             let additiveNote = '';
@@ -160,23 +144,42 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
             </div>
         `;
 
-        // --- Allergens ---
+        // --- Ingredients (Collapsible) ---
         html += `
-            <div class="section-card allergen-info">
-                <h2>Allergens</h2>
-                ${product.allergens && product.allergens.length > 0 ?
-                    `<p><strong>May Contain:</strong> ${product.allergens.map(a => `<span class="allergen-tag">${a.replace(/en:/g, '').replace(/-/g, ' ')}</span>`).join(', ')}</p>` :
-                    `<p>No allergens declared for this product.</p>`
-                }
+            <div class="section-card">
+                <button class="accordion-header">
+                    <h2>Ingredients <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content">
+                    <p>${product.ingredients || 'Ingredients list not available.'}</p>
+                </div>
             </div>
         `;
 
-        // --- Additives ---
+        // --- Allergens (Collapsible) ---
+        html += `
+            <div class="section-card">
+                <button class="accordion-header">
+                    <h2>Allergens <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content">
+                    ${product.allergens && product.allergens.length > 0 ?
+                        `<p><strong>May Contain:</strong> ${product.allergens.map(a => `<span class="allergen-tag">${a.replace(/en:/g, '').replace(/-/g, ' ')}</span>`).join(', ')}</p>` :
+                        `<p>No allergens declared for this product.</p>`
+                    }
+                </div>
+            </div>
+        `;
+
+        // --- Additives (Collapsible) ---
         if (product.additives && product.additives.length > 0) {
             html += `
-                <div class="section-card additives-info">
-                    <h2>Additives</h2>
-                    <ul class="additive-list">
+                <div class="section-card">
+                    <button class="accordion-header">
+                        <h2>Additives <span class="arrow">▼</span></h2>
+                    </button>
+                    <div class="accordion-content">
+                        <ul class="additive-list">
             `;
             product.additives.forEach(add => {
                 let statusText = '';
@@ -188,68 +191,116 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
                 } else if (add.status && add.status.includes('Requires warning')) {
                     statusText = 'Requires warning';
                     statusClass += ' warning';
-                } else if (add.status && add.status !== 'Not banned in EU') { // Catch other specific statuses
-                     statusText = add.status;
-                     statusClass += ' info'; // Neutral info class
+                } else if (add.status && add.status !== 'Not banned in EU') {
+                    statusText = add.status;
+                    statusClass += ' info';
                 } else {
-                    statusClass = ''; // Clear status class if no specific status to show or "Not banned"
+                    statusClass = '';
                 }
 
                 html += `
-                    <li>
-                        <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
-                        <br>
-                        <small>
-                            Type: ${add.type || 'N/A'}
-                            ${statusText ? ` | Status: <span class="${statusClass}">${statusText}</span>` : ''}
-                        </small>
-                    </li>
+                            <li>
+                                <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
+                                <br>
+                                <small>
+                                    Type: ${add.type || 'N/A'}
+                                    ${statusText ? ` | Status: <span class="${statusClass}">${statusText}</span>` : ''}
+                                </small>
+                            </li>
                 `;
             });
             html += `
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             `;
         } else {
             html += `
-                <div class="section-card additives-info">
-                    <h2>Additives</h2>
-                    <p>No specific additives found or listed for this product.</p>
-                </div>
-            `;
-        }
-
-        // --- Nutrition Facts ---
-        if (product.nutrition_facts) {
-            html += `
-                <div class="section-card nutrition-info">
-                    <h2>Nutrition Facts <small>(per 100g/ml)</small></h2>
-                    <div class="nutrition-grid">
-                        <p><strong>Calories:</strong> ${product.nutrition_facts.calories || 'N/A'} kcal</p>
-                        <p><strong>Protein:</strong> ${product.nutrition_facts.protein || 'N/A'} g</p>
-                        <p><strong>Carbohydrates:</strong> ${product.nutrition_facts.carbohydrates || 'N/A'} g</p>
-                        <p><strong>Fat:</strong> ${product.nutrition_facts.fat || 'N/A'} g</p>
-                        <p><strong>Sugar:</strong> ${product.nutrition_facts.sugar || 'N/A'} g</p>
-                        <p><strong>Salt:</strong> ${product.nutrition_facts.salt || 'N/A'} g</p>
-                        <p><strong>Fiber:</strong> ${product.nutrition_facts.fiber || 'N/A'} g</p>
+                <div class="section-card">
+                    <button class="accordion-header">
+                        <h2>Additives <span class="arrow">▼</span></h2>
+                    </button>
+                    <div class="accordion-content">
+                        <p>No specific additives found or listed for this product.</p>
                     </div>
                 </div>
             `;
         }
 
-        // --- Data Source ---
+        // --- Nutrition Facts (Collapsible) ---
+        if (product.nutrition_facts) {
+            html += `
+                <div class="section-card">
+                    <button class="accordion-header">
+                        <h2>Nutrition Facts <small>(per 100g/ml)</small> <span class="arrow">▼</span></h2>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="nutrition-grid">
+                            <p><strong>Calories:</strong> ${product.nutrition_facts.calories || 'N/A'} kcal</p>
+                            <p><strong>Protein:</strong> ${product.nutrition_facts.protein || 'N/A'} g</p>
+                            <p><strong>Carbohydrates:</strong> ${product.nutrition_facts.carbohydrates || 'N/A'} g</p>
+                            <p><strong>Fat:</strong> ${product.nutrition_facts.fat || 'N/A'} g</p>
+                            <p><strong>Sugar:</strong> ${product.nutrition_facts.sugar || 'N/A'} g</p>
+                            <p><strong>Salt:</strong> ${product.nutrition_facts.salt || 'N/A'} g</p>
+                            <p><strong>Fiber:</strong> ${product.nutrition_facts.fiber || 'N/A'} g</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- Data Source (Collapsible) ---
         html += `
-            <div class="section-card source-info">
-                <h3>Data Source</h3>
-                <p>Information provided by ${product.source || 'Open Food Facts'}.</p>
+            <div class="section-card">
+                <button class="accordion-header">
+                    <h2>Data Source <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content">
+                    <p>Information provided by ${product.source || 'Open Food Facts'}.</p>
+                </div>
             </div>
         `;
-        
+
         // Finally, update the productInfoDiv with the constructed HTML
         productInfoDiv.innerHTML = html;
+
+        // *** CALL THE ACCORDION SETUP FUNCTION HERE ***
+        setupAccordions();
     }
 
-    // Quagga2 scanner integration (This section is now correct and unchanged from previous fix)
+    // --- Accordion Logic ---
+    // This function will set up the accordion behavior each time product info is displayed
+    function setupAccordions() {
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            // Remove previous event listeners to prevent duplicates if displayProductInfo is called multiple times
+            header.removeEventListener('click', toggleAccordion);
+            header.addEventListener('click', toggleAccordion);
+        });
+
+        function toggleAccordion() {
+            this.classList.toggle('active'); // Toggle 'active' class on the header
+            const content = this.nextElementSibling; // Get the next sibling element (which is the content div)
+
+            if (content.classList.contains('show')) {
+                // If it's currently open, close it
+                content.classList.remove('show');
+            } else {
+                // If it's currently closed, open it
+                content.classList.add('show');
+            }
+        }
+
+        // Optional: Open the first content section by default if desired
+        // if (accordionHeaders.length > 0) {
+        //     accordionHeaders[0].classList.add('active');
+        //     accordionHeaders[0].nextElementSibling.classList.add('show');
+        // }
+    }
+
+
+    // Quagga2 scanner integration
     function startScanner() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             Quagga.init({
@@ -273,7 +324,7 @@ const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
                 Quagga.start();
                 isScannerRunning = true;
                 displayMessage('Scanner started. Point to a UPC code.', 'info');
-                startScannerBtn.style.display = 'none'; 
+                startScannerBtn.style.display = 'none';
                 stopScannerBtn.style.display = 'inline-block';
             });
 
