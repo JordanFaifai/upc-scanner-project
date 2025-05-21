@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const upcInput = document.getElementById('upcInput');
     const fetchUpcBtn = document.getElementById('fetchUpcBtn');
     const productInfoDiv = document.getElementById('productInfo');
-    const clearResultsBtn = document.getElementById('clearResultsBtn');
+    const clearResultsBtn = document = document.getElementById('clearResultsBtn');
     const manualScanSection = document.getElementById('manualScanSection');
     const toggleManualScanBtn = document.getElementById('toggleManualScanBtn');
 
