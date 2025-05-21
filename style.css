@@ -1,4 +1,4 @@
-/* style.css - Health-Oriented Theme with Enhanced Cards */
+/* style.css - Health-Oriented Theme with Enhanced Cards and Nutrition Scale */
 
 /* --- Base Body and General Page Styles --- */
 body {
@@ -456,6 +456,27 @@ header p {
 .external-link:hover {
     color: #1976D2;
     text-decoration: underline;
+}
+
+/* --- NEW: Nutrition Scale Colors --- */
+.nutrient-low {
+    color: #4CAF50; /* Green for low/good (e.g., low sugar, high fiber) */
+    font-weight: bold;
+}
+
+.nutrient-moderate {
+    color: #FFC107; /* Orange for moderate/caution */
+    font-weight: bold;
+}
+
+.nutrient-high {
+    color: #F44336; /* Red for high/warning */
+    font-weight: bold;
+}
+
+.nutrient-good { /* Explicitly for nutrients where more is good (protein, fiber) */
+    color: #4CAF50; /* Green */
+    font-weight: bold;
 }
 
 

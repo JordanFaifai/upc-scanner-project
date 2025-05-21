@@ -99,6 +99,49 @@ document.addEventListener('DOMContentLoaded', function() {
         displayMessage('Results cleared.', 'info');
     });
 
+    // --- Helper function to determine nutrient status class ---
+    // Thresholds are general guidelines per 100g/ml, often inspired by UK traffic light system.
+    function getNutrientStatusClass(nutrientName, value) {
+        if (value === null || isNaN(value)) {
+            return ''; // No class if value is missing or not a number
+        }
+
+        value = parseFloat(value); // Ensure value is a number
+
+        switch (nutrientName.toLowerCase()) {
+            case 'calories': // Energy in kcal
+                if (value < 150) return 'nutrient-low'; // Green
+                if (value >= 150 && value <= 400) return 'nutrient-moderate'; // Orange
+                return 'nutrient-high'; // Red
+            case 'sugar':
+                if (value < 5) return 'nutrient-low'; // Green
+                if (value >= 5 && value <= 22.5) return 'nutrient-moderate'; // Orange
+                return 'nutrient-high'; // Red
+            case 'fat':
+                if (value < 3) return 'nutrient-low'; // Green
+                if (value >= 3 && value <= 17.5) return 'nutrient-moderate'; // Orange
+                return 'nutrient-high'; // Red
+            case 'salt':
+                if (value < 0.3) return 'nutrient-low'; // Green
+                if (value >= 0.3 && value <= 1.5) return 'nutrient-moderate'; // Orange
+                return 'nutrient-high'; // Red
+            case 'protein': // More protein is generally good
+                if (value >= 10) return 'nutrient-good'; // Green
+                if (value < 5) return 'nutrient-low'; // Red for very low protein
+                return 'nutrient-moderate'; // Neutral/orange for moderate
+            case 'fiber': // More fiber is generally good
+                if (value >= 6) return 'nutrient-good'; // Green
+                if (value < 3) return 'nutrient-low'; // Red for very low fiber
+                return 'nutrient-moderate'; // Neutral/orange for moderate
+            case 'carbohydrates': // Can be complex, but general high/low
+                if (value < 10) return 'nutrient-low'; // Green (often for low-carb diets, or if it's mostly fiber)
+                if (value >= 10 && value <= 45) return 'nutrient-moderate'; // Orange
+                return 'nutrient-high'; // Red
+            default:
+                return ''; // No specific classification
+        }
+    }
+
     // --- CRITICAL CHANGE: 'product' parameter now directly IS the product object ---
     function displayProductInfo(product) {
         let html = ''; // Initialize the HTML string
@@ -122,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </p>
                 <p class="nova-description">
                     <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" title="Learn more about NOVA classification">
-                        Learn more about NOVA food classification
+                        Learn more about NOVA classification
                     </a>
                 </p>
                 <p class="nova-source-note">
@@ -241,13 +284,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     </button>
                     <div class="accordion-content">
                         <div class="nutrition-grid">
-                            <p><strong>Calories:</strong> ${product.nutrition_facts.calories || 'N/A'} kcal</p>
-                            <p><strong>Protein:</strong> ${product.nutrition_facts.protein || 'N/A'} g</p>
-                            <p><strong>Carbohydrates:</strong> ${product.nutrition_facts.carbohydrates || 'N/A'} g</p>
-                            <p><strong>Fat:</strong> ${product.nutrition_facts.fat || 'N/A'} g</p>
-                            <p><strong>Sugar:</strong> ${product.nutrition_facts.sugar || 'N/A'} g</p>
-                            <p><strong>Salt:</strong> ${product.nutrition_facts.salt || 'N/A'} g</p>
-                            <p><strong>Fiber:</strong> ${product.nutrition_facts.fiber || 'N/A'} g</p>
+                            <p><strong>Calories:</strong> <span class="${getNutrientStatusClass('calories', product.nutrition_facts.calories)}">${product.nutrition_facts.calories || 'N/A'} kcal</span></p>
+                            <p><strong>Protein:</strong> <span class="${getNutrientStatusClass('protein', product.nutrition_facts.protein)}">${product.nutrition_facts.protein || 'N/A'} g</span></p>
+                            <p><strong>Carbohydrates:</strong> <span class="${getNutrientStatusClass('carbohydrates', product.nutrition_facts.carbohydrates)}">${product.nutrition_facts.carbohydrates || 'N/A'} g</span></p>
+                            <p><strong>Fat:</strong> <span class="${getNutrientStatusClass('fat', product.nutrition_facts.fat)}">${product.nutrition_facts.fat || 'N/A'} g</span></p>
+                            <p><strong>Sugar:</strong> <span class="${getNutrientStatusClass('sugar', product.nutrition_facts.sugar)}">${product.nutrition_facts.sugar || 'N/A'} g</span></p>
+                            <p><strong>Salt:</strong> <span class="${getNutrientStatusClass('salt', product.nutrition_facts.salt)}">${product.nutrition_facts.salt || 'N/A'} g</span></p>
+                            <p><strong>Fiber:</strong> <span class="${getNutrientStatusClass('fiber', product.nutrition_facts.fiber)}">${product.nutrition_facts.fiber || 'N/A'} g</span></p>
                         </div>
                     </div>
                 </div>
