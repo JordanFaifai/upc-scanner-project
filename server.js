@@ -1,12 +1,16 @@
 const express = require('express');
 const fetch = require('node-fetch'); // Used to make requests to the Open Food Facts API
 const path = require('path'); // Node.js built-in module for path manipulation
+const cors = require('cors'); // <--- ADD THIS LINE
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Your server will run on port 3000 by default
 
 // Serve static files (your HTML, CSS, client-side JS) from the current directory
 // This makes your index.html and client.js available to the browser
+// NOTE: For your setup with separate frontend/backend, this `app.use(express.static(__dirname));`
+// line in the backend server is technically not needed if the frontend is hosted separately on Render
+// as a Static Site, but it doesn't hurt anything.
 app.use(express.static(__dirname));
 
 // Load your enriched additive data from the generated JSON file
@@ -18,6 +22,9 @@ const additiveMap = {
     ...efsaAdditiveDetails
 };
 
+// Enable CORS for all origins. This allows your frontend (on a different domain/port)
+// to make requests to this backend.
+app.use(cors()); // <--- ADD THIS LINE - PLACE IT AFTER app = express(); and before app.get(...)
 
 // API endpoint to fetch ingredients based on UPC
 // When your frontend asks for /api/ingredients/12345, this code runs
@@ -46,77 +53,9 @@ app.get('/api/ingredients/:upc', async (req, res) => {
 
         const product = data.product;
 
-        // Extract key product information
-        const productName = product.product_name || product.product_name_en || 'Unknown Product';
-        const ingredientsText = product.ingredients_text || product.ingredients_text_en || 'No ingredients text available.';
-        const novaGroup = product.nova_group || 'Unknown';
-        const novaExplanation = product.nova_groups_tags && product.nova_groups_tags[0] ?
-            product.nova_groups_tags[0].replace('en:', '').replace('-', ' Group ').toUpperCase() + ' Food Classification' :
-            'No NOVA group explanation available.';
-        const imageUrl = product.image_front_url || product.image_url || null;
+        // ... (rest of your product processing logic, which looks fine) ...
 
-
-        // Process allergens
-        // The API returns allergens as tags, e.g., "en:gluten", "en:milk"
-        const allergens = product.allergens_tags ?
-            product.allergens_tags.map(tag => tag.replace('en:', '').replace(/-/g, ' ')) : [];
-
-
-        // Process additives - NOW USING efsa_additive_details.json
-        const rawAdditives = product.additives_tags || [];
-        const processedAdditives = rawAdditives.map(additive => {
-            const additiveId = additive.replace('en:', '').toUpperCase(); // e.g., E330
-            const efsaDetails = additiveMap[additiveId]; // Look up in your efsa_additive_details.json
-
-            return {
-                name: efsaDetails ? efsaDetails.name : (additiveId.startsWith('E') ? `Additive ${additiveId}` : additiveId),
-                eNumber: additiveId.startsWith('E') ? additiveId : 'N/A', // Ensure E-number format
-                type: efsaDetails ? efsaDetails.type : 'N/A',
-                status: efsaDetails ? efsaDetails.status : 'N/A' // e.g., 'Not banned in EU', 'Banned in EU', 'Requires warning'
-            };
-        });
-
-        // --- Process Nutrition Facts ---
-        const nutriments = product.nutriments || {};
-
-        let calories = 'N/A';
-        // Check for common calorie keys
-        if (nutriments['energy-kcal_100g']) {
-            calories = nutriments['energy-kcal_100g'];
-        } else if (nutriments.energy_kcal_100g) { // Sometimes uses underscore
-            calories = nutriments.energy_kcal_100g;
-        } else if (nutriments['energy-kj_100g']) { // Convert kJ to kcal if only kJ is available
-            calories = (parseFloat(nutriments['energy-kj_100g']) / 4.184).toFixed(0); // Rough conversion
-        }
-
-        const nutrition_facts = {
-            calories: calories, // Now handles different keys and kJ conversion
-            protein: nutriments.proteins_100g || 'N/A',
-            carbohydrates: nutriments.carbohydrates_100g || 'N/A',
-            fat: nutriments.fat_100g || 'N/A',
-            sugar: nutriments.sugars_100g || 'N/A',
-            salt: nutriments.salt_100g || 'N/A',
-            fiber: nutriments.fiber_100g || 'N/A'
-        };
-
-
-        // --- CONSTRUCT THE FINAL OBJECT TO SEND TO CLIENT ---
-        const simplifiedProduct = {
-            name: productName,
-            ingredients: ingredientsText,
-            novaGroup: novaGroup, // Send as string
-            novaExplanation: novaExplanation,
-            image: imageUrl,
-            source: product.product_url ? `Open Food Facts (${product.product_url})` : "Open Food Facts",
-            allergens: allergens, // Send raw tags, client will process
-            additives: processedAdditives, // Send processed additive objects
-            nutrition_facts: nutrition_facts // Send the nutrition object
-        };
-
-        // --- CRUCIAL LOG: See what your server is sending to the client ---
-        console.log('[SERVER] Sending simplified product to client:', JSON.stringify(simplifiedProduct, null, 2));
-
-        res.json(simplifiedProduct);
+        res.json(simplifiedProduct); // This will send the data to your frontend
 
     } catch (error) {
         console.error('[SERVER] Caught server error fetching product data:', error);
