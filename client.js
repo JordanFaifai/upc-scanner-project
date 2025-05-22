@@ -20,11 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const prefGlutenFree = document.getElementById('prefGlutenFree');
     const allergensToAvoid = document.getElementById('allergensToAvoid');
     const savePreferencesBtn = document.getElementById('savePreferencesBtn');
-    const clearPreferencesBtn = document.getElementById('clearPreferencesBtn'); // NEW: Get the clear preferences button
+    const clearPreferencesBtn = document.getElementById('clearPreferencesBtn');
     const preferenceMessage = document.getElementById('preferenceMessage');
 
     let isScannerRunning = false;
+    let isFetchingProduct = false; // New flag to prevent multiple API calls for the same detected barcode
     const MAX_HISTORY_ITEMS = 10;
+    const LAST_SCAN_DEBOUNCE_MS = 1500; // Time to wait before allowing another scan of the same code
+    let lastScannedCode = null;
+    let lastScanTimestamp = 0;
+
 
     // Helper function to display messages
     function displayMessage(message, type = "info") {
@@ -66,11 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // NEW: Function to clear preferences
     function clearPreferences() {
         showCustomConfirm('Are you sure you want to clear all your dietary preferences?', () => {
             localStorage.removeItem('dietaryPreferences');
-            // Reset form fields
             prefVegetarian.checked = false;
             prefVegan.checked = false;
             prefGlutenFree.checked = false;
@@ -81,21 +84,19 @@ document.addEventListener('DOMContentLoaded', function() {
             preferenceMessage.style.display = 'block';
             setTimeout(() => { preferenceMessage.style.display = 'none'; }, 3000);
 
-            // Re-render product info if any is displayed, to reflect cleared preferences
-            if (productInfoDiv.innerHTML.includes('product-header')) { // Simple check if product info is visible
+            if (productInfoDiv.innerHTML.includes('product-header')) {
                 const currentUpc = upcInput.value.trim();
                 if (currentUpc) {
-                    fetchUpcBtn.click(); // Re-fetch/re-display current product with new preferences
+                    // Re-fetch/re-display current product with new preferences
+                    fetchAndProcessProduct(currentUpc, false); // Don't stop scanner if it's running
                 }
             }
         });
     }
 
-
-    // Initial load of preferences
     loadPreferences();
     savePreferencesBtn.addEventListener('click', savePreferences);
-    clearPreferencesBtn.addEventListener('click', clearPreferences); // NEW: Attach event listener
+    clearPreferencesBtn.addEventListener('click', clearPreferences);
 
 
     // --- Scan History Functions ---
@@ -152,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             li.addEventListener('click', () => {
                 upcInput.value = item.upc;
-                fetchUpcBtn.click();
+                fetchAndProcessProduct(item.upc, true); // Fetch and stop scanner if successful
             });
             scanHistoryList.appendChild(li);
         });
@@ -167,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initial render of history when page loads
     renderScanHistory();
     clearHistoryBtn.addEventListener('click', clearScanHistory);
 
@@ -221,60 +221,73 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle UPC fetching
+    // NEW: Centralized function to fetch and process product information
+    async function fetchAndProcessProduct(upc, stopScannerOnSuccess = true) {
+        if (isFetchingProduct) {
+            console.log("Already fetching a product, ignoring redundant request.");
+            return;
+        }
+
+        isFetchingProduct = true;
+        displayMessage('Fetching product information...', 'info');
+        productInfoDiv.innerHTML = '<p>Loading product details...</p>';
+        clearResultsBtn.style.display = 'none';
+
+        try {
+            const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com';
+            const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
+            const data = await response.json();
+
+            if (!response.ok || !data || typeof data !== 'object' || !data.name) {
+                // Product not found or incomplete data
+                const errorMessage = data?.message || `Product data incomplete or not found for UPC: ${upc}.`;
+                displayMessage(errorMessage + ' Keep scanning or try manual entry.', 'warning');
+                productInfoDiv.innerHTML = `
+                    <div class="info-card no-product">
+                        <h2>Product Not Found or Incomplete Data</h2>
+                        <p>${errorMessage}</p>
+                        <p>Try scanning a different product or check the UPC for typos.</p>
+                        <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link">Search Open Food Facts directly for ${upc}</a></p>
+                    </div>
+                `;
+                // DO NOT stop scanner here, allow continuous scanning
+                clearResultsBtn.style.display = 'none';
+                return false; // Indicate failure
+            }
+
+            // Success: Product found and valid
+            displayProductInfo(data);
+            displayMessage('Product information fetched successfully.', 'success');
+            clearResultsBtn.style.display = 'block';
+            saveScanToHistory(data);
+
+            if (stopScannerOnSuccess) {
+                stopScanner(); // Only stop scanner if explicitly requested (e.g., from manual fetch or successful scan)
+            }
+            return true; // Indicate success
+
+        } catch (error) {
+            console.error('Error fetching or processing product:', error);
+            displayMessage('Network error or server is unreachable. Check connection, continuing scan.', 'error');
+            productInfoDiv.innerHTML = `
+                <div class="info-card error-card">
+                    <h2>Network Error</h2>
+                    <p>Could not connect to the server or an unexpected error occurred. Please ensure the server is running and your internet connection is stable.</p>
+                </div>
+            `;
+            // DO NOT stop scanner here, allow continuous scanning
+            clearResultsBtn.style.display = 'none';
+            return false; // Indicate failure
+        } finally {
+            isFetchingProduct = false; // Reset flag regardless of success or failure
+        }
+    }
+
+    // Handle UPC fetching (manual entry)
     fetchUpcBtn.addEventListener('click', async function() {
         const upc = upcInput.value.trim();
         if (upc) {
-            displayMessage('Fetching product information...', 'info');
-            productInfoDiv.innerHTML = '<p>Loading product details...</p>';
-            clearResultsBtn.style.display = 'none';
-
-            try {
-                const BACKEND_URL = 'https://upc-scanner-backend-api.onrender.com';
-                const response = await fetch(`${BACKEND_URL}/api/ingredients/${upc}`);
-                const data = await response.json();
-
-                if (!response.ok) {
-                    displayMessage(data.message || 'Error fetching product information.', 'error');
-                    productInfoDiv.innerHTML = `
-                        <div class="info-card error-card">
-                            <h2>Error</h2>
-                            <p>${data.message || 'Could not retrieve product information. Please try again or check your internet connection.'}</p>
-                            <p>Status: ${response.status}</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                if (!data || typeof data !== 'object' || !data.name) {
-                    displayMessage(`Product data incomplete or not found for UPC: ${upc}.`, 'warning');
-                    productInfoDiv.innerHTML = `
-                        <div class="info-card no-product">
-                            <h2>Product Not Found or Incomplete Data</h2>
-                            <p>Try scanning a different product or check the UPC for typos.</p>
-                            <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link">Search Open Food Facts directly for ${upc}</a></p>
-                        </div>
-                    `;
-                    clearResultsBtn.style.display = 'block';
-                    return;
-                }
-
-                displayProductInfo(data);
-                displayMessage('Product information fetched successfully.', 'success');
-                clearResultsBtn.style.display = 'block';
-                saveScanToHistory(data);
-
-            } catch (error) {
-                console.error('Error:', error);
-                displayMessage('Network error or server is unreachable. Please check your connection.', 'error');
-                productInfoDiv.innerHTML = `
-                    <div class="info-card error-card">
-                        <h2>Network Error</h2>
-                        <p>Could not connect to the server. Please ensure the server is running and your internet connection is stable.</p>
-                    </div>
-                `;
-                clearResultsBtn.style.display = 'none';
-            }
+            await fetchAndProcessProduct(upc, true); // Always stop scanner if manual fetch is successful
         } else {
             displayMessage('Please enter a UPC code.', 'warning');
         }
@@ -347,12 +360,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
         const allergensToAvoidList = preferences.allergens || []; // already lowercased and trimmed
 
-        // NEW: Define common general terms and their specific mappings for better matching
         const generalAllergenMappings = {
             'nuts': ['almond', 'brazil nut', 'cashew', 'hazelnut', 'macadamia', 'pecan', 'pistachio', 'walnut', 'nut'],
-            'peanuts': ['peanut'], // Explicitly handle 'peanuts' if user types it
+            'peanuts': ['peanut'],
             'dairy': ['milk', 'lactose', 'whey', 'casein', 'butter', 'cheese'],
-            'gluten': ['wheat', 'barley', 'rye', 'oats'], // 'oats' can be tricky, but common
+            'gluten': ['wheat', 'barley', 'rye', 'oats'],
             'soy': ['soy', 'soya'],
             'egg': ['egg'],
             'fish': ['fish'],
@@ -362,8 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'celery': ['celery'],
             'sulfites': ['sulfite', 'sulphite'],
             'lupin': ['lupin'],
-            'molluscs': ['mollusc'],
-            // Add more as needed based on common user input vs. product data
+            'molluscs': ['mollusc']
         };
 
 
@@ -391,30 +402,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
 
-        // NEW: Enhanced Allergen Matching Logic
+        // Enhanced Allergen Matching Logic
         let foundAvoidedAllergens = new Set(); // Use a Set to avoid duplicates
         if (allergensToAvoidList.length > 0 && product.allergens && product.allergens.length > 0) {
             const normalizedProductImagesAllergens = product.allergens.map(a => a.toLowerCase().replace(/en:|from:/g, '').replace(/-/g, ' ').trim());
 
             allergensToAvoidList.forEach(avoidedTerm => {
-                let termsToCheck = [avoidedTerm]; // Start with the user's exact term
+                let termsToCheck = [avoidedTerm];
 
-                // If the user's term is a general one, add its specific mappings
                 if (generalAllergenMappings[avoidedTerm]) {
                     termsToCheck = termsToCheck.concat(generalAllergenMappings[avoidedTerm]);
                 } else if (avoidedTerm.endsWith('s') && avoidedTerm.length > 2) {
-                    // Also check singular form if it's not a direct mapping key
                     termsToCheck.push(avoidedTerm.slice(0, -1));
                 }
 
-                // Iterate through all terms to check (user's term + its mappings/singular form)
                 termsToCheck.forEach(checkTerm => {
                     normalizedProductImagesAllergens.forEach(productAllergen => {
-                        // Check if the product allergen contains the current checkTerm
-                        // e.g., "peanuts" contains "peanut" or "nut"
-                        // e.g., "milk" contains "milk" or "dairy" (if 'dairy' is in checkTerms)
                         if (productAllergen.includes(checkTerm) && !foundAvoidedAllergens.has(productAllergen)) {
-                            foundAvoidedAllergens.add(productAllergen); // Add the actual product allergen that matched
+                            foundAvoidedAllergens.add(productAllergen);
                         }
                     });
                 });
@@ -603,10 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // Finally, update the productInfoDiv with the constructed HTML
         productInfoDiv.innerHTML = html;
-
-        // *** CALL THE ACCORDION SETUP FUNCTION HERE ***
         setupAccordions();
     }
 
@@ -629,22 +631,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Call setupAccordions on initial page load
     setupAccordions();
 
 
     // Quagga2 scanner integration
     function startScanner() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // NEW: Immediately clear the scanner container
-            scannerContainer.innerHTML = '';
+            scannerContainer.innerHTML = ''; // Clear container
             displayMessage('Activating camera, please wait...', 'info');
 
             Quagga.init({
                 inputStream: {
                     name: "Live",
                     type: "LiveStream",
-                    target: scannerContainer, // Quagga will inject video/canvas here
+                    target: scannerContainer,
                     constraints: {
                         facingMode: "environment"
                     }
@@ -656,7 +656,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (err) {
                     console.error(err);
                     displayMessage(`Error starting scanner: ${err.message}. Ensure camera access is granted.`, 'error');
-                    // Restore initial message if scanner fails to start
                     scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
                     return;
                 }
@@ -670,9 +669,17 @@ document.addEventListener('DOMContentLoaded', function() {
             Quagga.onDetected(function(result) {
                 if (result && result.codeResult && result.codeResult.code) {
                     const upcCode = result.codeResult.code;
-                    upcInput.value = upcCode;
-                    stopScanner();
-                    fetchUpcBtn.click();
+                    const currentTime = Date.now();
+
+                    // Debounce logic: Only process if code is different or enough time has passed
+                    if (upcCode !== lastScannedCode || (currentTime - lastScanTimestamp > LAST_SCAN_DEBOUNCE_MS)) {
+                        lastScannedCode = upcCode;
+                        lastScanTimestamp = currentTime;
+
+                        upcInput.value = upcCode; // Update input for user feedback
+                        // Attempt to fetch and process the product, but don't stop scanner on failure
+                        fetchAndProcessProduct(upcCode, false);
+                    }
                 }
             });
 
@@ -707,10 +714,11 @@ document.addEventListener('DOMContentLoaded', function() {
             Quagga.stop();
             isScannerRunning = false;
             displayMessage('Scanner stopped.');
-            // Restore initial message when scanner stops
             scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
             startScannerBtn.style.display = 'inline-block';
             stopScannerBtn.style.display = 'none';
+            lastScannedCode = null; // Reset for next scan session
+            lastScanTimestamp = 0;
         }
     }
 
