@@ -17,14 +17,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
     const prefVegetarian = document.getElementById('prefVegetarian');
     const prefVegan = document.getElementById('prefVegan');
-    const prefGlutenFree = document.getElementById('prefGlutenFree');
+    const prefGlutenFree = document = document.getElementById('prefGlutenFree');
     const allergensToAvoid = document.getElementById('allergensToAvoid');
     const savePreferencesBtn = document.getElementById('savePreferencesBtn');
     const clearPreferencesBtn = document.getElementById('clearPreferencesBtn');
     const preferenceMessage = document.getElementById('preferenceMessage');
 
     let isScannerRunning = false;
-    let isFetchingProduct = false; // New flag to prevent multiple API calls for the same detected barcode
+    let isFetchingProduct = false; // Flag to prevent multiple API calls for the same detected barcode
     const MAX_HISTORY_ITEMS = 10;
     const LAST_SCAN_DEBOUNCE_MS = 1500; // Time to wait before allowing another scan of the same code
     let lastScannedCode = null;
@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // NEW: Centralized function to fetch and process product information
+    // Centralized function to fetch and process product information
     async function fetchAndProcessProduct(upc, stopScannerOnSuccess = true) {
         if (isFetchingProduct) {
             console.log("Already fetching a product, ignoring redundant request.");
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return 'nutrient-high';
             case 'salt':
                 if (value < 0.3) return 'nutrient-low';
-                if (value >= 0.3 && value <= 1.5) return 'nutrient-moderate';
+                if (value >= 0.3 && value >= 1.5) return 'nutrient-moderate';
                 return 'nutrient-high';
             case 'protein':
                 if (value >= 10) return 'nutrient-good';
@@ -672,13 +672,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     const currentTime = Date.now();
 
                     // Debounce logic: Only process if code is different or enough time has passed
+                    // AND if we're not already fetching the same product
                     if (upcCode !== lastScannedCode || (currentTime - lastScanTimestamp > LAST_SCAN_DEBOUNCE_MS)) {
                         lastScannedCode = upcCode;
                         lastScanTimestamp = currentTime;
 
                         upcInput.value = upcCode; // Update input for user feedback
-                        // Attempt to fetch and process the product, but don't stop scanner on failure
-                        fetchAndProcessProduct(upcCode, false);
+                        // Attempt to fetch and process the product.
+                        // If successful, the scanner will stop automatically.
+                        // If not found/error, it will continue scanning.
+                        fetchAndProcessProduct(upcCode, true); // <--- This was the key change
                     }
                 }
             });
