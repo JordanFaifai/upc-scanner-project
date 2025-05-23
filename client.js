@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
     const prefVegetarian = document.getElementById('prefVegetarian');
     const prefVegan = document.getElementById('prefVegan');
-    const prefGlutenFree = document = document.getElementById('prefGlutenFree');
+    const prefGlutenFree = document.getElementById('prefGlutenFree');
     const allergensToAvoid = document.getElementById('allergensToAvoid');
     const savePreferencesBtn = document.getElementById('savePreferencesBtn');
     const clearPreferencesBtn = document.getElementById('clearPreferencesBtn');
@@ -87,8 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productInfoDiv.innerHTML.includes('product-header')) {
                 const currentUpc = upcInput.value.trim();
                 if (currentUpc) {
-                    // Re-fetch/re-display current product with new preferences
-                    fetchAndProcessProduct(currentUpc, false); // Don't stop scanner if it's running
+                    fetchAndProcessProduct(currentUpc, false);
                 }
             }
         });
@@ -153,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             li.addEventListener('click', () => {
                 upcInput.value = item.upc;
-                fetchAndProcessProduct(item.upc, true); // Fetch and stop scanner if successful
+                fetchAndProcessProduct(item.upc, true);
             });
             scanHistoryList.appendChild(li);
         });
@@ -239,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (!response.ok || !data || typeof data !== 'object' || !data.name) {
-                // Product not found or incomplete data
                 const errorMessage = data?.message || `Product data incomplete or not found for UPC: ${upc}.`;
                 displayMessage(errorMessage + ' Keep scanning or try manual entry.', 'warning');
                 productInfoDiv.innerHTML = `
@@ -250,21 +248,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link">Search Open Food Facts directly for ${upc}</a></p>
                     </div>
                 `;
-                // DO NOT stop scanner here, allow continuous scanning
                 clearResultsBtn.style.display = 'none';
-                return false; // Indicate failure
+                return false;
             }
 
-            // Success: Product found and valid
             displayProductInfo(data);
             displayMessage('Product information fetched successfully.', 'success');
             clearResultsBtn.style.display = 'block';
             saveScanToHistory(data);
 
             if (stopScannerOnSuccess) {
-                stopScanner(); // Only stop scanner if explicitly requested (e.g., from manual fetch or successful scan)
+                stopScanner();
             }
-            return true; // Indicate success
+            return true;
 
         } catch (error) {
             console.error('Error fetching or processing product:', error);
@@ -275,11 +271,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p>Could not connect to the server or an unexpected error occurred. Please ensure the server is running and your internet connection is stable.</p>
                 </div>
             `;
-            // DO NOT stop scanner here, allow continuous scanning
             clearResultsBtn.style.display = 'none';
-            return false; // Indicate failure
+            return false;
         } finally {
-            isFetchingProduct = false; // Reset flag regardless of success or failure
+            isFetchingProduct = false;
         }
     }
 
@@ -287,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchUpcBtn.addEventListener('click', async function() {
         const upc = upcInput.value.trim();
         if (upc) {
-            await fetchAndProcessProduct(upc, true); // Always stop scanner if manual fetch is successful
+            await fetchAndProcessProduct(upc, true);
         } else {
             displayMessage('Please enter a UPC code.', 'warning');
         }
@@ -342,6 +337,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // NEW FUNCTION: Deduplicates ingredients from a comma-separated string
+    function deduplicateIngredients(ingredientsText) {
+        if (!ingredientsText) {
+            return '';
+        }
+        const ingredientsArray = ingredientsText.split(',').map(item => item.trim());
+        const uniqueIngredients = [];
+        const seen = new Set();
+
+        for (const item of ingredientsArray) {
+            // Normalize for comparison (e.g., "Milk" and "milk" are the same)
+            const normalizedItem = item.toLowerCase();
+            if (!seen.has(normalizedItem)) {
+                seen.add(normalizedItem);
+                uniqueIngredients.push(item); // Keep original casing for display
+            }
+        }
+        return uniqueIngredients.join(', ');
+    }
+
+
     // --- Function to display product information ---
     function displayProductInfo(product) {
         let html = '';
@@ -358,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Get current preferences for highlighting
         const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
-        const allergensToAvoidList = preferences.allergens || []; // already lowercased and trimmed
+        const allergensToAvoidList = preferences.allergens || [];
 
         const generalAllergenMappings = {
             'nuts': ['almond', 'brazil nut', 'cashew', 'hazelnut', 'macadamia', 'pecan', 'pistachio', 'walnut', 'nut'],
@@ -403,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         // Enhanced Allergen Matching Logic
-        let foundAvoidedAllergens = new Set(); // Use a Set to avoid duplicates
+        let foundAvoidedAllergens = new Set();
         if (allergensToAvoidList.length > 0 && product.allergens && product.allergens.length > 0) {
             const normalizedProductImagesAllergens = product.allergens.map(a => a.toLowerCase().replace(/en:|from:/g, '').replace(/-/g, ' ').trim());
 
@@ -474,13 +490,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // --- Ingredients (Collapsible) ---
+        // Apply deduplication here
+        const displayIngredients = deduplicateIngredients(product.ingredients);
         html += `
             <div class="section-card">
                 <button class="accordion-header">
                     <h2>Ingredients <span class="arrow">▼</span></h2>
                 </button>
                 <div class="accordion-content">
-                    <p>${product.ingredients || 'Ingredients list not available.'}</p>
+                    <p>${displayIngredients || 'Ingredients list not available.'}</p>
                 </div>
             </div>
         `;
@@ -671,17 +689,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const upcCode = result.codeResult.code;
                     const currentTime = Date.now();
 
-                    // Debounce logic: Only process if code is different or enough time has passed
-                    // AND if we're not already fetching the same product
                     if (upcCode !== lastScannedCode || (currentTime - lastScanTimestamp > LAST_SCAN_DEBOUNCE_MS)) {
                         lastScannedCode = upcCode;
                         lastScanTimestamp = currentTime;
 
-                        upcInput.value = upcCode; // Update input for user feedback
-                        // Attempt to fetch and process the product.
-                        // If successful, the scanner will stop automatically.
-                        // If not found/error, it will continue scanning.
-                        fetchAndProcessProduct(upcCode, true); // <--- This was the key change
+                        upcInput.value = upcCode;
+                        fetchAndProcessProduct(upcCode, true);
                     }
                 }
             });
@@ -720,7 +733,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
             startScannerBtn.style.display = 'inline-block';
             stopScannerBtn.style.display = 'none';
-            lastScannedCode = null; // Reset for next scan session
+            lastScannedCode = null;
             lastScanTimestamp = 0;
         }
     }
