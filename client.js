@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const requestCameraAccessBtn = document.getElementById('requestCameraAccessBtn');
+    // const requestCameraAccessBtn = document.getElementById('requestCameraAccessBtn'); // REMOVED
     const stopScannerBtn = document.getElementById('stopScannerBtn');
     const scannerMessage = document.getElementById('scanner-message');
     const scannerContainer = document.getElementById('scanner-container');
@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
     const prefVegetarian = document.getElementById('prefVegetarian');
     const prefVegan = document.getElementById('prefVegan');
-    const prefGlutenFree = document.getElementById('prefGlutenFree');
+    const prefGlutenFree = document = document.getElementById('prefGlutenFree');
     const allergensToAvoid = document.getElementById('allergensToAvoid');
     const savePreferencesBtn = document.getElementById('savePreferencesBtn');
-    const clearPreferencesBtn = document.getElementById('clearPreferencesBtn'); // Corrected typo here
+    const clearPreferencesBtn = document.getElementById('clearPreferencesBtn');
     const preferenceMessage = document.getElementById('preferenceMessage');
 
     // Variables for scanner state and product fetching
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return 'nutrient-high';
             case 'salt':
                 if (value < 0.3) return 'nutrient-low';
-                if (value >= 0.3 && value <= 1.5) return 'nutrient-moderate';
+                if (value >= 0.3 && value >= 1.5) return 'nutrient-moderate';
                 return 'nutrient-high';
             case 'protein':
                 if (value >= 10) return 'nutrient-good';
@@ -662,9 +662,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function onScanError(errorMessage) {
         if (isScannerRunning) {
-            // Note: Html5QrcodeScanner.render() doesn't typically expose "NotReadableError"
-            // or "OverconstrainedError" through its onScanError directly.
-            // These are usually caught in the initial .render() promise.
             console.warn('Scanner error during active scan:', errorMessage);
         }
     }
@@ -684,8 +681,6 @@ document.addEventListener('DOMContentLoaded', function() {
             {
                 fps: 10,
                 qrbox: { width: 250, height: 250 },
-                // IMPORTANT: do not set rememberLastUsedCamera here.
-                // It should be part of the config passed to .render()
                 supportedScanFormats: [
                     Html5QrcodeSupportedFormats.EAN_13,
                     Html5QrcodeSupportedFormats.EAN_8,
@@ -712,7 +707,7 @@ document.addEventListener('DOMContentLoaded', function() {
             isScannerRunning = true;
             currentCameraId = cameraId;
 
-            requestCameraAccessBtn.style.display = 'none';
+            // requestCameraAccessBtn.style.display = 'none'; // REMOVED
             stopScannerBtn.style.display = 'inline-block';
             cameraControlsDiv.style.display = 'block'; // Ensure camera controls are visible
             createCameraSwitchButton(); // This will create/show the switch button if multiple cameras exist
@@ -743,7 +738,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             displayMessage(errorMessage, 'error');
             scannerContainer.innerHTML = '<p>Camera access denied or error. Please check permissions.</p>';
-            requestCameraAccessBtn.style.display = 'inline-block';
+            // requestCameraAccessBtn.style.display = 'inline-block'; // REMOVED
             stopScannerBtn.style.display = 'none';
             if (switchCameraBtn) switchCameraBtn.style.display = 'none';
             cameraControlsDiv.style.display = 'none'; // Hide camera controls if scanner failed to start
@@ -809,7 +804,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         displayMessage('Requesting camera access...', 'info');
         scannerContainer.innerHTML = '<p>Waiting for camera permission...</p>';
-        requestCameraAccessBtn.style.display = 'none'; // Hide request button during process
+        // requestCameraAccessBtn.style.display = 'none'; // REMOVED
 
         try {
             // This `getUserMedia` call prompts the user for camera permission.
@@ -823,7 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 displayMessage('No suitable camera found on this device after permission was granted.', 'error');
                 scannerContainer.innerHTML = '<p>No camera devices detected or available.</p>';
-                requestCameraAccessBtn.style.display = 'inline-block'; // Allow retry
+                // requestCameraAccessBtn.style.display = 'inline-block'; // REMOVED
             }
         } catch (err) {
             console.error('Error requesting camera access:', err);
@@ -844,14 +839,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             displayMessage(userFriendlyMessage, 'error');
             scannerContainer.innerHTML = '<p>' + userFriendlyMessage + '</p>';
-            requestCameraAccessBtn.style.display = 'inline-block'; // Show button to retry
+            // requestCameraAccessBtn.style.display = 'inline-block'; // REMOVED
             stopScannerBtn.style.display = 'none';
             if (switchCameraBtn) switchCameraBtn.style.display = 'none';
             cameraControlsDiv.style.display = 'none';
         }
     }
 
-    requestCameraAccessBtn.addEventListener('click', requestCameraAccess);
+    // requestCameraAccessBtn.addEventListener('click', requestCameraAccess); // REMOVED
 
     async function stopScanner() {
         return new Promise(async (resolve) => {
@@ -861,18 +856,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log("Html5QrcodeScanner stopped and cleared.");
                     displayMessage('Scanner stopped.', 'info');
                     isScannerRunning = false;
-                    requestCameraAccessBtn.style.display = 'inline-block'; // Show request button
+                    // requestCameraAccessBtn.style.display = 'inline-block'; // REMOVED
                     stopScannerBtn.style.display = 'none';
                     if (switchCameraBtn) switchCameraBtn.style.display = 'none';
                     cameraControlsDiv.style.display = 'none';
-                    scannerContainer.innerHTML = '<p>Click "Request Camera Access" to activate your camera.</p>';
+                    scannerContainer.innerHTML = '<p>Click "Request Camera Access" to activate your camera.</p>'; // Updated message
                     html5QrcodeScanner = null; // Clear the instance
                 } catch (err) {
                     console.error('Error stopping scanner:', err);
                     displayMessage('Error stopping scanner. It might already be stopped or camera access is blocked.', 'error');
                     // Even if stopping fails, update UI to reflect non-running state
                     isScannerRunning = false;
-                    requestCameraAccessBtn.style.display = 'inline-block';
+                    // requestCameraAccessBtn.style.display = 'inline-block'; // REMOVED
                     stopScannerBtn.style.display = 'none';
                     if (switchCameraBtn) switchCameraBtn.style.display = 'none';
                     cameraControlsDiv.style.display = 'none';
@@ -883,12 +878,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     stopScannerBtn.addEventListener('click', stopScanner);
 
-    // Initial display adjustments on load
-    displayMessage('Click "Request Camera Access" to activate your camera.', 'info');
-    requestCameraAccessBtn.style.display = 'inline-block';
+    // Initial display adjustments and automatic camera request on load
+    displayMessage('Attempting to access camera...', 'info');
     stopScannerBtn.style.display = 'none';
     if (switchCameraBtn) switchCameraBtn.style.display = 'none';
     if (cameraControlsDiv) {
         cameraControlsDiv.style.display = 'none';
     }
+    // Automatically try to request camera access
+    requestCameraAccess();
 });
