@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pure Scan: Simple Food Transparency</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;606;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;606;700&family=Open+Sans:wght@400;606&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
@@ -18,11 +18,13 @@
         <section class="section-card controls">
             <h2>Scan Product</h2>
             <div id="scanner-container">
-                <p>Click "Start Scanner" to activate your camera.</p>
+                <p>Click "Request Camera Access" to activate your camera.</p>
             </div>
             <p id="scanner-message" class="message info">Awaiting camera activation.</p>
             <div class="flex justify-center flex-wrap">
-                <button id="startScannerBtn">Start Scanner</button>
+                <button id="requestCameraAccessBtn">Request Camera Access</button>
+                <button id="startScannerBtn" style="display: none;">Start Scanner</button>
+
                 <div id="cameraControls" style="display: none;">
                     <button id="stopScannerBtn" class="button button-danger">Stop Scanner</button>
                     </div>

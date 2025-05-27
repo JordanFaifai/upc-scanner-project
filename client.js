@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const startScannerBtn = document.getElementById('startScannerBtn');
+    const requestCameraAccessBtn = document.getElementById('requestCameraAccessBtn'); // NEW button
     const stopScannerBtn = document.getElementById('stopScannerBtn');
     const scannerMessage = document.getElementById('scanner-message');
     const scannerContainer = document.getElementById('scanner-container');
@@ -12,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const scanHistorySection = document.getElementById('scanHistorySection');
     const scanHistoryList = document.getElementById('scanHistoryList');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-    const cameraControlsDiv = document.getElementById('cameraControls'); // Assuming you add this div in HTML
-    let switchCameraBtn = document.getElementById('switchCameraBtn'); // This will be created dynamically if needed
+    const cameraControlsDiv = document.getElementById('cameraControls');
+    let switchCameraBtn = document.getElementById('switchCameraBtn');
 
     // Dietary Preferences elements
     const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
@@ -27,16 +28,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Variables for scanner state and product fetching
     let isScannerRunning = false;
-    let isFetchingProduct = false; // Flag to prevent multiple API calls for the same detected barcode
+    let isFetchingProduct = false;
     const MAX_HISTORY_ITEMS = 10;
-    const LAST_SCAN_DEBOUNCE_MS = 2000; // Increased debounce time for better user experience
+    const LAST_SCAN_DEBOUNCE_MS = 2000;
     let lastScannedCode = null;
     let lastScanTimestamp = 0;
 
     // Html5QrcodeScanner instance and camera management
-    let html5QrcodeScanner = null; // Initialize as null
-    let availableCameras = []; // Store detected cameras
-    let currentCameraId = null; // Store the ID of the camera currently in use
+    let html5QrcodeScanner = null;
+    let availableCameras = [];
+    let currentCameraId = null;
 
     // Helper function to display messages
     function displayMessage(message, type = "info") {
@@ -91,11 +92,10 @@ document.addEventListener('DOMContentLoaded', function() {
             preferenceMessage.style.display = 'block';
             setTimeout(() => { preferenceMessage.style.display = 'none'; }, 3000);
 
-            // Re-render product info with cleared preferences if a product is displayed
             if (productInfoDiv.innerHTML.includes('product-header')) {
                 const currentUpc = upcInput.value.trim();
                 if (currentUpc) {
-                    fetchAndProcessProduct(currentUpc, false); // Re-fetch, don't stop scanner
+                    fetchAndProcessProduct(currentUpc, false);
                 }
             }
         });
@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadPreferences();
     savePreferencesBtn.addEventListener('click', savePreferences);
     clearPreferencesBtn.addEventListener('click', clearPreferences);
-
 
     // --- Scan History Functions ---
     function getScanHistory() {
@@ -119,15 +118,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function saveScanToHistory(product) {
         let history = getScanHistory();
-        history = history.filter(item => item.upc !== product.upc); // Remove if already in history
-        history.unshift({ // Add to the beginning
+        history = history.filter(item => item.upc !== product.upc);
+        history.unshift({
             upc: product.upc,
             name: product.name,
             image: product.image,
             timestamp: new Date().toISOString()
         });
         if (history.length > MAX_HISTORY_ITEMS) {
-            history = history.slice(0, MAX_HISTORY_ITEMS); // Trim to max items
+            history = history.slice(0, MAX_HISTORY_ITEMS);
         }
         try {
             localStorage.setItem('scanHistory', JSON.stringify(history));
@@ -160,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             li.addEventListener('click', () => {
                 upcInput.value = item.upc;
-                // When clicking history, don't stop scanner if it's running (it's a lookup, not a live scan)
                 fetchAndProcessProduct(item.upc, false);
             });
             scanHistoryList.appendChild(li);
@@ -178,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderScanHistory();
     clearHistoryBtn.addEventListener('click', clearScanHistory);
-
 
     // --- Custom Confirmation Modal (Replaces alert/confirm) ---
     function showCustomConfirm(message, onConfirm) {
@@ -200,24 +197,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         document.getElementById('customConfirmMessage').textContent = message;
-        modal.style.display = 'flex'; // Show modal
+        modal.style.display = 'flex';
 
         const confirmYes = document.getElementById('customConfirmYes');
         const confirmNo = document.getElementById('customConfirmNo');
 
-        // Remove previous event listeners to prevent multiple calls
         confirmYes.onclick = null;
         confirmNo.onclick = null;
 
         confirmYes.onclick = () => {
-            modal.style.display = 'none'; // Hide modal
-            onConfirm(); // Execute the callback
+            modal.style.display = 'none';
+            onConfirm();
         };
         confirmNo.onclick = () => {
-            modal.style.display = 'none'; // Hide modal
+            modal.style.display = 'none';
         };
     }
-
 
     // Toggle Manual Scan Section
     toggleManualScanBtn.addEventListener('click', function() {
@@ -231,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Centralized function to fetch and process product information
-    async function fetchAndProcessProduct(upc, stopScannerOnSuccess = false) { // Default to false
+    async function fetchAndProcessProduct(upc, stopScannerOnSuccess = false) {
         if (isFetchingProduct) {
             console.log("Already fetching a product, ignoring redundant request.");
             return;
@@ -259,8 +254,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
                 clearResultsBtn.style.display = 'none';
-                // If scanner was intended to stop, but failed to find product, keep it running
-                // Only hide start/show stop if we explicitly stop it.
                 return false;
             }
 
@@ -269,9 +262,8 @@ document.addEventListener('DOMContentLoaded', function() {
             clearResultsBtn.style.display = 'block';
             saveScanToHistory(data);
 
-            // Crucial: Stop the scanner here if it was a successful scan from the camera
             if (stopScannerOnSuccess) {
-                await stopScanner(); // Use await here as stopScanner is now async
+                await stopScanner();
             }
             return true;
 
@@ -285,25 +277,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             clearResultsBtn.style.display = 'none';
-            // If the scanner was running, don't stop it on a network error, allow user to try again
             return false;
         } finally {
             isFetchingProduct = false;
         }
     }
 
-    // Handle UPC fetching (manual entry)
     fetchUpcBtn.addEventListener('click', async function() {
         const upc = upcInput.value.trim();
         if (upc) {
-            // For manual entry, always stop scanner if it's running after fetching
             await fetchAndProcessProduct(upc, true);
         } else {
             displayMessage('Please enter a UPC code.', 'warning');
         }
     });
 
-    // Clear Results button handler
     clearResultsBtn.addEventListener('click', function() {
         productInfoDiv.innerHTML = '<p>Scan a UPC or enter it manually to see results.</p>';
         upcInput.value = '';
@@ -311,7 +299,6 @@ document.addEventListener('DOMContentLoaded', function() {
         displayMessage('Results cleared.', 'info');
     });
 
-    // --- Helper function to determine nutrient status class ---
     function getNutrientStatusClass(nutrientName, value) {
         if (value === null || isNaN(value)) {
             return '';
@@ -352,7 +339,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // NEW FUNCTION: Deduplicates ingredients from a comma-separated string
     function deduplicateIngredients(ingredientsText) {
         if (!ingredientsText) {
             return '';
@@ -362,18 +348,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const seen = new Set();
 
         for (const item of ingredientsArray) {
-            // Normalize for comparison (e.g., "Milk" and "milk" are the same)
             const normalizedItem = item.toLowerCase();
             if (!seen.has(normalizedItem)) {
                 seen.add(normalizedItem);
-                uniqueIngredients.push(item); // Keep original casing for display
+                uniqueIngredients.push(item);
             }
         }
         return uniqueIngredients.join(', ');
     }
 
-
-    // --- Function to display product information ---
     function displayProductInfo(product) {
         let html = '';
 
@@ -387,7 +370,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return ((parseFloat(valuePer100g) / 100) * product.serving_quantity).toFixed(1);
         };
 
-        // Get current preferences for highlighting
         const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
         const allergensToAvoidList = preferences.allergens || [];
 
@@ -408,8 +390,6 @@ document.addEventListener('DOMContentLoaded', function() {
             'molluscs': ['mollusc']
         };
 
-
-        // --- Product Header (Name and Image) ---
         html += `
             <div class="product-header">
                 <h1>${product.name || 'Unknown Product'}</h1>
@@ -417,10 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // --- Dietary Preference Highlights ---
         let preferenceHighlights = [];
-
-        // Check for Vegetarian/Vegan
         const ingredientsLower = product.ingredients ? product.ingredients.toLowerCase() : '';
         const labelsLower = product.labels ? product.labels.map(l => l.toLowerCase()) : [];
 
@@ -428,7 +405,6 @@ document.addEventListener('DOMContentLoaded', function() {
             (labelsLower.includes('vegetarian') || labelsLower.includes('lacto-vegetarian') || labelsLower.includes('ovo-vegetarian'))) {
             preferenceHighlights.push('<span class="diet-badge diet-vegetarian">Vegetarian Friendly</span>');
         } else if (preferences.vegetarian && product.ingredients && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish')) {
-            // Fallback for general ingredient check if no specific label
             preferenceHighlights.push('<span class="diet-badge diet-vegetarian-potential">Potentially Vegetarian</span>');
         }
 
@@ -437,19 +413,15 @@ document.addEventListener('DOMContentLoaded', function() {
             (labelsLower.includes('vegan'))) {
             preferenceHighlights.push('<span class="diet-badge diet-vegan">Vegan Friendly</span>');
         } else if (preferences.vegan && product.ingredients && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish') && !ingredientsLower.includes('dairy') && !ingredientsLower.includes('egg')) {
-            // Fallback for general ingredient check if no specific label
             preferenceHighlights.push('<span class="diet-badge diet-vegan-potential">Potentially Vegan</span>');
         }
 
-        // Basic Gluten-Free check (needs more robust ingredient parsing for accuracy)
         if (preferences.glutenFree && (labelsLower.includes('gluten-free') || labelsLower.includes('sans gluten'))) {
              preferenceHighlights.push('<span class="diet-badge diet-gluten-free">Gluten-Free</span>');
         } else if (preferences.glutenFree && product.ingredients && !ingredientsLower.includes('wheat') && !ingredientsLower.includes('barley') && !ingredientsLower.includes('rye')) {
              preferenceHighlights.push('<span class="diet-badge diet-gluten-free-potential">Potentially Gluten-Free</span>');
         }
 
-
-        // Enhanced Allergen Matching Logic
         let foundAvoidedAllergens = new Set();
         if (allergensToAvoidList.length > 0 && product.allergens && product.allergens.length > 0) {
             const normalizedProductImagesAllergens = product.allergens.map(a => a.toLowerCase().replace(/en:|from:|fr:/g, '').replace(/-/g, ' ').trim());
@@ -460,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (generalAllergenMappings[avoidedTerm]) {
                     termsToCheck = termsToCheck.concat(generalAllergenMappings[avoidedTerm]);
                 } else if (avoidedTerm.endsWith('s') && avoidedTerm.length > 2) {
-                    termsToCheck.push(avoidedTerm.slice(0, -1)); // Handle plural/singular
+                    termsToCheck.push(avoidedTerm.slice(0, -1));
                 }
 
                 termsToCheck.forEach(checkTerm => {
@@ -484,8 +456,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>`;
         }
 
-
-        // --- Processing Level (NOVA Group) ---
         html += `
             <div class="section-card nova-info nova-group-${String(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
                 <h2>Processing Level: NOVA Group ${product.novaGroup || 'N/A'}</h2>
@@ -520,7 +490,6 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `<p class="additive-nova-note">${additiveNote}</p>`;
         }
 
-        // --- Ingredients (Collapsible) ---
         const displayIngredients = deduplicateIngredients(product.ingredients);
         html += `
             <div class="section-card">
@@ -533,7 +502,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // --- Allergens (Collapsible) ---
         html += `
             <div class="section-card">
                 <button class="accordion-header">
@@ -548,7 +516,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // --- Additives (Collapsible and Scrollable) ---
         if (product.additives && product.additives.length > 0) {
             html += `
                 <div class="section-card">
@@ -573,12 +540,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     statusText = add.status;
                     statusClass += ' info';
                 } else if (add.status && (add.status === 'Unknown Status' || add.status === 'Details from Wikipedia.')) {
-                    statusText = 'Info limited'; // More generic for unknown/details from Wikipedia
+                    statusText = 'Info limited';
                     statusClass += ' info';
                 } else {
-                    statusClass = ''; // No specific badge if no special status
+                    statusClass = '';
                 }
-
 
                 html += `
                                 <li>
@@ -622,7 +588,6 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
 
-        // --- Nutrition Facts (Collapsible) ---
         if (product.nutrition_facts) {
             html += `
                 <div class="section-card">
@@ -644,7 +609,6 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
 
-        // --- Data Source (Collapsible) ---
         html += `
             <div class="section-card">
                 <button class="accordion-header">
@@ -660,11 +624,9 @@ document.addEventListener('DOMContentLoaded', function() {
         setupAccordions();
     }
 
-    // --- Accordion Logic ---
     function setupAccordions() {
         const accordionHeaders = document.querySelectorAll('.accordion-header');
         accordionHeaders.forEach(header => {
-            // Remove existing listeners to prevent duplication if called multiple times
             header.removeEventListener('click', toggleAccordion);
             header.addEventListener('click', toggleAccordion);
         });
@@ -680,124 +642,106 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Initial setup for accordions (in case there's static content)
     setupAccordions();
 
-    // Html5QrcodeScanner integration
     async function onScanSuccess(decodedText, decodedResult) {
         const currentTime = new Date().getTime();
 
-        // Debounce logic: Only process if it's the exact same code scanned too quickly
         if (decodedText === lastScannedCode && (currentTime - lastScanTimestamp < LAST_SCAN_DEBOUNCE_MS)) {
             console.log("Debouncing: Same code scanned too quickly.");
             return;
         }
 
-        // Set debouncing variables immediately
         lastScannedCode = decodedText;
         lastScanTimestamp = currentTime;
 
         console.log(`Scan result: ${decodedText}`, decodedResult);
-        upcInput.value = decodedText; // Populate the manual input field
+        upcInput.value = decodedText;
 
-        // Fetch and process the product, and crucially, tell it to stop the scanner on success
         await fetchAndProcessProduct(decodedText, true);
     }
 
     function onScanError(errorMessage) {
-        // This can be chatty, so only log for significant errors or if scanner not running
-        // For common, transient scanning issues, we might suppress messages.
-        // console.warn(`QR Code scanning error: ${errorMessage}`);
         if (isScannerRunning) {
+            // Keep the error messages minimal for transient scanning issues
+            // console.warn(`QR Code scanning error: ${errorMessage}`);
             if (errorMessage.includes("NotReadableError")) {
                 displayMessage('Camera is busy or inaccessible. Please close other camera apps.', 'error');
             } else if (errorMessage.includes("OverconstrainedError")) {
                 displayMessage('Requested camera constraints cannot be satisfied. Trying another camera or facing mode.', 'error');
-                // Attempt to switch camera if this error occurs
                 if (availableCameras.length > 1) {
                     const currentIndex = availableCameras.findIndex(camera => camera.id === currentCameraId);
                     const nextIndex = (currentIndex + 1) % availableCameras.length;
                     const nextCamera = availableCameras[nextIndex];
                     displayMessage(`Attempting to switch to ${nextCamera.label || 'another camera'}...`, 'info');
-                    initializeScanner(nextCamera.id); // Try initializing with the next camera
+                    initializeScanner(nextCamera.id);
                 }
-            } else {
-                // Generic error for other scanning issues, keep it quiet to avoid spam
-                // displayMessage(`Scanning issue: ${errorMessage}`, 'warning');
             }
+            // For other errors, avoid spamming
         }
     }
 
-    // Function to initialize scanner with a specific camera
     async function initializeScanner(cameraId) {
         if (html5QrcodeScanner && isScannerRunning) {
-            // If scanner already exists and is running, stop it first to re-initialize with new camera
             console.log("Stopping existing scanner to re-initialize.");
-            await stopScanner(); // Await ensures it's fully stopped before new start
+            await stopScanner();
         }
 
-        // Clear previous content in scanner container
         scannerContainer.innerHTML = '';
         displayMessage('Starting scanner...', 'info');
 
-        // Create a new scanner instance
         html5QrcodeScanner = new Html5QrcodeScanner(
-            "scanner-container", // ID of the HTML element where the scanner will be rendered
+            "scanner-container",
             {
                 fps: 10,
-                qrbox: { width: 250, height: 250 }, // Adjust size of scanning box
-                rememberLastUsedCamera: false, // Prevents library from remembering user's last choice
+                qrbox: { width: 250, height: 250 },
+                rememberLastUsedCamera: false,
                 supportedScanFormats: [
                     Html5QrcodeSupportedFormats.EAN_13,
                     Html5QrcodeSupportedFormats.EAN_8,
                     Html5QrcodeSupportedFormats.UPC_A,
                     Html5QrcodeSupportedFormats.UPC_E,
                 ],
-                // Pass facingMode or deviceId for initial camera selection
                 cameraLastUsed: cameraId ? { deviceId: { exact: cameraId } } : { facingMode: { exact: "environment" } }
             },
             /* verbose= */ false
         );
 
         try {
-            // Use start() directly with camera constraints
             await html5QrcodeScanner.start(
                 cameraId ? { deviceId: { exact: cameraId } } : { facingMode: { exact: "environment" } },
                 onScanSuccess,
                 onScanError
             );
-            isScannerRunning = true; // Set flag once start is successful
-            currentCameraId = cameraId; // Update current camera ID
+            isScannerRunning = true;
+            currentCameraId = cameraId;
 
-            startScannerBtn.style.display = 'none';
+            requestCameraAccessBtn.style.display = 'none'; // Hide request button
+            startScannerBtn.style.display = 'none'; // Hide start button
             stopScannerBtn.style.display = 'inline-block';
-
-            // Ensure camera controls are visible
             if (cameraControlsDiv) {
                 cameraControlsDiv.style.display = 'block';
             }
-            createCameraSwitchButton(); // Create/update switch button visibility
+            createCameraSwitchButton();
 
             displayMessage('Scanner active. Point to a barcode.', 'success');
         } catch (err) {
             console.error('Error starting scanner:', err);
-            isScannerRunning = false; // Ensure flag is false on failure
-            displayMessage('Error starting scanner. Please ensure camera permissions are granted and no other app is using the camera.', 'error');
-            // Hide scanner and show start button again
+            isScannerRunning = false;
+            displayMessage('Error starting scanner: ' + err.message + '. Please ensure camera permissions are granted and no other app is using the camera.', 'error');
             scannerContainer.innerHTML = '<p>Camera access denied or error. Please check permissions.</p>';
-            startScannerBtn.style.display = 'inline-block';
+            requestCameraAccessBtn.style.display = 'inline-block'; // Show request button again
+            startScannerBtn.style.display = 'none'; // Keep Start hidden, Request takes over
             stopScannerBtn.style.display = 'none';
-            if (switchCameraBtn) switchCameraBtn.style.display = 'none'; // Hide switch button
+            if (switchCameraBtn) switchCameraBtn.style.display = 'none';
         }
     }
 
-    // Function to get and store available cameras
     async function getCameras() {
         try {
             const cameras = await Html5Qrcode.getCameras();
             if (cameras && cameras.length) {
                 availableCameras = cameras;
-                // Return the preferred camera ID (back or first)
                 const backCamera = cameras.find(camera =>
                     camera.label.toLowerCase().includes('back') ||
                     camera.label.toLowerCase().includes('environment') ||
@@ -805,15 +749,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 );
                 return backCamera ? backCamera.id : cameras[0].id;
             }
-            return null; // No cameras found
+            return null;
         } catch (err) {
             console.error('Error getting cameras:', err);
-            displayMessage('Error listing cameras. Please check camera permissions.', 'error');
+            // This error happens *after* initial permission check, so it's a list issue.
+            displayMessage('Could not list cameras. Ensure camera is connected and drivers are installed.', 'error');
             return null;
         }
     }
 
-    // Function to create and manage the camera switch button
     function createCameraSwitchButton() {
         if (!cameraControlsDiv) {
             console.warn("Camera controls div not found. Cannot create switch button.");
@@ -825,7 +769,7 @@ document.addEventListener('DOMContentLoaded', function() {
             switchCameraBtn.id = 'switchCameraBtn';
             switchCameraBtn.textContent = 'Switch Camera';
             switchCameraBtn.className = 'scanner-control-button';
-            cameraControlsDiv.appendChild(switchCameraBtn); // Add to the dedicated controls div
+            cameraControlsDiv.appendChild(switchCameraBtn);
         }
 
         switchCameraBtn.onclick = async () => {
@@ -839,29 +783,55 @@ document.addEventListener('DOMContentLoaded', function() {
             const nextCamera = availableCameras[nextIndex];
 
             displayMessage(`Switching to ${nextCamera.label || 'another camera'}...`, 'info');
-            await initializeScanner(nextCamera.id); // Re-initialize scanner with the next camera
+            await initializeScanner(nextCamera.id);
         };
-        // Show only if multiple cameras are available AND scanner is running
         switchCameraBtn.style.display = (availableCameras.length > 1 && isScannerRunning) ? 'inline-block' : 'none';
     }
 
+    // NEW FUNCTION: Request camera access explicitly
+    async function requestCameraAccess() {
+        if (isScannerRunning) return; // Prevent re-request if already running
 
-    // Modified startScanner event listener
-    startScannerBtn.addEventListener('click', async function() {
-        if (!isScannerRunning) {
-            displayMessage('Requesting camera access...', 'info');
-            const defaultCameraId = await getCameras(); // Get the ID of the default camera
+        displayMessage('Requesting camera access...', 'info');
+        scannerContainer.innerHTML = '<p>Waiting for camera permission...</p>';
+        requestCameraAccessBtn.style.display = 'none'; // Hide this button while requesting
+
+        try {
+            // This call directly triggers the browser's permission prompt if needed
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            // If we get here, permission is granted, or was already granted
+            stream.getTracks().forEach(track => track.stop()); // Stop the temporary stream
+
+            const defaultCameraId = await getCameras();
             if (defaultCameraId) {
-                await initializeScanner(defaultCameraId); // Start scanner with the default camera
+                await initializeScanner(defaultCameraId);
             } else {
-                displayMessage('No suitable camera found or access denied.', 'error');
-                startScannerBtn.style.display = 'none';
+                displayMessage('No suitable camera found after access granted.', 'error');
+                scannerContainer.innerHTML = '<p>No camera devices detected or available.</p>';
+                requestCameraAccessBtn.style.display = 'inline-block'; // Allow retry
             }
+        } catch (err) {
+            console.error('Error requesting camera access:', err);
+            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                displayMessage('Camera access denied by user. Please enable camera permissions in your browser settings to use the scanner.', 'error');
+                scannerContainer.innerHTML = '<p>Camera access denied. Please allow camera access in browser settings.</p>';
+            } else if (err.name === 'NotFoundError') {
+                displayMessage('No camera found on this device.', 'error');
+                scannerContainer.innerHTML = '<p>No camera found on this device.</p>';
+            } else {
+                displayMessage('An error occurred while requesting camera access: ' + err.message, 'error');
+                scannerContainer.innerHTML = '<p>Error accessing camera. Check device and browser settings.</p>';
+            }
+            requestCameraAccessBtn.style.display = 'inline-block'; // Show request button again for retry
+            startScannerBtn.style.display = 'none'; // Keep Start hidden
         }
-    });
+    }
+
+    // Event listeners
+    startScannerBtn.addEventListener('click', requestCameraAccess); // Now calls requestCameraAccess
+    requestCameraAccessBtn.addEventListener('click', requestCameraAccess); // NEW: button specifically for requesting access
 
 
-    // Function to stop the scanner
     async function stopScanner() {
         return new Promise(async (resolve) => {
             if (isScannerRunning && html5QrcodeScanner) {
@@ -870,33 +840,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log("Html5QrcodeScanner stopped.");
                     displayMessage('Scanner stopped.', 'info');
                     isScannerRunning = false;
-                    startScannerBtn.style.display = 'inline-block';
+                    requestCameraAccessBtn.style.display = 'inline-block'; // Show request button
+                    startScannerBtn.style.display = 'none'; // Keep start hidden
                     stopScannerBtn.style.display = 'none';
-                    if (switchCameraBtn) switchCameraBtn.style.display = 'none'; // Hide switch button
-                    scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>'; // Clear video feed
-                    html5QrcodeScanner = null; // Clear the instance completely
+                    if (switchCameraBtn) switchCameraBtn.style.display = 'none';
+                    scannerContainer.innerHTML = '<p>Click "Request Camera Access" to activate your camera.</p>';
+                    html5QrcodeScanner = null;
                 } catch (err) {
                     console.error('Error stopping scanner:', err);
                     displayMessage('Error stopping scanner. It might already be stopped or camera access is blocked.', 'error');
-                    // Even if error, try to reset UI state
                     isScannerRunning = false;
-                    startScannerBtn.style.display = 'inline-block';
+                    requestCameraAccessBtn.style.display = 'inline-block'; // Show request button
+                    startScannerBtn.style.display = 'none'; // Keep start hidden
                     stopScannerBtn.style.display = 'none';
                     if (switchCameraBtn) switchCameraBtn.style.display = 'none';
                 }
             }
-            resolve(); // Resolve the promise even if scanner wasn't running or error occurred
+            resolve();
         });
     }
     stopScannerBtn.addEventListener('click', stopScanner);
 
     // Initial display adjustments on load
-    displayMessage('Click "Start Scanner" to activate your camera.', 'info');
-    startScannerBtn.style.display = 'inline-block';
+    displayMessage('Click "Request Camera Access" to activate your camera.', 'info');
+    requestCameraAccessBtn.style.display = 'inline-block'; // Show this button by default
+    startScannerBtn.style.display = 'none'; // Hide the original "Start Scanner"
     stopScannerBtn.style.display = 'none';
-    if (switchCameraBtn) switchCameraBtn.style.display = 'none'; // Hide switch button on initial load
+    if (switchCameraBtn) switchCameraBtn.style.display = 'none';
     if (cameraControlsDiv) {
-        cameraControlsDiv.style.display = 'none'; // Hide camera controls div until scanner starts
+        cameraControlsDiv.style.display = 'none';
     }
-
-}); // End of DOMContentLoaded
+});
