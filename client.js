@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const scanHistorySection = document.getElementById('scanHistorySection');
     const scanHistoryList = document.getElementById('scanHistoryList');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const cameraControlsDiv = document.getElementById('cameraControls'); // Assuming you add this div in HTML
+    let switchCameraBtn = document.getElementById('switchCameraBtn'); // This will be created dynamically if needed
 
     // Dietary Preferences elements
     const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
@@ -257,11 +259,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
                 clearResultsBtn.style.display = 'none';
-                // Only re-show start button if scanner was explicitly stopped due to this success
-                if (stopScannerOnSuccess && !isScannerRunning) {
-                    startScannerBtn.style.display = 'inline-block';
-                    stopScannerBtn.style.display = 'none';
-                }
+                // If scanner was intended to stop, but failed to find product, keep it running
+                // Only hide start/show stop if we explicitly stop it.
                 return false;
             }
 
@@ -287,11 +286,6 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             clearResultsBtn.style.display = 'none';
             // If the scanner was running, don't stop it on a network error, allow user to try again
-            // If it was manual entry, no scanner to stop anyway.
-            if (stopScannerOnSuccess && !isScannerRunning) {
-                startScannerBtn.style.display = 'inline-block';
-                stopScannerBtn.style.display = 'none';
-            }
             return false;
         } finally {
             isFetchingProduct = false;
@@ -714,24 +708,37 @@ document.addEventListener('DOMContentLoaded', function() {
         // This can be chatty, so only log for significant errors or if scanner not running
         // For common, transient scanning issues, we might suppress messages.
         // console.warn(`QR Code scanning error: ${errorMessage}`);
-        if (isScannerRunning && errorMessage.includes("NotReadableError")) {
-            displayMessage('Camera is busy or inaccessible. Please close other camera apps.', 'error');
-        } else if (isScannerRunning && errorMessage.includes("OverconstrainedError")) {
-            displayMessage('Requested camera constraints cannot be satisfied. Try switching cameras.', 'error');
-        } else if (isScannerRunning) {
-            // displayMessage(`Scanning issue: ${errorMessage}`, 'warning'); // Use for debugging, can be annoying for users
+        if (isScannerRunning) {
+            if (errorMessage.includes("NotReadableError")) {
+                displayMessage('Camera is busy or inaccessible. Please close other camera apps.', 'error');
+            } else if (errorMessage.includes("OverconstrainedError")) {
+                displayMessage('Requested camera constraints cannot be satisfied. Trying another camera or facing mode.', 'error');
+                // Attempt to switch camera if this error occurs
+                if (availableCameras.length > 1) {
+                    const currentIndex = availableCameras.findIndex(camera => camera.id === currentCameraId);
+                    const nextIndex = (currentIndex + 1) % availableCameras.length;
+                    const nextCamera = availableCameras[nextIndex];
+                    displayMessage(`Attempting to switch to ${nextCamera.label || 'another camera'}...`, 'info');
+                    initializeScanner(nextCamera.id); // Try initializing with the next camera
+                }
+            } else {
+                // Generic error for other scanning issues, keep it quiet to avoid spam
+                // displayMessage(`Scanning issue: ${errorMessage}`, 'warning');
+            }
         }
     }
 
     // Function to initialize scanner with a specific camera
     async function initializeScanner(cameraId) {
-        if (html5QrcodeScanner) {
-            // If scanner already exists, stop it first to re-initialize with new camera
-            await stopScanner();
+        if (html5QrcodeScanner && isScannerRunning) {
+            // If scanner already exists and is running, stop it first to re-initialize with new camera
+            console.log("Stopping existing scanner to re-initialize.");
+            await stopScanner(); // Await ensures it's fully stopped before new start
         }
 
         // Clear previous content in scanner container
         scannerContainer.innerHTML = '';
+        displayMessage('Starting scanner...', 'info');
 
         // Create a new scanner instance
         html5QrcodeScanner = new Html5QrcodeScanner(
@@ -746,80 +753,96 @@ document.addEventListener('DOMContentLoaded', function() {
                     Html5QrcodeSupportedFormats.UPC_A,
                     Html5QrcodeSupportedFormats.UPC_E,
                 ],
-                // Use deviceId if a specific camera is selected, otherwise facingMode for default (environment)
-                ...(cameraId ? { deviceId: { exact: cameraId } } : { facingMode: { exact: "environment" } })
+                // Pass facingMode or deviceId for initial camera selection
+                cameraLastUsed: cameraId ? { deviceId: { exact: cameraId } } : { facingMode: { exact: "environment" } }
             },
             /* verbose= */ false
         );
 
-        // This method renders the scanner and starts the camera.
-        html5QrcodeScanner.render(onScanSuccess, onScanError);
-        isScannerRunning = true; // Set flag once render is called
-        startScannerBtn.style.display = 'none';
-        stopScannerBtn.style.display = 'inline-block';
+        try {
+            // Use start() directly with camera constraints
+            await html5QrcodeScanner.start(
+                cameraId ? { deviceId: { exact: cameraId } } : { facingMode: { exact: "environment" } },
+                onScanSuccess,
+                onScanError
+            );
+            isScannerRunning = true; // Set flag once start is successful
+            currentCameraId = cameraId; // Update current camera ID
 
-        // Add or show the camera switch button if multiple cameras are available
-        if (availableCameras.length > 1) {
-            createCameraSwitchButton();
-        } else {
-            const switchBtn = document.getElementById('switchCameraBtn');
-            if (switchBtn) switchBtn.style.display = 'none';
+            startScannerBtn.style.display = 'none';
+            stopScannerBtn.style.display = 'inline-block';
+
+            // Ensure camera controls are visible
+            if (cameraControlsDiv) {
+                cameraControlsDiv.style.display = 'block';
+            }
+            createCameraSwitchButton(); // Create/update switch button visibility
+
+            displayMessage('Scanner active. Point to a barcode.', 'success');
+        } catch (err) {
+            console.error('Error starting scanner:', err);
+            isScannerRunning = false; // Ensure flag is false on failure
+            displayMessage('Error starting scanner. Please ensure camera permissions are granted and no other app is using the camera.', 'error');
+            // Hide scanner and show start button again
+            scannerContainer.innerHTML = '<p>Camera access denied or error. Please check permissions.</p>';
+            startScannerBtn.style.display = 'inline-block';
+            stopScannerBtn.style.display = 'none';
+            if (switchCameraBtn) switchCameraBtn.style.display = 'none'; // Hide switch button
         }
-        displayMessage('Scanner active. Point to a barcode.', 'info');
-        currentCameraId = cameraId; // Update current camera ID
     }
 
-    // Function to get and store available cameras, then initialize scanner
-    async function getCamerasAndInitialize() {
+    // Function to get and store available cameras
+    async function getCameras() {
         try {
             const cameras = await Html5Qrcode.getCameras();
             if (cameras && cameras.length) {
                 availableCameras = cameras;
-                // Try to find a back camera (common labels include 'back', 'environment', 'external')
-                const backCamera = cameras.find(camera => 
-                    camera.label.toLowerCase().includes('back') || 
+                // Return the preferred camera ID (back or first)
+                const backCamera = cameras.find(camera =>
+                    camera.label.toLowerCase().includes('back') ||
                     camera.label.toLowerCase().includes('environment') ||
-                    (cameras.length > 1 && !camera.label.toLowerCase().includes('front')) // If more than one, prefer non-front
+                    (cameras.length > 1 && !camera.label.toLowerCase().includes('front'))
                 );
-
-                if (backCamera) {
-                    initializeScanner(backCamera.id); // Start with back camera
-                } else {
-                    // Fallback to the first available camera if no clear "back" camera is found
-                    initializeScanner(cameras[0].id);
-                }
-            } else {
-                displayMessage('No cameras found on this device.', 'error');
-                startScannerBtn.style.display = 'none'; // Hide start button if no camera
+                return backCamera ? backCamera.id : cameras[0].id;
             }
+            return null; // No cameras found
         } catch (err) {
             console.error('Error getting cameras:', err);
-            displayMessage('Error accessing camera. Please ensure permissions are granted and no other app is using the camera.', 'error');
-            startScannerBtn.style.display = 'none'; // Hide start button on error
+            displayMessage('Error listing cameras. Please check camera permissions.', 'error');
+            return null;
         }
     }
 
     // Function to create and manage the camera switch button
     function createCameraSwitchButton() {
-        let switchBtn = document.getElementById('switchCameraBtn');
-        if (!switchBtn) {
-            switchBtn = document.createElement('button');
-            switchBtn.id = 'switchCameraBtn';
-            switchBtn.textContent = 'Switch Camera';
-            switchBtn.className = 'scanner-control-button'; // Add a class for styling
-            // Insert it near the stop button
-            stopScannerBtn.parentNode.insertBefore(switchBtn, stopScannerBtn.nextSibling);
+        if (!cameraControlsDiv) {
+            console.warn("Camera controls div not found. Cannot create switch button.");
+            return;
         }
 
-        switchBtn.onclick = () => {
-            if (!availableCameras.length) return; // Should not happen if button is visible
+        if (!switchCameraBtn) {
+            switchCameraBtn = document.createElement('button');
+            switchCameraBtn.id = 'switchCameraBtn';
+            switchCameraBtn.textContent = 'Switch Camera';
+            switchCameraBtn.className = 'scanner-control-button';
+            cameraControlsDiv.appendChild(switchCameraBtn); // Add to the dedicated controls div
+        }
+
+        switchCameraBtn.onclick = async () => {
+            if (!availableCameras.length) {
+                displayMessage("No other cameras available to switch to.", "warning");
+                return;
+            }
+
             const currentIndex = availableCameras.findIndex(camera => camera.id === currentCameraId);
             const nextIndex = (currentIndex + 1) % availableCameras.length;
             const nextCamera = availableCameras[nextIndex];
+
             displayMessage(`Switching to ${nextCamera.label || 'another camera'}...`, 'info');
-            initializeScanner(nextCamera.id); // Re-initialize scanner with the next camera
+            await initializeScanner(nextCamera.id); // Re-initialize scanner with the next camera
         };
-        switchBtn.style.display = (availableCameras.length > 1) ? 'inline-block' : 'none'; // Show only if multiple cameras
+        // Show only if multiple cameras are available AND scanner is running
+        switchCameraBtn.style.display = (availableCameras.length > 1 && isScannerRunning) ? 'inline-block' : 'none';
     }
 
 
@@ -827,8 +850,13 @@ document.addEventListener('DOMContentLoaded', function() {
     startScannerBtn.addEventListener('click', async function() {
         if (!isScannerRunning) {
             displayMessage('Requesting camera access...', 'info');
-            // On initial start, get cameras and then initialize
-            await getCamerasAndInitialize();
+            const defaultCameraId = await getCameras(); // Get the ID of the default camera
+            if (defaultCameraId) {
+                await initializeScanner(defaultCameraId); // Start scanner with the default camera
+            } else {
+                displayMessage('No suitable camera found or access denied.', 'error');
+                startScannerBtn.style.display = 'none';
+            }
         }
     });
 
@@ -839,17 +867,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isScannerRunning && html5QrcodeScanner) {
                 try {
                     await html5QrcodeScanner.stop();
+                    console.log("Html5QrcodeScanner stopped.");
                     displayMessage('Scanner stopped.', 'info');
                     isScannerRunning = false;
                     startScannerBtn.style.display = 'inline-block';
                     stopScannerBtn.style.display = 'none';
-                    const switchBtn = document.getElementById('switchCameraBtn');
-                    if (switchBtn) switchBtn.style.display = 'none'; // Hide switch button when stopped
+                    if (switchCameraBtn) switchCameraBtn.style.display = 'none'; // Hide switch button
                     scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>'; // Clear video feed
-                    html5QrcodeScanner = null; // Clear the instance
+                    html5QrcodeScanner = null; // Clear the instance completely
                 } catch (err) {
                     console.error('Error stopping scanner:', err);
                     displayMessage('Error stopping scanner. It might already be stopped or camera access is blocked.', 'error');
+                    // Even if error, try to reset UI state
+                    isScannerRunning = false;
+                    startScannerBtn.style.display = 'inline-block';
+                    stopScannerBtn.style.display = 'none';
+                    if (switchCameraBtn) switchCameraBtn.style.display = 'none';
                 }
             }
             resolve(); // Resolve the promise even if scanner wasn't running or error occurred
@@ -861,5 +894,9 @@ document.addEventListener('DOMContentLoaded', function() {
     displayMessage('Click "Start Scanner" to activate your camera.', 'info');
     startScannerBtn.style.display = 'inline-block';
     stopScannerBtn.style.display = 'none';
+    if (switchCameraBtn) switchCameraBtn.style.display = 'none'; // Hide switch button on initial load
+    if (cameraControlsDiv) {
+        cameraControlsDiv.style.display = 'none'; // Hide camera controls div until scanner starts
+    }
 
 }); // End of DOMContentLoaded
