@@ -803,6 +803,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     displayMessage('Scanner stopped.', 'info');
                     isScannerRunning = false;
                     scannerContainer.innerHTML = '<p>Scanner stopped. Refresh the page to scan another product, or use manual entry below.</p>';
+                    scannerContainer.style.height = 'auto';     // Reset height
+                    scannerContainer.style.width = 'auto';      // Reset width
+                    scannerContainer.style.minHeight = '100px'; // Ensure it has a minimum height to be visible
+                    scannerContainer.style.overflow = 'visible';// Ensure overflow is not hidden
+                    scannerContainer.style.position = 'relative'; // Ensure proper stacking context if it was changed
+                    scannerContainer.style.zIndex = 'auto';
                     html5QrcodeScanner = null;
                 } catch (err) {
                     console.error('Error stopping scanner:', err);
