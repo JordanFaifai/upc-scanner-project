@@ -23,15 +23,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearPreferencesBtn = document.getElementById('clearPreferencesBtn');
     const preferenceMessage = document.getElementById('preferenceMessage');
 
+    // Variables for scanner state and product fetching
     let isScannerRunning = false;
     let isFetchingProduct = false; // Flag to prevent multiple API calls for the same detected barcode
     const MAX_HISTORY_ITEMS = 10;
-    const LAST_SCAN_DEBOUNCE_MS = 1500; // Time to wait before allowing another scan of the same code
+    const LAST_SCAN_DEBOUNCE_MS = 2000; // Increased debounce time for better user experience
     let lastScannedCode = null;
     let lastScanTimestamp = 0;
 
-    // Html5QrcodeScanner instance
+    // Html5QrcodeScanner instance and camera management
     let html5QrcodeScanner = null; // Initialize as null
+    let availableCameras = []; // Store detected cameras
+    let currentCameraId = null; // Store the ID of the camera currently in use
 
     // Helper function to display messages
     function displayMessage(message, type = "info") {
@@ -86,10 +89,11 @@ document.addEventListener('DOMContentLoaded', function() {
             preferenceMessage.style.display = 'block';
             setTimeout(() => { preferenceMessage.style.display = 'none'; }, 3000);
 
+            // Re-render product info with cleared preferences if a product is displayed
             if (productInfoDiv.innerHTML.includes('product-header')) {
                 const currentUpc = upcInput.value.trim();
                 if (currentUpc) {
-                    fetchAndProcessProduct(currentUpc, false);
+                    fetchAndProcessProduct(currentUpc, false); // Re-fetch, don't stop scanner
                 }
             }
         });
@@ -113,15 +117,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function saveScanToHistory(product) {
         let history = getScanHistory();
-        history = history.filter(item => item.upc !== product.upc);
-        history.unshift({
+        history = history.filter(item => item.upc !== product.upc); // Remove if already in history
+        history.unshift({ // Add to the beginning
             upc: product.upc,
             name: product.name,
             image: product.image,
             timestamp: new Date().toISOString()
         });
         if (history.length > MAX_HISTORY_ITEMS) {
-            history = history.slice(0, MAX_HISTORY_ITEMS);
+            history = history.slice(0, MAX_HISTORY_ITEMS); // Trim to max items
         }
         try {
             localStorage.setItem('scanHistory', JSON.stringify(history));
@@ -154,7 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             li.addEventListener('click', () => {
                 upcInput.value = item.upc;
-                fetchAndProcessProduct(item.upc, true);
+                // When clicking history, don't stop scanner if it's running (it's a lookup, not a live scan)
+                fetchAndProcessProduct(item.upc, false);
             });
             scanHistoryList.appendChild(li);
         });
@@ -193,20 +198,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         document.getElementById('customConfirmMessage').textContent = message;
-        modal.style.display = 'flex';
+        modal.style.display = 'flex'; // Show modal
 
         const confirmYes = document.getElementById('customConfirmYes');
         const confirmNo = document.getElementById('customConfirmNo');
 
+        // Remove previous event listeners to prevent multiple calls
         confirmYes.onclick = null;
         confirmNo.onclick = null;
 
         confirmYes.onclick = () => {
-            modal.style.display = 'none';
-            onConfirm();
+            modal.style.display = 'none'; // Hide modal
+            onConfirm(); // Execute the callback
         };
         confirmNo.onclick = () => {
-            modal.style.display = 'none';
+            modal.style.display = 'none'; // Hide modal
         };
     }
 
@@ -223,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Centralized function to fetch and process product information
-    async function fetchAndProcessProduct(upc, stopScannerOnSuccess = true) {
+    async function fetchAndProcessProduct(upc, stopScannerOnSuccess = false) { // Default to false
         if (isFetchingProduct) {
             console.log("Already fetching a product, ignoring redundant request.");
             return;
@@ -247,10 +253,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <h2>Product Not Found or Incomplete Data</h2>
                         <p>${errorMessage}</p>
                         <p>Try scanning a different product or check the UPC for typos.</p>
-                        <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link">Search Open Food Facts directly for ${upc}</a></p>
+                        <p><a href="https://world.openfoodfacts.org/barcode/${upc}" target="_blank" class="external-link" rel="noopener noreferrer">Search Open Food Facts directly for ${upc}</a></p>
                     </div>
                 `;
                 clearResultsBtn.style.display = 'none';
+                // Only re-show start button if scanner was explicitly stopped due to this success
+                if (stopScannerOnSuccess && !isScannerRunning) {
+                    startScannerBtn.style.display = 'inline-block';
+                    stopScannerBtn.style.display = 'none';
+                }
                 return false;
             }
 
@@ -259,14 +270,15 @@ document.addEventListener('DOMContentLoaded', function() {
             clearResultsBtn.style.display = 'block';
             saveScanToHistory(data);
 
+            // Crucial: Stop the scanner here if it was a successful scan from the camera
             if (stopScannerOnSuccess) {
-                stopScanner();
+                await stopScanner(); // Use await here as stopScanner is now async
             }
             return true;
 
         } catch (error) {
             console.error('Error fetching or processing product:', error);
-            displayMessage('Network error or server is unreachable. Check connection, continuing scan.', 'error');
+            displayMessage('Network error or server is unreachable. Check connection.', 'error');
             productInfoDiv.innerHTML = `
                 <div class="info-card error-card">
                     <h2>Network Error</h2>
@@ -274,6 +286,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             clearResultsBtn.style.display = 'none';
+            // If the scanner was running, don't stop it on a network error, allow user to try again
+            // If it was manual entry, no scanner to stop anyway.
+            if (stopScannerOnSuccess && !isScannerRunning) {
+                startScannerBtn.style.display = 'inline-block';
+                stopScannerBtn.style.display = 'none';
+            }
             return false;
         } finally {
             isFetchingProduct = false;
@@ -284,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchUpcBtn.addEventListener('click', async function() {
         const upc = upcInput.value.trim();
         if (upc) {
+            // For manual entry, always stop scanner if it's running after fetching
             await fetchAndProcessProduct(upc, true);
         } else {
             displayMessage('Please enter a UPC code.', 'warning');
@@ -408,22 +427,38 @@ document.addEventListener('DOMContentLoaded', function() {
         let preferenceHighlights = [];
 
         // Check for Vegetarian/Vegan
-        if (preferences.vegetarian && product.ingredients && !product.ingredients.toLowerCase().includes('meat') && !product.ingredients.toLowerCase().includes('fish')) {
+        const ingredientsLower = product.ingredients ? product.ingredients.toLowerCase() : '';
+        const labelsLower = product.labels ? product.labels.map(l => l.toLowerCase()) : [];
+
+        if (preferences.vegetarian && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish') &&
+            (labelsLower.includes('vegetarian') || labelsLower.includes('lacto-vegetarian') || labelsLower.includes('ovo-vegetarian'))) {
             preferenceHighlights.push('<span class="diet-badge diet-vegetarian">Vegetarian Friendly</span>');
+        } else if (preferences.vegetarian && product.ingredients && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish')) {
+            // Fallback for general ingredient check if no specific label
+            preferenceHighlights.push('<span class="diet-badge diet-vegetarian-potential">Potentially Vegetarian</span>');
         }
-        if (preferences.vegan && product.ingredients && !product.ingredients.toLowerCase().includes('meat') && !product.ingredients.toLowerCase().includes('fish') && !product.ingredients.toLowerCase().includes('dairy') && !product.ingredients.toLowerCase().includes('egg')) {
+
+        if (preferences.vegan && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish') &&
+            !ingredientsLower.includes('dairy') && !ingredientsLower.includes('egg') &&
+            (labelsLower.includes('vegan'))) {
             preferenceHighlights.push('<span class="diet-badge diet-vegan">Vegan Friendly</span>');
+        } else if (preferences.vegan && product.ingredients && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish') && !ingredientsLower.includes('dairy') && !ingredientsLower.includes('egg')) {
+            // Fallback for general ingredient check if no specific label
+            preferenceHighlights.push('<span class="diet-badge diet-vegan-potential">Potentially Vegan</span>');
         }
+
         // Basic Gluten-Free check (needs more robust ingredient parsing for accuracy)
-        if (preferences.glutenFree && product.ingredients && !product.ingredients.toLowerCase().includes('wheat') && !product.ingredients.toLowerCase().includes('barley') && !product.ingredients.toLowerCase().includes('rye')) {
-             preferenceHighlights.push('<span class="diet-badge diet-gluten-free">Potentially Gluten-Free</span>');
+        if (preferences.glutenFree && (labelsLower.includes('gluten-free') || labelsLower.includes('sans gluten'))) {
+             preferenceHighlights.push('<span class="diet-badge diet-gluten-free">Gluten-Free</span>');
+        } else if (preferences.glutenFree && product.ingredients && !ingredientsLower.includes('wheat') && !ingredientsLower.includes('barley') && !ingredientsLower.includes('rye')) {
+             preferenceHighlights.push('<span class="diet-badge diet-gluten-free-potential">Potentially Gluten-Free</span>');
         }
 
 
         // Enhanced Allergen Matching Logic
         let foundAvoidedAllergens = new Set();
         if (allergensToAvoidList.length > 0 && product.allergens && product.allergens.length > 0) {
-            const normalizedProductImagesAllergens = product.allergens.map(a => a.toLowerCase().replace(/en:|from:/g, '').replace(/-/g, ' ').trim());
+            const normalizedProductImagesAllergens = product.allergens.map(a => a.toLowerCase().replace(/en:|from:|fr:/g, '').replace(/-/g, ' ').trim());
 
             allergensToAvoidList.forEach(avoidedTerm => {
                 let termsToCheck = [avoidedTerm];
@@ -431,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (generalAllergenMappings[avoidedTerm]) {
                     termsToCheck = termsToCheck.concat(generalAllergenMappings[avoidedTerm]);
                 } else if (avoidedTerm.endsWith('s') && avoidedTerm.length > 2) {
-                    termsToCheck.push(avoidedTerm.slice(0, -1));
+                    termsToCheck.push(avoidedTerm.slice(0, -1)); // Handle plural/singular
                 }
 
                 termsToCheck.forEach(checkTerm => {
@@ -465,14 +500,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <strong>${product.novaExplanation || 'No detailed NOVA group explanation available.'}</strong>
                 </p>
                 <p class="nova-description">
-                    <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" title="Learn more about NOVA classification">
+                    <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" title="Learn more about NOVA classification" rel="noopener noreferrer">
                         Learn more about NOVA classification
                     </a>
                 </p>
                 <p class="nova-source-note">
                     <small>
                         Classification provided by Open Food Facts. View product details on
-                        <a href="https://world.openfoodfacts.org/product/${product.upc}" target="_blank" class="external-link">Open Food Facts</a>.
+                        <a href="https://world.openfoodfacts.org/product/${product.upc}" target="_blank" class="external-link" rel="noopener noreferrer">Open Food Facts</a>.
                     </small>
                 </p>
             </div>
@@ -492,7 +527,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // --- Ingredients (Collapsible) ---
-        // Apply deduplication here
         const displayIngredients = deduplicateIngredients(product.ingredients);
         html += `
             <div class="section-card">
@@ -513,7 +547,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </button>
                 <div class="accordion-content">
                     ${product.allergens && product.allergens.length > 0 ?
-                        `<p><strong>May Contain:</strong> ${product.allergens.map(a => `<span class="allergen-tag">${a.replace(/en:/g, '').replace(/-/g, ' ')}</span>`).join(', ')}</p>` :
+                        `<p><strong>May Contain:</strong> ${product.allergens.map(a => `<span class="allergen-tag">${a.replace(/en:|fr:/g, '').replace(/-/g, ' ')}</span>`).join(', ')}</p>` :
                         `<p>No allergens declared for this product.</p>`
                     }
                 </div>
@@ -569,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="additive-lookup-note">
                             <small>
                                 For more information on E-numbers, consult resources like
-                                <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link">Wikipedia's List of Food Additives</a>.
+                                <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
                             </small>
                         </p>
                     </div>
@@ -586,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="additive-lookup-note">
                             <small>
                                 For more information on E-numbers, consult resources like
-                                <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link">Wikipedia's List of Food Additives</a>.
+                                <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
                             </small>
                         </p>
                     </div>
@@ -636,6 +670,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupAccordions() {
         const accordionHeaders = document.querySelectorAll('.accordion-header');
         accordionHeaders.forEach(header => {
+            // Remove existing listeners to prevent duplication if called multiple times
             header.removeEventListener('click', toggleAccordion);
             header.addEventListener('click', toggleAccordion);
         });
@@ -651,119 +686,180 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Initial setup for accordions (in case there's static content)
     setupAccordions();
 
     // Html5QrcodeScanner integration
-    function onScanSuccess(decodedText, decodedResult) {
+    async function onScanSuccess(decodedText, decodedResult) {
         const currentTime = new Date().getTime();
 
-        // Debounce logic: Only process if it's a new code or enough time has passed
+        // Debounce logic: Only process if it's the exact same code scanned too quickly
         if (decodedText === lastScannedCode && (currentTime - lastScanTimestamp < LAST_SCAN_DEBOUNCE_MS)) {
             console.log("Debouncing: Same code scanned too quickly.");
             return;
         }
 
+        // Set debouncing variables immediately
         lastScannedCode = decodedText;
         lastScanTimestamp = currentTime;
 
         console.log(`Scan result: ${decodedText}`, decodedResult);
-        upcInput.value = decodedText;
-        fetchAndProcessProduct(decodedText, true); // Pass true to stop scanner on success
+        upcInput.value = decodedText; // Populate the manual input field
+
+        // Fetch and process the product, and crucially, tell it to stop the scanner on success
+        await fetchAndProcessProduct(decodedText, true);
     }
 
     function onScanError(errorMessage) {
         // This can be chatty, so only log for significant errors or if scanner not running
+        // For common, transient scanning issues, we might suppress messages.
         // console.warn(`QR Code scanning error: ${errorMessage}`);
-        if (isScannerRunning) {
-             // Optionally display persistent errors, but often it's just minor frame errors.
-             // displayMessage(`Scanning error: ${errorMessage}`, 'warning');
+        if (isScannerRunning && errorMessage.includes("NotReadableError")) {
+            displayMessage('Camera is busy or inaccessible. Please close other camera apps.', 'error');
+        } else if (isScannerRunning && errorMessage.includes("OverconstrainedError")) {
+            displayMessage('Requested camera constraints cannot be satisfied. Try switching cameras.', 'error');
+        } else if (isScannerRunning) {
+            // displayMessage(`Scanning issue: ${errorMessage}`, 'warning'); // Use for debugging, can be annoying for users
         }
     }
 
-    function startScanner() {
-        if (!html5QrcodeScanner) {
-            html5QrcodeScanner = new Html5QrcodeScanner(
-                "scanner-container", // ID of the HTML element where the scanner will be rendered
-                {
-                    fps: 10, // Frames per second
-                    qrbox: { width: 250, height: 150 }, // Bounding box for QR code scanning area
-                    rememberLastUsedCamera: true,
-                    formatsToSupport: [
-                        Html5QrcodeSupportedFormats.EAN_13,
-                        Html5QrcodeSupportedFormats.EAN_8,
-                        Html5QrcodeSupportedFormats.UPC_A,
-                        Html5QrcodeSupportedFormats.UPC_E
-                    ],
-                    // Prefer front camera for mobile, "environment" for back
-                    // Note: This library often defaults to 'environment' if available.
-                    facingMode: { exact: "environment" }
-                },
-                /* verbose= */ false
-            );
+    // Function to initialize scanner with a specific camera
+    async function initializeScanner(cameraId) {
+        if (html5QrcodeScanner) {
+            // If scanner already exists, stop it first to re-initialize with new camera
+            await stopScanner();
         }
 
-        // Check if scanner is already running before rendering
+        // Clear previous content in scanner container
+        scannerContainer.innerHTML = '';
+
+        // Create a new scanner instance
+        html5QrcodeScanner = new Html5QrcodeScanner(
+            "scanner-container", // ID of the HTML element where the scanner will be rendered
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 }, // Adjust size of scanning box
+                rememberLastUsedCamera: false, // Prevents library from remembering user's last choice
+                supportedScanFormats: [
+                    Html5QrcodeSupportedFormats.EAN_13,
+                    Html5QrcodeSupportedFormats.EAN_8,
+                    Html5QrcodeSupportedFormats.UPC_A,
+                    Html5QrcodeSupportedFormats.UPC_E,
+                ],
+                // Use deviceId if a specific camera is selected, otherwise facingMode for default (environment)
+                ...(cameraId ? { deviceId: { exact: cameraId } } : { facingMode: { exact: "environment" } })
+            },
+            /* verbose= */ false
+        );
+
+        // This method renders the scanner and starts the camera.
+        html5QrcodeScanner.render(onScanSuccess, onScanError);
+        isScannerRunning = true; // Set flag once render is called
+        startScannerBtn.style.display = 'none';
+        stopScannerBtn.style.display = 'inline-block';
+
+        // Add or show the camera switch button if multiple cameras are available
+        if (availableCameras.length > 1) {
+            createCameraSwitchButton();
+        } else {
+            const switchBtn = document.getElementById('switchCameraBtn');
+            if (switchBtn) switchBtn.style.display = 'none';
+        }
+        displayMessage('Scanner active. Point to a barcode.', 'info');
+        currentCameraId = cameraId; // Update current camera ID
+    }
+
+    // Function to get and store available cameras, then initialize scanner
+    async function getCamerasAndInitialize() {
+        try {
+            const cameras = await Html5Qrcode.getCameras();
+            if (cameras && cameras.length) {
+                availableCameras = cameras;
+                // Try to find a back camera (common labels include 'back', 'environment', 'external')
+                const backCamera = cameras.find(camera => 
+                    camera.label.toLowerCase().includes('back') || 
+                    camera.label.toLowerCase().includes('environment') ||
+                    (cameras.length > 1 && !camera.label.toLowerCase().includes('front')) // If more than one, prefer non-front
+                );
+
+                if (backCamera) {
+                    initializeScanner(backCamera.id); // Start with back camera
+                } else {
+                    // Fallback to the first available camera if no clear "back" camera is found
+                    initializeScanner(cameras[0].id);
+                }
+            } else {
+                displayMessage('No cameras found on this device.', 'error');
+                startScannerBtn.style.display = 'none'; // Hide start button if no camera
+            }
+        } catch (err) {
+            console.error('Error getting cameras:', err);
+            displayMessage('Error accessing camera. Please ensure permissions are granted and no other app is using the camera.', 'error');
+            startScannerBtn.style.display = 'none'; // Hide start button on error
+        }
+    }
+
+    // Function to create and manage the camera switch button
+    function createCameraSwitchButton() {
+        let switchBtn = document.getElementById('switchCameraBtn');
+        if (!switchBtn) {
+            switchBtn = document.createElement('button');
+            switchBtn.id = 'switchCameraBtn';
+            switchBtn.textContent = 'Switch Camera';
+            switchBtn.className = 'scanner-control-button'; // Add a class for styling
+            // Insert it near the stop button
+            stopScannerBtn.parentNode.insertBefore(switchBtn, stopScannerBtn.nextSibling);
+        }
+
+        switchBtn.onclick = () => {
+            if (!availableCameras.length) return; // Should not happen if button is visible
+            const currentIndex = availableCameras.findIndex(camera => camera.id === currentCameraId);
+            const nextIndex = (currentIndex + 1) % availableCameras.length;
+            const nextCamera = availableCameras[nextIndex];
+            displayMessage(`Switching to ${nextCamera.label || 'another camera'}...`, 'info');
+            initializeScanner(nextCamera.id); // Re-initialize scanner with the next camera
+        };
+        switchBtn.style.display = (availableCameras.length > 1) ? 'inline-block' : 'none'; // Show only if multiple cameras
+    }
+
+
+    // Modified startScanner event listener
+    startScannerBtn.addEventListener('click', async function() {
         if (!isScannerRunning) {
-            displayMessage('Activating camera, please wait...', 'info');
-            // Ensure the container is visible before rendering
-            scannerContainer.style.display = 'block';
-            html5QrcodeScanner.render(onScanSuccess, onScanError)
-                .then(() => {
-                    isScannerRunning = true;
-                    displayMessage('Scanner started. Point to a UPC code.', 'success');
-                    startScannerBtn.style.display = 'none';
-                    stopScannerBtn.style.display = 'inline-block';
-                    console.log("Html5QrcodeScanner started successfully.");
-                })
-                .catch((err) => {
-                    console.error("Failed to start Html5QrcodeScanner:", err);
-                    displayMessage(`Error starting scanner: ${err.message}. Ensure camera access is granted.`, 'error');
-                    scannerContainer.style.display = 'none'; // Hide if failed to start
+            displayMessage('Requesting camera access...', 'info');
+            // On initial start, get cameras and then initialize
+            await getCamerasAndInitialize();
+        }
+    });
+
+
+    // Function to stop the scanner
+    async function stopScanner() {
+        return new Promise(async (resolve) => {
+            if (isScannerRunning && html5QrcodeScanner) {
+                try {
+                    await html5QrcodeScanner.stop();
+                    displayMessage('Scanner stopped.', 'info');
+                    isScannerRunning = false;
                     startScannerBtn.style.display = 'inline-block';
                     stopScannerBtn.style.display = 'none';
-                    isScannerRunning = false;
-                });
-        } else {
-            console.log("Scanner is already running.");
-        }
-    }
-
-    async function stopScanner() {
-        if (isScannerRunning && html5QrcodeScanner) {
-            try {
-                await html5QrcodeScanner.clear(); // This stops the camera and clears the UI
-                isScannerRunning = false;
-                displayMessage('Scanner stopped.', 'info');
-                startScannerBtn.style.display = 'inline-block';
-                stopScannerBtn.style.display = 'none';
-                scannerContainer.style.display = 'none'; // Hide the container after stopping
-                console.log("Html5QrcodeScanner stopped.");
-            } catch (err) {
-                console.error("Failed to stop Html5QrcodeScanner:", err);
-                displayMessage('Error stopping scanner. Please refresh if issues persist.', 'error');
-                // Even on error, try to set button states correctly
-                isScannerRunning = false;
-                startScannerBtn.style.display = 'inline-block';
-                stopScannerBtn.style.display = 'none';
-                scannerContainer.style.display = 'none';
+                    const switchBtn = document.getElementById('switchCameraBtn');
+                    if (switchBtn) switchBtn.style.display = 'none'; // Hide switch button when stopped
+                    scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>'; // Clear video feed
+                    html5QrcodeScanner = null; // Clear the instance
+                } catch (err) {
+                    console.error('Error stopping scanner:', err);
+                    displayMessage('Error stopping scanner. It might already be stopped or camera access is blocked.', 'error');
+                }
             }
-        } else {
-            console.log("Scanner is not running or already stopped.");
-            // Ensure button and container states are consistent
-            isScannerRunning = false;
-            startScannerBtn.style.display = 'inline-block';
-            stopScannerBtn.style.display = 'none';
-            scannerContainer.style.display = 'none';
-        }
+            resolve(); // Resolve the promise even if scanner wasn't running or error occurred
+        });
     }
-
-    // Initial button states and scanner visibility
-    startScannerBtn.style.display = 'inline-block';
-    stopScannerBtn.style.display = 'none';
-    scannerContainer.style.display = 'none'; // Hide scanner initially
-
-    // Event Listeners for Start/Stop buttons
-    startScannerBtn.addEventListener('click', startScanner);
     stopScannerBtn.addEventListener('click', stopScanner);
 
-});
+    // Initial display adjustments on load
+    displayMessage('Click "Start Scanner" to activate your camera.', 'info');
+    startScannerBtn.style.display = 'inline-block';
+    stopScannerBtn.style.display = 'none';
+
+}); // End of DOMContentLoaded
