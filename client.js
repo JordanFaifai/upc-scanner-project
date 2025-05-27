@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastScannedCode = null;
     let lastScanTimestamp = 0;
 
+    // Html5QrcodeScanner instance
+    let html5QrcodeScanner = null; // Initialize as null
 
     // Helper function to display messages
     function displayMessage(message, type = "info") {
@@ -318,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return 'nutrient-high';
             case 'salt':
                 if (value < 0.3) return 'nutrient-low';
-                if (value >= 0.3 && value >= 1.5) return 'nutrient-moderate';
+                if (value >= 0.3 && value <= 1.5) return 'nutrient-moderate';
                 return 'nutrient-high';
             case 'protein':
                 if (value >= 10) return 'nutrient-good';
@@ -651,93 +653,117 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setupAccordions();
 
+    // Html5QrcodeScanner integration
+    function onScanSuccess(decodedText, decodedResult) {
+        const currentTime = new Date().getTime();
 
-    // Quagga2 scanner integration
-    function startScanner() {
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            scannerContainer.innerHTML = ''; // Clear container
-            displayMessage('Activating camera, please wait...', 'info');
+        // Debounce logic: Only process if it's a new code or enough time has passed
+        if (decodedText === lastScannedCode && (currentTime - lastScanTimestamp < LAST_SCAN_DEBOUNCE_MS)) {
+            console.log("Debouncing: Same code scanned too quickly.");
+            return;
+        }
 
-            Quagga.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: scannerContainer,
-                    constraints: {
-                        facingMode: "environment"
-                    }
-                },
-                decoder: {
-                    readers: ["ean_reader", "ean_8_reader", "upc_reader", "upc_e_reader"]
-                }
-            }, function(err) {
-                if (err) {
-                    console.error(err);
-                    displayMessage(`Error starting scanner: ${err.message}. Ensure camera access is granted.`, 'error');
-                    scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
-                    return;
-                }
-                Quagga.start();
-                isScannerRunning = true;
-                displayMessage('Scanner started. Point to a UPC code.', 'success');
-                startScannerBtn.style.display = 'none';
-                stopScannerBtn.style.display = 'inline-block';
-            });
+        lastScannedCode = decodedText;
+        lastScanTimestamp = currentTime;
 
-            Quagga.onDetected(function(result) {
-                if (result && result.codeResult && result.codeResult.code) {
-                    const upcCode = result.codeResult.code;
-                    const currentTime = Date.now();
+        console.log(`Scan result: ${decodedText}`, decodedResult);
+        upcInput.value = decodedText;
+        fetchAndProcessProduct(decodedText, true); // Pass true to stop scanner on success
+    }
 
-                    if (upcCode !== lastScannedCode || (currentTime - lastScanTimestamp > LAST_SCAN_DEBOUNCE_MS)) {
-                        lastScannedCode = upcCode;
-                        lastScanTimestamp = currentTime;
-
-                        upcInput.value = upcCode;
-                        fetchAndProcessProduct(upcCode, true);
-                    }
-                }
-            });
-
-            Quagga.onProcessed(function(result) {
-                var drawingCtx = Quagga.canvas.ctx.overlay;
-                var drawingCanvas = Quagga.canvas.dom.overlay;
-                if (result) {
-                    if (result.boxes) {
-                        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.width), parseInt(drawingCanvas.height));
-                        result.boxes.filter(function(box) {
-                            return box !== result.box;
-                        }).forEach(function(box) {
-                            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
-                        });
-                    }
-                    if (result.box) {
-                        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "blue", lineWidth: 2 });
-                    }
-                    if (result.codeResult && result.codeResult.code) {
-                        Quagga.ImageDebug.drawPath(result.line, { x: "x", y: "y" }, drawingCtx, { color: "red", lineWidth: 3 });
-                    }
-                }
-            });
-        } else {
-            displayMessage('getUserMedia not supported in this browser. Please use manual UPC entry.', 'error');
-            startScannerBtn.style.display = 'none';
+    function onScanError(errorMessage) {
+        // This can be chatty, so only log for significant errors or if scanner not running
+        // console.warn(`QR Code scanning error: ${errorMessage}`);
+        if (isScannerRunning) {
+             // Optionally display persistent errors, but often it's just minor frame errors.
+             // displayMessage(`Scanning error: ${errorMessage}`, 'warning');
         }
     }
 
-    function stopScanner() {
-        if (isScannerRunning) {
-            Quagga.stop();
+    function startScanner() {
+        if (!html5QrcodeScanner) {
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "scanner-container", // ID of the HTML element where the scanner will be rendered
+                {
+                    fps: 10, // Frames per second
+                    qrbox: { width: 250, height: 150 }, // Bounding box for QR code scanning area
+                    rememberLastUsedCamera: true,
+                    formatsToSupport: [
+                        Html5QrcodeSupportedFormats.EAN_13,
+                        Html5QrcodeSupportedFormats.EAN_8,
+                        Html5QrcodeSupportedFormats.UPC_A,
+                        Html5QrcodeSupportedFormats.UPC_E
+                    ],
+                    // Prefer front camera for mobile, "environment" for back
+                    // Note: This library often defaults to 'environment' if available.
+                    facingMode: { exact: "environment" }
+                },
+                /* verbose= */ false
+            );
+        }
+
+        // Check if scanner is already running before rendering
+        if (!isScannerRunning) {
+            displayMessage('Activating camera, please wait...', 'info');
+            // Ensure the container is visible before rendering
+            scannerContainer.style.display = 'block';
+            html5QrcodeScanner.render(onScanSuccess, onScanError)
+                .then(() => {
+                    isScannerRunning = true;
+                    displayMessage('Scanner started. Point to a UPC code.', 'success');
+                    startScannerBtn.style.display = 'none';
+                    stopScannerBtn.style.display = 'inline-block';
+                    console.log("Html5QrcodeScanner started successfully.");
+                })
+                .catch((err) => {
+                    console.error("Failed to start Html5QrcodeScanner:", err);
+                    displayMessage(`Error starting scanner: ${err.message}. Ensure camera access is granted.`, 'error');
+                    scannerContainer.style.display = 'none'; // Hide if failed to start
+                    startScannerBtn.style.display = 'inline-block';
+                    stopScannerBtn.style.display = 'none';
+                    isScannerRunning = false;
+                });
+        } else {
+            console.log("Scanner is already running.");
+        }
+    }
+
+    async function stopScanner() {
+        if (isScannerRunning && html5QrcodeScanner) {
+            try {
+                await html5QrcodeScanner.clear(); // This stops the camera and clears the UI
+                isScannerRunning = false;
+                displayMessage('Scanner stopped.', 'info');
+                startScannerBtn.style.display = 'inline-block';
+                stopScannerBtn.style.display = 'none';
+                scannerContainer.style.display = 'none'; // Hide the container after stopping
+                console.log("Html5QrcodeScanner stopped.");
+            } catch (err) {
+                console.error("Failed to stop Html5QrcodeScanner:", err);
+                displayMessage('Error stopping scanner. Please refresh if issues persist.', 'error');
+                // Even on error, try to set button states correctly
+                isScannerRunning = false;
+                startScannerBtn.style.display = 'inline-block';
+                stopScannerBtn.style.display = 'none';
+                scannerContainer.style.display = 'none';
+            }
+        } else {
+            console.log("Scanner is not running or already stopped.");
+            // Ensure button and container states are consistent
             isScannerRunning = false;
-            displayMessage('Scanner stopped.');
-            scannerContainer.innerHTML = '<p>Click "Start Scanner" to activate your camera.</p>';
             startScannerBtn.style.display = 'inline-block';
             stopScannerBtn.style.display = 'none';
-            lastScannedCode = null;
-            lastScanTimestamp = 0;
+            scannerContainer.style.display = 'none';
         }
     }
 
+    // Initial button states and scanner visibility
+    startScannerBtn.style.display = 'inline-block';
+    stopScannerBtn.style.display = 'none';
+    scannerContainer.style.display = 'none'; // Hide scanner initially
+
+    // Event Listeners for Start/Stop buttons
     startScannerBtn.addEventListener('click', startScanner);
     stopScannerBtn.addEventListener('click', stopScanner);
+
 });
