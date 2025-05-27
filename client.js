@@ -860,7 +860,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     stopScannerBtn.style.display = 'none';
                     if (switchCameraBtn) switchCameraBtn.style.display = 'none';
                     cameraControlsDiv.style.display = 'none';
-                    scannerContainer.innerHTML = '<p>Click "Request Camera Access" to activate your camera.</p>'; // Updated message
+                    scannerContainer.innerHTML = '<p>Scanner stopped. Refresh the page to scan another product, or use manual entry below.</p>';
                     html5QrcodeScanner = null; // Clear the instance
                 } catch (err) {
                     console.error('Error stopping scanner:', err);
