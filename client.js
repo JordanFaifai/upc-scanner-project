@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     renderScanHistory();
-    clearHistoryBtn.addEventListener('click', clearHistoryBtn); // Changed to clearHistoryBtn here
+    clearHistoryBtn.addEventListener('click', clearScanHistory); // Changed to clearHistoryBtn here
 
     // --- Custom Confirmation Modal (Replaces alert/confirm) ---
     function showCustomConfirm(message, onConfirm) {
