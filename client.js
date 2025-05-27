@@ -798,18 +798,31 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Promise(async (resolve) => {
             if (isScannerRunning && html5QrcodeScanner) {
                 try {
-                    await html5QrcodeScanner.clear();
-                    console.log("Html5QrcodeScanner stopped and cleared.");
-                    displayMessage('Scanner stopped.', 'info');
-                    isScannerRunning = false;
-                    scannerContainer.innerHTML = '<p>Scanner stopped. Refresh the page to scan another product, or use manual entry below.</p>';
-                    scannerContainer.style.height = 'auto';     // Reset height
-                    scannerContainer.style.width = 'auto';      // Reset width
-                    scannerContainer.style.minHeight = '100px'; // Ensure it has a minimum height to be visible
-                    scannerContainer.style.overflow = 'visible';// Ensure overflow is not hidden
-                    scannerContainer.style.position = 'relative'; // Ensure proper stacking context if it was changed
-                    scannerContainer.style.zIndex = 'auto';
-                    html5QrcodeScanner = null;
+                    if (html5QrcodeScanner) {
+                await html5QrcodeScanner.stop();
+            }
+            isScannerRunning = false;
+            displayMessage('Scanner stopped. Ready for next scan.', 'info');
+
+            // --- START OF NEW/IMPROVED CLEANUP CODE ---
+            // Clear content and explicitly hide the container for the scanner
+            if (scannerContainer) {
+                scannerContainer.innerHTML = ''; // Remove any child elements from the scanner
+                scannerContainer.style.display = 'none'; // Ensure it's hidden
+                scannerContainer.style.width = ''; // Reset any inline width
+                scannerContainer.style.height = ''; // Reset any inline height
+                scannerContainer.style.position = ''; // Remove any absolute/fixed positioning
+                scannerContainer.style.zIndex = ''; // Reset z-index, crucial for overlays
+                scannerContainer.style.visibility = ''; // Ensure it's not just "hidden" but takes up no space
+                scannerContainer.style.pointerEvents = ''; // Ensure clicks pass through if it's still there
+            }
+            // --- END OF NEW/IMPROVED CLEANUP CODE ---
+
+            // Re-setup accordions after a tiny delay to allow DOM to settle from scanner removal
+            setTimeout(() => {
+                console.log("Re-running setupAccordions after scanner stop cleanup.");
+                setupAccordions();
+            }, 100); // 100ms delay
                 } catch (err) {
                     console.error('Error stopping scanner:', err);
                     displayMessage('Error stopping scanner. It might already be stopped or camera access is blocked.', 'error');
