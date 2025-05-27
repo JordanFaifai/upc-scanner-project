@@ -260,6 +260,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (stopScannerOnSuccess) {
                 await stopScanner();
             }
+            // **** INSERT THE setTimeout HERE ****
+            // Delay the setupAccordions call to allow the DOM to fully settle
+            // after the product info is displayed. This helps prevent race conditions
+            // where class toggling might be immediately undone or not applied.
+            setTimeout(() => {
+                console.log("Re-applying accordion listeners and ensuring classes can stick.");
+                setupAccordions();
+            }, 50); // A small delay, 50 milliseconds, is often enough       
+
             return true;
 
         } catch (error) {
