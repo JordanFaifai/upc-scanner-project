@@ -1,3 +1,5 @@
+// client.js
+
 // Global variables
 let html5QrcodeScanner;
 let isScannerRunning = false;
@@ -8,166 +10,120 @@ const LAST_SCAN_DEBOUNCE_MS = 1500; // 1.5 seconds debounce
 let availableCameras = [];
 let currentCameraId = null;
 
-// DOM Elements
-const upcInput = document.getElementById('upcInput');
-const scanButton = document.getElementById('scanButton');
-const lookupButton = document.getElementById('lookupButton');
-const productInfoDiv = document.getElementById('productInfo');
-const messageDiv = document.getElementById('message');
-const scannerContainer = document.getElementById('scanner-container');
-const scanHistoryList = document.getElementById('scanHistoryList');
-const clearHistoryButton = document.getElementById('clearHistoryButton');
-const savePreferencesButton = document.getElementById('savePreferencesButton');
-const clearPreferencesButton = document.getElementById('clearPreferencesButton');
-const dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
-const scanHistorySection = document.getElementById('scanHistorySection');
-const modalOverlay = document.getElementById('customConfirmModal');
-const modalMessage = document.getElementById('customConfirmMessage');
-const modalButtonYes = document.getElementById('modalConfirmYes');
-const modalButtonNo = document.getElementById('modalConfirmNo');
-const cameraControls = document.getElementById('cameraControls'); // New camera controls container
-const switchCameraButton = document.getElementById('switchCameraButton'); // New switch camera button
-const stopCameraButton = document.getElementById('stopCameraButton'); // New stop camera button
-const startCameraButton = document.getElementById('startCameraButton'); // New start camera button
-
 // API Base URL (replace with your actual server URL if different)
 const API_BASE_URL = 'https://upc-scanner-backend-api.onrender.com/api'; // Or your deployed backend URL
 
 // State variables for custom modal
 let resolveModalPromise;
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initial display of sections
-    productInfoDiv.innerHTML = '<p class="no-product">Scan a barcode or enter a UPC to get started!</p>';
-    displayMessage('Welcome! Enter a UPC or click "Start Scan" to begin.', 'info');
+// --- GLOBAL DOM Element References (declared here, assigned in DOMContentLoaded) ---
+// These are declared globally so other functions (like displayMessage, stopScanner) can access them.
+// Their values will be assigned once the DOM is fully loaded.
+let upcInput;
+let scanButton;
+let lookupButton;
+let productInfoDiv;
+let messageDiv;
+let scannerContainer;
+let scanHistoryList;
+let clearHistoryButton;
+let savePreferencesButton;
+let clearPreferencesButton;
+let dietaryPreferencesSection;
+let scanHistorySection;
+let modalOverlay;
+let modalMessage;
+let modalButtonYes;
+let modalButtonNo;
+let cameraControls;
+let switchCameraButton;
+let stopCameraButton;
+let startCameraButton;
+let vegetarianCheckbox;
+let veganCheckbox;
+let glutenFreeCheckbox;
+let allergensToAvoid;
+let dietaryAccordionButton;
+let scanHistoryAccordionButton;
 
-    // Load preferences and history on startup
-    loadDietaryPreferences();
-    loadScanHistory();
 
-    // Event Listeners
-    lookupButton.addEventListener('click', async () => {
-        const upc = upcInput.value.trim();
-        if (upc) {
-            await fetchAndProcessProduct(upc, false);
-            // After manual lookup, stop scanner if running, to free up camera
-            if (isScannerRunning) {
-                await stopScanner();
-            }
-        } else {
-            displayMessage('Please enter a UPC.', 'warning');
-        }
-    });
-const dietaryAccordionButton = document.getElementById('dietary-information-accordion-button');
-    const scanHistoryAccordionButton = document.getElementById('scan-history-accordion-button');
+// --- HELPER FUNCTIONS (DEFINED GLOBALLY) ---
 
-    if (dietaryAccordionButton) { // Always good to check if element exists
-        dietaryAccordionButton.addEventListener('click', () => {
-            console.log('Dietary Accordion Button CLICKED!'); // <-- ADD THIS LINE
-            toggleAccordion(dietaryAccordionButton, 'dietary-information-body');
-        });
+/**
+ * Toggles the expanded state of an accordion.
+ * @param {HTMLElement} button The accordion header button.
+ * @param {HTMLElement} contentElement The accordion content div that follows the button.
+ * @param {boolean|null} forceState If true/false, forces the state; otherwise, toggles.
+ */
+function toggleAccordion(button, contentElement, forceState = null) {
+    // console.log(`toggleAccordion called for button:`, button, `contentElement:`, contentElement, `Force State:`, forceState);
+
+    if (!button || !contentElement) {
+        // console.error('Error: Accordion button or content element not found.', { button, contentElement });
+        return;
     }
 
-    if (scanHistoryAccordionButton) { // Always good to check if element exists
-        scanHistoryAccordionButton.addEventListener('click', () => {
-            console.log('Scan History Accordion Button CLICKED!'); // <-- ADD THIS LINE
-            toggleAccordion(scanHistoryAccordionButton, 'scan-history-body');
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    let newState = forceState !== null ? forceState : !isExpanded;
+
+    button.setAttribute('aria-expanded', newState);
+    contentElement.classList.toggle('hidden', !newState);
+    contentElement.classList.toggle('flex', newState); // Use 'flex' if your CSS uses it for open state
+
+    // console.log(`Accordion Button ID: ${button.id || 'dynamic'}, Content ID: ${contentElement.id || 'dynamic'}, New expanded state: ${newState}, Content classes: ${contentElement.classList.value}`);
+}
+
+/**
+ * Sets up event listeners for all accordion headers.
+ * This function can be called multiple times, e.g., after dynamic content loads.
+ */
+function setupAccordions() {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        // Remove existing listener to prevent duplicates if this function is called multiple times
+        // (e.g., after productInfoDiv is updated).
+        // Note: The listener must be the *same function reference* to be removed.
+        // If we use an anonymous function for the listener, we can't remove it.
+        // So, we'll make sure the toggleAccordion call uses the elements directly.
+
+        // We need to attach the specific toggle logic here for each header.
+        // It's safer to use an anonymous function if `toggleAccordion` takes arguments
+        // and is not directly assigned as the event handler.
+        header.onclick = null; // Clear previous onclick handler (if any, safer than removeEventListener for anonymous)
+
+        header.addEventListener('click', (event) => {
+            // console.log('Generic Accordion Header CLICKED!', event.target);
+            toggleAccordion(header, header.nextElementSibling);
         });
-    }
-    scanButton.addEventListener('click', async () => {
-        if (!isScannerRunning) {
-            scannerContainer.style.display = 'block'; // Show scanner container
-            await requestCameraAccess();
-            scanButton.textContent = 'Hide Scanner'; // Change button text
-        } else {
-            await stopScanner();
-            scannerContainer.style.display = 'none'; // Hide scanner container
-            scanButton.textContent = 'Start Scan'; // Change button text
+
+        // Initialize state based on 'hidden' class from HTML
+        const content = header.nextElementSibling;
+        if (content && content.classList.contains('hidden')) {
+            header.setAttribute('aria-expanded', 'false');
+        } else if (content) {
+            header.setAttribute('aria-expanded', 'true');
+            content.classList.add('flex'); // Ensure flex is added if it starts visible
         }
     });
+}
 
-    clearHistoryButton.addEventListener('click', () => {
-        showCustomConfirm('Are you sure you want to clear your scan history?', () => {
-            clearScanHistory();
-            displayMessage('Scan history cleared.', 'success');
-        });
-    });
-
-    savePreferencesButton.addEventListener('click', () => {
-        saveDietaryPreferences();
-        displayMessage('Dietary preferences saved!', 'success');
-    });
-
-    clearPreferencesButton.addEventListener('click', () => {
-        showCustomConfirm('Are you sure you want to clear all dietary preferences?', () => {
-            clearDietaryPreferences();
-            displayMessage('Dietary preferences cleared.', 'success');
-        });
-    });
-
-    switchCameraButton.addEventListener('click', async () => {
-        if (availableCameras.length > 1 && isScannerRunning) {
-            const currentIndex = availableCameras.findIndex(camera => camera.id === currentCameraId);
-            const nextIndex = (currentIndex + 1) % availableCameras.length;
-            const nextCamera = availableCameras[nextIndex];
-            displayMessage(`Switching to camera: ${nextCamera.label || 'unknown'}`, 'info');
-            await stopScanner();
-            await initializeScanner(nextCamera.id);
-        } else if (availableCameras.length <= 1) {
-            displayMessage('No other cameras available to switch to.', 'warning');
-        } else if (!isScannerRunning) {
-            displayMessage('Scanner is not running. Start the scanner first.', 'warning');
-        }
-    });
-
-    stopCameraButton.addEventListener('click', async () => {
-        if (isScannerRunning) {
-            await stopScanner();
-            scannerContainer.style.display = 'none';
-            scanButton.textContent = 'Start Scan';
-        } else {
-            displayMessage('Scanner is not running.', 'info');
-        }
-    });
-
-    startCameraButton.addEventListener('click', async () => {
-        if (!isScannerRunning) {
-            scannerContainer.style.display = 'block';
-            await requestCameraAccess();
-            scanButton.textContent = 'Hide Scanner';
-        } else {
-            displayMessage('Scanner is already running.', 'warning');
-        }
-    });
-
-
-    // Custom Confirmation Modal Listeners
-    modalButtonYes.addEventListener('click', () => {
-        modalOverlay.style.display = 'none';
-        resolveModalPromise(true);
-    });
-
-    modalButtonNo.addEventListener('click', () => {
-        modalOverlay.style.display = 'none';
-        resolveModalPromise(false);
-    });
-
-    // Initial setup for static accordions (Preferences, History)
-    // The accordions related to product details will be set up after scan
-    setupAccordions();
-
-}); // End DOMContentLoaded
-
-// Helper functions
 
 function displayMessage(msg, type = 'info') {
-    messageDiv.textContent = msg;
-    messageDiv.className = `message ${type}`;
-    messageDiv.style.display = 'block'; // Ensure message is visible
+    if (messageDiv) {
+        messageDiv.textContent = msg;
+        messageDiv.className = `message ${type}`;
+        messageDiv.style.display = 'block'; // Ensure message is visible
+    } else {
+        console.log(`Message (no div): [${type}] ${msg}`);
+    }
 }
 
 // Custom confirmation modal
 function showCustomConfirm(message, onConfirm) {
+    if (!modalMessage || !modalOverlay) {
+        console.error('Custom modal elements not found.');
+        return Promise.resolve(false);
+    }
     modalMessage.textContent = message;
     modalOverlay.style.display = 'flex'; // Use flex to center content
     return new Promise(resolve => {
@@ -184,18 +140,18 @@ function showCustomConfirm(message, onConfirm) {
 function loadDietaryPreferences() {
     const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
 
-    document.getElementById('vegetarianCheckbox').checked = preferences.vegetarian || false;
-    document.getElementById('veganCheckbox').checked = preferences.vegan || false;
-    document.getElementById('glutenFreeCheckbox').checked = preferences.glutenFree || false;
-    document.getElementById('allergensToAvoid').value = (preferences.allergens && preferences.allergens.length > 0) ? preferences.allergens.join(', ') : '';
+    if (vegetarianCheckbox) vegetarianCheckbox.checked = preferences.vegetarian || false;
+    if (veganCheckbox) veganCheckbox.checked = preferences.vegan || false;
+    if (glutenFreeCheckbox) glutenFreeCheckbox.checked = preferences.glutenFree || false;
+    if (allergensToAvoid) allergensToAvoid.value = (preferences.allergens && preferences.allergens.length > 0) ? preferences.allergens.join(', ') : '';
 }
 
 function saveDietaryPreferences() {
     const preferences = {
-        vegetarian: document.getElementById('vegetarianCheckbox').checked,
-        vegan: document.getElementById('veganCheckbox').checked,
-        glutenFree: document.getElementById('glutenFreeCheckbox').checked,
-        allergens: document.getElementById('allergensToAvoid').value.split(',').map(item => item.trim().toLowerCase()).filter(item => item !== '')
+        vegetarian: vegetarianCheckbox.checked,
+        vegan: veganCheckbox.checked,
+        glutenFree: glutenFreeCheckbox.checked,
+        allergens: allergensToAvoid.value.split(',').map(item => item.trim().toLowerCase()).filter(item => item !== '')
     };
     localStorage.setItem('dietaryPreferences', JSON.stringify(preferences));
 }
@@ -235,6 +191,8 @@ function addProductToHistory(product) {
 }
 
 function renderScanHistory(history) {
+    if (!scanHistoryList) return;
+
     scanHistoryList.innerHTML = '';
     if (history.length === 0) {
         scanHistoryList.innerHTML = '<li class="text-center text-gray-500 p-3">No scan history yet.</li>';
@@ -242,12 +200,9 @@ function renderScanHistory(history) {
     }
 
     history.forEach(item => {
-        // --- THIS IS THE CRUCIAL LINE ---
-        // Ensure image URL is valid. If item.image is null, undefined, an empty string, or the string "null",
-        // use the fallback image URL.
-        const imageUrl = (item.image && item.image !== 'null' && item.image !== '')
-                         ? item.image
-                         : 'https://via.placeholder.com/60x60?text=No+Image';
+        const imageUrl = (item.image && item.image !== 'null' && item.image !== '') ?
+            item.image :
+            'https://via.placeholder.com/60x60?text=No+Image';
 
         const li = document.createElement('li');
         li.className = 'scan-history-item';
@@ -260,7 +215,7 @@ function renderScanHistory(history) {
             </div>
         `;
         li.addEventListener('click', async () => {
-            upcInput.value = item.upc; // Populate input
+            if (upcInput) upcInput.value = item.upc; // Populate input
             await fetchAndProcessProduct(item.upc, false);
             if (isScannerRunning) {
                 await stopScanner(); // Stop scanner after history lookup
@@ -327,7 +282,6 @@ function getNutrientStatusClass(nutrient, value) {
     }
 }
 
-
 function deduplicateIngredients(ingredientsString) {
     if (!ingredientsString) return 'Ingredients list not available.';
 
@@ -353,8 +307,10 @@ function deduplicateIngredients(ingredientsString) {
 
 async function fetchAndProcessProduct(upc, isScanned = false) {
     displayMessage('Searching for product...', 'info');
-    productInfoDiv.innerHTML = ''; // Clear previous product info
-    productInfoDiv.classList.remove('error-card');
+    if (productInfoDiv) {
+        productInfoDiv.innerHTML = ''; // Clear previous product info
+        productInfoDiv.classList.remove('error-card');
+    }
 
     try {
         const response = await fetch(`${API_BASE_URL}/ingredients/${upc}`);
@@ -366,30 +322,47 @@ async function fetchAndProcessProduct(upc, isScanned = false) {
                 // CRUCIAL: Re-setup accordions AFTER product info is rendered
                 setTimeout(() => {
                     setupAccordions();
-                }, 50); // Small delay to ensure DOM is ready
+                    // Auto-expand specific accordions after a scan/lookup:
+                    // Force Dietary Preferences accordion to open
+                    if (dietaryAccordionButton && document.getElementById('dietary-information-body')) {
+                        toggleAccordion(dietaryAccordionButton, document.getElementById('dietary-information-body'), true);
+                    }
+                    // Force Scan History accordion to open
+                    if (scanHistoryAccordionButton && document.getElementById('scan-history-body')) {
+                        toggleAccordion(scanHistoryAccordionButton, document.getElementById('scan-history-body'), true);
+                    }
+
+                    // Auto-expand the "Ingredients" accordion in the product details
+                    const ingredientsHeader = productInfoDiv.querySelector('.section-card .accordion-header');
+                    if (ingredientsHeader && ingredientsHeader.nextElementSibling) {
+                        toggleAccordion(ingredientsHeader, ingredientsHeader.nextElementSibling, true);
+                    }
+
+                }, 50); // Small delay to ensure DOM is ready and accordions are set up
                 if (isScanned) {
                     addProductToHistory(data);
                 }
                 displayMessage(`Found: ${data.name}`, 'success');
             } else {
                 displayMessage(`Product with UPC ${upc} not found or data incomplete.`, 'warning');
-                productInfoDiv.innerHTML = '<p class="no-product">Product not found. Please try another UPC or scan again.</p>';
+                if (productInfoDiv) productInfoDiv.innerHTML = '<p class="no-product">Product not found. Please try another UPC or scan again.</p>';
             }
         } else {
             const errorMsg = data.message || 'An error occurred while fetching product data.';
             displayMessage(`Error: ${errorMsg}`, 'error');
-            productInfoDiv.innerHTML = `<div class="info-card error-card"><h2>Error</h2><p>${errorMsg}</p></div>`;
+            if (productInfoDiv) productInfoDiv.innerHTML = `<div class="info-card error-card"><h2>Error</h2><p>${errorMsg}</p></div>`;
         }
     } catch (error) {
         console.error('Fetch error:', error);
         displayMessage(`Network error or API unavailable: ${error.message}`, 'error');
-        productInfoDiv.innerHTML = `<div class="info-card error-card"><h2>Network Error</h2><p>Could not connect to the server or API. Please check your internet connection.</p></div>`;
+        if (productInfoDiv) productInfoDiv.innerHTML = `<div class="info-card error-card"><h2>Network Error</h2><p>Could not connect to the server or API. Please check your internet connection.</p></div>`;
     }
 }
 
 
 function displayProductInfo(product) {
-    const productInfoDiv = document.getElementById('productInfo');
+    if (!productInfoDiv) return; // Ensure productInfoDiv is available
+
     let html = '';
 
     const hasServingData = product.serving_quantity && product.serving_quantity > 0;
@@ -525,10 +498,10 @@ function displayProductInfo(product) {
     const displayIngredients = deduplicateIngredients(product.ingredients);
     html += `
             <div class="section-card">
-                <button class="accordion-header">
+                <button class="accordion-header" aria-expanded="false">
                     <h2>Ingredients <span class="arrow">▼</span></h2>
                 </button>
-                <div class="accordion-content">
+                <div class="accordion-content hidden">
                     <p>${displayIngredients || 'Ingredients list not available.'}</p>
                 </div>
             </div>
@@ -536,10 +509,10 @@ function displayProductInfo(product) {
 
     html += `
             <div class="section-card">
-                <button class="accordion-header">
+                <button class="accordion-header" aria-expanded="false">
                     <h2>Allergens <span class="arrow">▼</span></h2>
                 </button>
-                <div class="accordion-content">
+                <div class="accordion-content hidden">
                     ${product.allergens && product.allergens.length > 0 ?
                         `<p><strong>May Contain:</strong> ${product.allergens.map(a => `<span class="allergen-tag">${a.replace(/en:|fr:/g, '').replace(/-/g, ' ')}</span>`).join(', ')}</p>` :
                         `<p>No allergens declared for this product.</p>`
@@ -551,10 +524,10 @@ function displayProductInfo(product) {
     if (product.additives && product.additives.length > 0) {
         html += `
                 <div class="section-card">
-                    <button class="accordion-header">
+                    <button class="accordion-header" aria-expanded="false">
                         <h2>Additives <span class="arrow">▼</span></h2>
                     </button>
-                    <div class="accordion-content">
+                    <div class="accordion-content hidden">
                         <div class="additive-list-container">
                             <ul class="additive-list">
                 `;
@@ -568,14 +541,14 @@ function displayProductInfo(product) {
             } else if (add.status && add.status.includes('Requires warning')) {
                 statusText = 'Requires warning';
                 statusClass += ' warning';
-            } else if (add.status && add.status !== 'Not banned in EU' && add.status !== 'Unknown Status' && add.status !== 'Details from Wikipedia.') {
+            } else if (add.status && (add.status !== 'Not banned in EU' && add.status !== 'Unknown Status' && add.status !== 'Details from Wikipedia.')) {
                 statusText = add.status;
                 statusClass += ' info';
             } else if (add.status && (add.status === 'Unknown Status' || add.status === 'Details from Wikipedia.')) {
                 statusText = 'Info limited';
                 statusClass += ' info';
             } else {
-                statusClass = '';
+                statusClass = ''; // No specific status class if none of the above
             }
 
             html += `
@@ -604,10 +577,10 @@ function displayProductInfo(product) {
     } else {
         html += `
                 <div class="section-card">
-                    <button class="accordion-header">
+                    <button class="accordion-header" aria-expanded="false">
                         <h2>Additives <span class="arrow">▼</span></h2>
                     </button>
-                    <div class="accordion-content">
+                    <div class="accordion-content hidden">
                         <p>No specific additives found or listed for this product.</p>
                         <p class="additive-lookup-note">
                             <small>
@@ -623,10 +596,10 @@ function displayProductInfo(product) {
     if (product.nutrition_facts) {
         html += `
                 <div class="section-card">
-                    <button class="accordion-header">
+                    <button class="accordion-header" aria-expanded="false">
                         <h2>Nutrition Facts <small>${servingSizeText}</small> <span class="arrow">▼</span></h2>
                     </button>
-                    <div class="accordion-content">
+                    <div class="accordion-content hidden">
                         <div class="nutrition-grid">
                             <p><strong>Calories:</strong> <span class="${getNutrientStatusClass('calories', getPerServingValue(product.nutrition_facts.calories))}">${getPerServingValue(product.nutrition_facts.calories) || 'N/A'} kcal</span></p>
                             <p><strong>Protein:</strong> <span class="${getNutrientStatusClass('protein', getPerServingValue(product.nutrition_facts.protein))}">${getPerServingValue(product.nutrition_facts.protein) || 'N/A'} g</span></p>
@@ -643,10 +616,10 @@ function displayProductInfo(product) {
 
     html += `
             <div class="section-card">
-                <button class="accordion-header">
+                <button class="accordion-header" aria-expanded="false">
                     <h2>Data Source <span class="arrow">▼</span></h2>
                 </button>
-                <div class="accordion-content">
+                <div class="accordion-content hidden">
                     <p>Information provided by ${product.source || 'Open Food Facts'}.</p>
                 </div>
             </div>
@@ -657,58 +630,37 @@ function displayProductInfo(product) {
     // It is now handled by a setTimeout in fetchAndProcessProduct to ensure DOM is fully ready.
 }
 
-function setupAccordions() {
-    const accordionHeaders = document.querySelectorAll('.accordion-header');
-    accordionHeaders.forEach(header => {
-        // Crucial: remove existing listener to prevent duplicates
-        header.removeEventListener('click', toggleAccordion);
-        // Add new listener
-        header.addEventListener('click', toggleAccordion);
-    });
-
-    function toggleAccordion() {
-        this.classList.toggle('active');
-        const content = this.nextElementSibling;
-        if (content.classList.contains('show')) {
-            content.classList.remove('show');
-        } else {
-            content.classList.add('show');
-        }
-    }
-}
-
-// setupAccordions(); // Initial setup for static accordions on page load is done inside DOMContentLoaded
 
 async function onScanSuccess(decodedText, decodedResult) {
     const currentTime = new Date().getTime();
 
     if (decodedText === lastScannedCode && (currentTime - lastScanTimestamp < LAST_SCAN_DEBOUNCE_MS)) {
-        console.log("Debouncing: Same code scanned too quickly.");
+        // console.log("Debouncing: Same code scanned too quickly.");
         return;
     }
 
     lastScannedCode = decodedText;
     lastScanTimestamp = currentTime;
 
-    console.log(`Scan result: ${decodedText}`, decodedResult);
-    upcInput.value = decodedText;
+    // console.log(`Scan result: ${decodedText}`, decodedResult);
+    if (upcInput) upcInput.value = decodedText;
 
     await fetchAndProcessProduct(decodedText, true);
 }
 
 function onScanError(errorMessage) {
     if (isScannerRunning) {
-        console.warn('Scanner error during active scan:', errorMessage);
+        // console.warn('Scanner error during active scan:', errorMessage);
     }
 }
 
 async function initializeScanner(cameraId) {
     if (html5QrcodeScanner && isScannerRunning) {
-        console.log("Stopping existing scanner to re-initialize.");
+        // console.log("Stopping existing scanner to re-initialize.");
         await stopScanner();
     }
 
-    scannerContainer.innerHTML = '';
+    if (scannerContainer) scannerContainer.innerHTML = '';
     displayMessage('Starting scanner...', 'info');
 
     html5QrcodeScanner = new Html5QrcodeScanner(
@@ -745,12 +697,11 @@ async function initializeScanner(cameraId) {
         currentCameraId = cameraId;
 
         displayMessage('Scanner active. Point to a barcode.', 'success');
-        // Hide scanner controls initially, only show when needed or scanner is active
-        cameraControls.style.display = 'flex'; // Show camera controls once scanner starts
+        if (cameraControls) cameraControls.style.display = 'flex'; // Show camera controls once scanner starts
     } catch (err) {
         console.error('Error starting scanner with ID ' + cameraId + ':', err);
         isScannerRunning = false;
-        cameraControls.style.display = 'none'; // Hide camera controls on error
+        if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls on error
         let errorMessage = 'Error starting scanner.';
         if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
             errorMessage = 'Camera access denied by user. Please enable camera permissions in your browser settings.';
@@ -771,7 +722,7 @@ async function initializeScanner(cameraId) {
         }
 
         displayMessage(errorMessage, 'error');
-        scannerContainer.innerHTML = '<p>Camera access denied or error. Please check permissions.</p>';
+        if (scannerContainer) scannerContainer.innerHTML = '<p>Camera access denied or error. Please check permissions.</p>';
     }
 }
 
@@ -798,12 +749,12 @@ async function getCameras() {
 
 async function requestCameraAccess() {
     if (isScannerRunning) {
-        console.log("Scanner already running, ignoring repeated request.");
+        // console.log("Scanner already running, ignoring repeated request.");
         return;
     }
 
     displayMessage('Requesting camera access...', 'info');
-    scannerContainer.innerHTML = '<p>Waiting for camera permission...</p>';
+    if (scannerContainer) scannerContainer.innerHTML = '<p>Waiting for camera permission...</p>';
 
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -814,8 +765,8 @@ async function requestCameraAccess() {
             await initializeScanner(defaultCameraId);
         } else {
             displayMessage('No suitable camera found on this device after permission was granted.', 'error');
-            scannerContainer.innerHTML = '<p>No camera devices detected or available.</p>';
-            cameraControls.style.display = 'none'; // Hide camera controls if no camera
+            if (scannerContainer) scannerContainer.innerHTML = '<p>No camera devices detected or available.</p>';
+            if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls if no camera
         }
     } catch (err) {
         console.error('Error requesting camera access:', err);
@@ -835,8 +786,8 @@ async function requestCameraAccess() {
         }
 
         displayMessage(userFriendlyMessage, 'error');
-        scannerContainer.innerHTML = '<p>' + userFriendlyMessage + '</p>';
-        cameraControls.style.display = 'none'; // Hide camera controls on error
+        if (scannerContainer) scannerContainer.innerHTML = '<p>' + userFriendlyMessage + '</p>';
+        if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls on error
     }
 }
 
@@ -848,7 +799,6 @@ async function stopScanner() {
                 isScannerRunning = false;
                 displayMessage('Scanner stopped. Ready for next scan.', 'info');
 
-                // --- START OF NEW/IMPROVED CLEANUP CODE ---
                 if (scannerContainer) {
                     scannerContainer.innerHTML = ''; // Remove any child elements from the scanner
                     scannerContainer.style.display = 'none'; // Ensure it's hidden
@@ -859,26 +809,193 @@ async function stopScanner() {
                     scannerContainer.style.visibility = ''; // Ensure it's not just "hidden" but takes up no space
                     scannerContainer.style.pointerEvents = ''; // Ensure clicks pass through if it's still there
                 }
-                cameraControls.style.display = 'none'; // Hide camera controls when scanner stops
-                // --- END OF NEW/IMPROVED CLEANUP CODE ---
+                if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls when scanner stops
 
                 // Re-setup accordions after a tiny delay to allow DOM to settle from scanner removal
                 setTimeout(() => {
-                    console.log("Re-running setupAccordions after scanner stop cleanup.");
+                    // console.log("Re-running setupAccordions after scanner stop cleanup.");
                     setupAccordions(); // Re-enable accordions on the rest of the page if needed
                 }, 100); // 100ms delay
             } catch (err) {
                 console.error('Error stopping scanner:', err);
                 displayMessage('Error stopping scanner. It might already be stopped or camera access is blocked.', 'error');
                 isScannerRunning = false;
-                cameraControls.style.display = 'none'; // Hide camera controls on error
+                if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls on error
             }
         }
         resolve();
     });
 }
 
-// Initial display adjustments and automatic camera request on load
-// displayMessage('Attempting to access camera...', 'info');
-// Automatically try to request camera access if desired, or leave commented out for manual start
-// requestCameraAccess();
+
+// --- DOMContentLoaded Event Listener ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Assign DOM elements AFTER the document is fully loaded
+    upcInput = document.getElementById('upcInput');
+    scanButton = document.getElementById('scanButton');
+    lookupButton = document.getElementById('lookupButton');
+    productInfoDiv = document.getElementById('productInfo');
+    messageDiv = document.getElementById('message');
+    scannerContainer = document.getElementById('scanner-container');
+    scanHistoryList = document.getElementById('scanHistoryList');
+    clearHistoryButton = document.getElementById('clearHistoryButton');
+    savePreferencesButton = document.getElementById('savePreferencesButton');
+    clearPreferencesButton = document.getElementById('clearPreferencesButton');
+    dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
+    scanHistorySection = document.getElementById('scanHistorySection');
+    modalOverlay = document.getElementById('customConfirmModal');
+    modalMessage = document.getElementById('customConfirmMessage');
+    modalButtonYes = document.getElementById('modalConfirmYes');
+    modalButtonNo = document.getElementById('modalConfirmNo');
+    cameraControls = document.getElementById('cameraControls');
+    switchCameraButton = document.getElementById('switchCameraButton');
+    stopCameraButton = document.getElementById('stopCameraButton');
+    startCameraButton = document.getElementById('startCameraButton');
+    vegetarianCheckbox = document.getElementById('vegetarianCheckbox');
+    veganCheckbox = document.getElementById('veganCheckbox');
+    glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
+    allergensToAvoid = document.getElementById('allergensToAvoid');
+    dietaryAccordionButton = document.getElementById('dietary-information-accordion-button');
+    scanHistoryAccordionButton = document.getElementById('scan-history-accordion-button');
+
+
+    // Initial display of sections
+    if (productInfoDiv) productInfoDiv.innerHTML = '<p class="no-product">Scan a barcode or enter a UPC to get started!</p>';
+    displayMessage('Welcome! Enter a UPC or click "Start Scan" to begin.', 'info');
+
+    // Load preferences and history on startup
+    loadDietaryPreferences();
+    loadScanHistory();
+
+    // Event Listeners
+    if (lookupButton && upcInput) {
+        lookupButton.addEventListener('click', async () => {
+            const upc = upcInput.value.trim();
+            if (upc) {
+                await fetchAndProcessProduct(upc, false);
+                // After manual lookup, stop scanner if running, to free up camera
+                if (isScannerRunning) {
+                    await stopScanner();
+                }
+            } else {
+                displayMessage('Please enter a UPC.', 'warning');
+            }
+        });
+    }
+
+    // Explicit accordion listeners for static accordions (Dietary, Scan History)
+    // Their content elements are guaranteed to have IDs in index.html
+    if (dietaryAccordionButton) {
+        dietaryAccordionButton.addEventListener('click', () => {
+            // console.log('Dietary Accordion Button CLICKED!');
+            toggleAccordion(dietaryAccordionButton, document.getElementById('dietary-information-body'));
+        });
+    }
+
+    if (scanHistoryAccordionButton) {
+        scanHistoryAccordionButton.addEventListener('click', () => {
+            // console.log('Scan History Accordion Button CLICKED!');
+            toggleAccordion(scanHistoryAccordionButton, document.getElementById('scan-history-body'));
+        });
+    }
+
+    if (scanButton && scannerContainer) {
+        scanButton.addEventListener('click', async () => {
+            if (!isScannerRunning) {
+                scannerContainer.style.display = 'block'; // Show scanner container
+                await requestCameraAccess();
+                scanButton.textContent = 'Hide Scanner'; // Change button text
+            } else {
+                await stopScanner();
+                scannerContainer.style.display = 'none'; // Hide scanner container
+                scanButton.textContent = 'Start Scan'; // Change button text
+            }
+        });
+    }
+
+    if (clearHistoryButton) {
+        clearHistoryButton.addEventListener('click', () => {
+            showCustomConfirm('Are you sure you want to clear your scan history?', () => {
+                clearScanHistory();
+                displayMessage('Scan history cleared.', 'success');
+            });
+        });
+    }
+
+    if (savePreferencesButton) {
+        savePreferencesButton.addEventListener('click', () => {
+            saveDietaryPreferences();
+            displayMessage('Dietary preferences saved!', 'success');
+        });
+    }
+
+    if (clearPreferencesButton) {
+        clearPreferencesButton.addEventListener('click', () => {
+            showCustomConfirm('Are you sure you want to clear all dietary preferences?', () => {
+                clearDietaryPreferences();
+                displayMessage('Dietary preferences cleared.', 'success');
+            });
+        });
+    }
+
+    if (switchCameraButton) {
+        switchCameraButton.addEventListener('click', async () => {
+            if (availableCameras.length > 1 && isScannerRunning) {
+                const currentIndex = availableCameras.findIndex(camera => camera.id === currentCameraId);
+                const nextIndex = (currentIndex + 1) % availableCameras.length;
+                const nextCamera = availableCameras[nextIndex];
+                displayMessage(`Switching to camera: ${nextCamera.label || 'unknown'}`, 'info');
+                await stopScanner();
+                await initializeScanner(nextCamera.id);
+            } else if (availableCameras.length <= 1) {
+                displayMessage('No other cameras available to switch to.', 'warning');
+            } else if (!isScannerRunning) {
+                displayMessage('Scanner is not running. Start the scanner first.', 'warning');
+            }
+        });
+    }
+
+    if (stopCameraButton) {
+        stopCameraButton.addEventListener('click', async () => {
+            if (isScannerRunning) {
+                await stopScanner();
+                if (scannerContainer) scannerContainer.style.display = 'none';
+                if (scanButton) scanButton.textContent = 'Start Scan';
+            } else {
+                displayMessage('Scanner is not running.', 'info');
+            }
+        });
+    }
+
+    if (startCameraButton && scannerContainer) {
+        startCameraButton.addEventListener('click', async () => {
+            if (!isScannerRunning) {
+                scannerContainer.style.display = 'block';
+                await requestCameraAccess();
+                if (scanButton) scanButton.textContent = 'Hide Scanner';
+            } else {
+                displayMessage('Scanner is already running.', 'warning');
+            }
+        });
+    }
+
+    // Custom Confirmation Modal Listeners
+    if (modalButtonYes && modalOverlay) {
+        modalButtonYes.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+            resolveModalPromise(true);
+        });
+    }
+
+    if (modalButtonNo && modalOverlay) {
+        modalButtonNo.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+            resolveModalPromise(false);
+        });
+    }
+
+    // Initial setup for static accordions (Preferences, History)
+    // The accordions related to product details will be set up after scan
+    setupAccordions();
+
+}); // End DOMContentLoaded
