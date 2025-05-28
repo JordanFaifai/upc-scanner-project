@@ -342,7 +342,7 @@ async function fetchAndProcessProduct(upc, isScanned = false) {
     productInfoDiv.classList.remove('error-card');
 
     try {
-        const response = await fetch(`${API_BASE_URL}/product/${upc}`);
+        const response = await fetch(`${API_BASE_URL}/ingredients/${upc}`);
         const data = await response.json();
 
         if (response.ok) {
