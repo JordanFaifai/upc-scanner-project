@@ -13,6 +13,9 @@
         <div id="message" class="message" style="display: none;"></div>
         <h1>Pure Scan: Simple Food Transparency</h1>
         <p>Scan product barcodes or enter UPCs manually to get detailed ingredient, nutrition, and additive information.</p>
+        <button id="sidebarToggleButton" class="hamburger-button" aria-label="Open menu">
+            ☰
+        </button>
     </header>
 
     <main class="container">
@@ -35,12 +38,22 @@
             <button id="lookupButton" class="button">Lookup Product Info</button>
         </section>
 
-        <section id="dietaryPreferencesSection" class="section-card">
-            <button id="dietary-information-accordion-button" class="accordion-header" aria-expanded="false">
-                <h2>Dietary Preferences <span class="arrow">▼</span></h2>
+        <section id="productInfo" class="section-card">
+            <h2>Product Details</h2>
+            <p>Scan a UPC or enter it manually to see results.</p>
+        </section>
+    </main>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Settings & History</h2>
+            <button id="sidebarCloseButton" class="sidebar-close-button" aria-label="Close menu">
+                &times;
             </button>
-            <div id="dietary-information-body" class="accordion-content hidden">
-                <div class="preference-group">
+        </div>
+        <section id="dietaryPreferencesSection" class="section-card no-margin-top">
+            <h2 class="sidebar-section-title">Dietary Preferences</h2>
+            <div id="dietary-information-body" class="accordion-content flex"> <div class="preference-group">
                     <h3>General Dietary Needs</h3>
                     <div class="checkbox-group">
                         <input type="checkbox" id="vegetarianCheckbox"> <label for="vegetarianCheckbox">Vegetarian</label>
@@ -66,24 +79,18 @@
             </div>
         </section>
 
-        <section id="productInfo" class="section-card">
-            <h2>Product Details</h2>
-            <p>Scan a UPC or enter it manually to see results.</p>
-        </section>
-
         <section id="scanHistorySection" class="section-card">
-            <button id="scan-history-accordion-button" class="accordion-header" aria-expanded="false">
-                <h2>Scan History <span class="arrow">▼</span></h2>
-            </button>
-            <div id="scan-history-body" class="accordion-content hidden">
-                <ul id="scanHistoryList" class="scan-history-list">
+            <h2 class="sidebar-section-title">Scan History</h2>
+            <div id="scan-history-body" class="accordion-content flex"> <ul id="scanHistoryList" class="scan-history-list">
                 </ul>
                 <div class="flex justify-center">
                     <button id="clearHistoryButton" class="button button-danger">Clear History</button>
                 </div>
             </div>
         </section>
-    </main>
+    </div>
+
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
     <div id="customConfirmModal" class="custom-modal">
         <div class="custom-modal-content">

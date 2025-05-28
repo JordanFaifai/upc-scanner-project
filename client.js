@@ -482,6 +482,483 @@ function displayProductInfo(product) {
             </div>
         `;
 
+   // client.js
+
+// Global variables
+let html5QrcodeScanner;
+let isScannerRunning = false;
+let lastScannedCode = null;
+let lastScanTimestamp = 0;
+const LAST_SCAN_DEBOUNCE_MS = 1500; // 1.5 seconds debounce
+
+let availableCameras = [];
+let currentCameraId = null;
+
+// API Base URL (replace with your actual server URL if different)
+const API_BASE_URL = 'https://upc-scanner-backend-api.onrender.com/api'; // Or your deployed backend URL
+
+// State variables for custom modal
+let resolveModalPromise;
+
+// --- GLOBAL DOM Element References (declared here, assigned in DOMContentLoaded) ---
+// These are declared globally so other functions (like displayMessage, stopScanner) can access them.
+// Their values will be assigned once the DOM is fully loaded.
+let upcInput;
+let scanButton;
+let lookupButton;
+let productInfoDiv;
+let messageDiv;
+let scannerContainer;
+let scanHistoryList;
+let clearHistoryButton;
+let savePreferencesButton;
+let clearPreferencesButton;
+// Removed: dietaryPreferencesSection; // No longer a main section
+// Removed: scanHistorySection;     // No longer a main section
+let modalOverlay;
+let modalMessage;
+let modalButtonYes;
+let modalButtonNo;
+let cameraControls;
+let switchCameraButton;
+let stopCameraButton;
+let startCameraButton;
+let vegetarianCheckbox;
+let veganCheckbox;
+let glutenFreeCheckbox;
+let allergensToAvoid;
+// Removed: dietaryAccordionButton; // No longer an accordion
+// Removed: scanHistoryAccordionButton; // No longer an accordion
+
+// NEW: Sidebar DOM elements
+let sidebar;
+let sidebarOverlay;
+let sidebarToggleButton;
+let sidebarCloseButton;
+
+
+// --- HELPER FUNCTIONS (DEFINED GLOBALLY) ---
+
+/**
+ * Toggles the expanded state of an accordion.
+ * @param {HTMLElement} button The accordion header button.
+ * @param {HTMLElement} contentElement The accordion content div that follows the button.
+ * @param {boolean|null} forceState If true/false, forces the state; otherwise, toggles.
+ */
+function toggleAccordion(button, contentElement, forceState = null) {
+    // console.log(`toggleAccordion called for button:`, button, `contentElement:`, contentElement, `Force State:`, forceState);
+
+    if (!button || !contentElement) {
+        // console.error('Error: Accordion button or content element not found.', { button, contentElement });
+        return;
+    }
+
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+    let newState = forceState !== null ? forceState : !isExpanded;
+
+    button.setAttribute('aria-expanded', newState);
+    contentElement.classList.toggle('hidden', !newState);
+    contentElement.classList.toggle('flex', newState); // Use 'flex' if your CSS uses it for open state
+
+    // console.log(`Accordion Button ID: ${button.id || 'dynamic'}, Content ID: ${contentElement.id || 'dynamic'}, New expanded state: ${newState}, Content classes: ${contentElement.classList.value}`);
+}
+
+/**
+ * Sets up event listeners for all accordion headers.
+ * This function can be called multiple times, e.g., after dynamic content loads.
+ */
+function setupAccordions() {
+    // Selects only accordions that are direct children of a .section-card (product details accordions)
+    const accordionHeaders = productInfoDiv.querySelectorAll('.section-card .accordion-header'); // IMPORTANT: Only apply to product details
+    accordionHeaders.forEach(header => {
+        // Remove existing listener to prevent duplicates if this function is called multiple times
+        // (e.g., after productInfoDiv is updated).
+        // It's safer to use an anonymous function if `toggleAccordion` takes arguments
+        // and is not directly assigned as the event handler.
+        header.onclick = null; // Clear previous onclick handler (if any, safer than removeEventListener for anonymous)
+
+        header.addEventListener('click', (event) => {
+            // console.log('Generic Accordion Header CLICKED!', event.target);
+            toggleAccordion(header, header.nextElementSibling);
+        });
+
+        // Initialize state based on 'hidden' class from HTML
+        const content = header.nextElementSibling;
+        if (content && content.classList.contains('hidden')) {
+            header.setAttribute('aria-expanded', 'false');
+        } else if (content) {
+            header.setAttribute('aria-expanded', 'true');
+            content.classList.add('flex'); // Ensure flex is added if it starts visible
+        }
+    });
+}
+
+
+function displayMessage(msg, type = 'info') {
+    if (messageDiv) {
+        messageDiv.textContent = msg;
+        messageDiv.className = `message ${type}`;
+        messageDiv.style.display = 'block'; // Ensure message is visible
+    } else {
+        console.log(`Message (no div): [${type}] ${msg}`);
+    }
+}
+
+// Custom confirmation modal
+function showCustomConfirm(message, onConfirm) {
+    if (!modalMessage || !modalOverlay) {
+        console.error('Custom modal elements not found.');
+        return Promise.resolve(false);
+    }
+    modalMessage.textContent = message;
+    modalOverlay.style.display = 'flex'; // Use flex to center content
+    return new Promise(resolve => {
+        resolveModalPromise = (result) => {
+            modalOverlay.style.display = 'none';
+            resolve(result);
+            if (result && typeof onConfirm === 'function') {
+                onConfirm();
+            }
+        };
+    });
+}
+
+function loadDietaryPreferences() {
+    const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
+
+    if (vegetarianCheckbox) vegetarianCheckbox.checked = preferences.vegetarian || false;
+    if (veganCheckbox) veganCheckbox.checked = preferences.vegan || false;
+    if (glutenFreeCheckbox) glutenFreeCheckbox.checked = preferences.glutenFree || false;
+    if (allergensToAvoid) allergensToAvoid.value = (preferences.allergens && preferences.allergens.length > 0) ? preferences.allergens.join(', ') : '';
+}
+
+function saveDietaryPreferences() {
+    const preferences = {
+        vegetarian: vegetarianCheckbox.checked,
+        vegan: veganCheckbox.checked,
+        glutenFree: glutenFreeCheckbox.checked,
+        allergens: allergensToAvoid.value.split(',').map(item => item.trim().toLowerCase()).filter(item => item !== '')
+    };
+    localStorage.setItem('dietaryPreferences', JSON.stringify(preferences));
+}
+
+function clearDietaryPreferences() {
+    localStorage.removeItem('dietaryPreferences');
+    loadDietaryPreferences(); // Reset checkboxes and textarea
+}
+
+const MAX_HISTORY_ITEMS = 5;
+
+function loadScanHistory() {
+    const history = JSON.parse(localStorage.getItem('scanHistory')) || [];
+    renderScanHistory(history);
+}
+
+function addProductToHistory(product) {
+    let history = JSON.parse(localStorage.getItem('scanHistory')) || [];
+
+    // Check if product already exists in history
+    history = history.filter(item => item.upc !== product.upc);
+
+    // Add new product to the beginning
+    history.unshift({
+        upc: product.upc,
+        name: product.name || 'Unknown Product',
+        image: product.image || 'https://via.placeholder.com/60x60?text=No+Image'
+    });
+
+    // Trim history to MAX_HISTORY_ITEMS
+    if (history.length > MAX_HISTORY_ITEMS) {
+        history = history.slice(0, MAX_HISTORY_ITEMS);
+    }
+
+    localStorage.setItem('scanHistory', JSON.stringify(history));
+    renderScanHistory(history);
+}
+
+function renderScanHistory(history) {
+    if (!scanHistoryList) return;
+
+    scanHistoryList.innerHTML = '';
+    if (history.length === 0) {
+        scanHistoryList.innerHTML = '<li class="text-center text-gray-500 p-3">No scan history yet.</li>';
+        return;
+    }
+
+    history.forEach(item => {
+        const imageUrl = (item.image && item.image !== 'null' && item.image !== '') ?
+            item.image :
+            'https://via.placeholder.com/60x60?text=No+Image';
+
+        const li = document.createElement('li');
+        li.className = 'scan-history-item';
+        li.dataset.upc = item.upc;
+        li.innerHTML = `
+            <img src="${imageUrl}" alt="${item.name || 'No Image'}" class="history-item-image">
+            <div class="history-item-details">
+                <span class="history-item-name">${item.name || 'Unknown Product'}</span>
+                <span class="history-item-upc">${item.upc || 'N/A'}</span>
+            </div>
+        `;
+        li.addEventListener('click', async () => {
+            if (upcInput) upcInput.value = item.upc; // Populate input
+            await fetchAndProcessProduct(item.upc, false);
+            if (isScannerRunning) {
+                await stopScanner(); // Stop scanner after history lookup
+            }
+            // Close sidebar after clicking a history item
+            toggleSidebar(false);
+        });
+        scanHistoryList.appendChild(li);
+    });
+}
+
+function clearScanHistory() {
+    localStorage.removeItem('scanHistory');
+    renderScanHistory([]); // Render empty list
+}
+
+function getNutrientStatusClass(nutrient, value) {
+    const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
+
+    if (value === null || isNaN(value)) {
+        return '';
+    }
+
+    value = parseFloat(value);
+
+    // Thresholds per 100g/ml (these are example values and can be adjusted)
+    const thresholds = {
+        calories: { low: 50, moderate: 150, high: 250 },
+        protein: { good: 10 },
+        carbohydrates: { moderate: 20, high: 50 },
+        fat: { low: 3, moderate: 10, high: 20 },
+        sugar: { low: 5, moderate: 15, high: 25 },
+        salt: { low: 0.3, moderate: 1.5, high: 5 }, // Note: EU guidelines for 'low', 'high' salt are often <0.3g and >1.5g per 100g
+        fiber: { good: 3 }
+    };
+
+    switch (nutrient) {
+        case 'calories':
+            if (value <= thresholds.calories.low) return 'nutrient-low';
+            if (value > thresholds.calories.high) return 'nutrient-high';
+            return 'nutrient-moderate';
+        case 'protein':
+            if (value >= thresholds.protein.good) return 'nutrient-good';
+            return 'nutrient-low'; // Or no class if not "good"
+        case 'carbohydrates':
+            if (value > thresholds.carbohydrates.high) return 'nutrient-high';
+            if (value >= thresholds.carbohydrates.moderate) return 'nutrient-moderate';
+            return 'nutrient-low';
+        case 'fat':
+            if (value > thresholds.fat.high) return 'nutrient-high';
+            if (value >= thresholds.fat.moderate) return 'nutrient-moderate';
+            return 'nutrient-low';
+        case 'sugar':
+            if (value > thresholds.sugar.high) return 'nutrient-high';
+            if (value >= thresholds.sugar.moderate) return 'nutrient-moderate';
+            return 'nutrient-low';
+        case 'salt':
+            if (value > thresholds.salt.high) return 'nutrient-high'; // Over 1.5g per 100g is often considered high
+            if (value >= thresholds.salt.low) return 'nutrient-moderate'; // Between 0.3g and 1.5g
+            return 'nutrient-low'; // Below 0.3g
+        case 'fiber':
+            if (value >= thresholds.fiber.good) return 'nutrient-good';
+            return 'nutrient-low'; // Or no class if not "good"
+        default:
+            return '';
+    }
+}
+
+function deduplicateIngredients(ingredientsString) {
+    if (!ingredientsString) return 'Ingredients list not available.';
+
+    // Split by common delimiters, clean up, and filter out empty strings
+    const rawIngredients = ingredientsString.split(/[,.;:()]/).map(item => item.trim()).filter(item => item.length > 0);
+
+    // Convert to lowercase for case-insensitive comparison
+    const lowercasedIngredients = rawIngredients.map(item => item.toLowerCase());
+
+    const uniqueIngredients = new Set();
+    const resultIngredients = [];
+
+    rawIngredients.forEach((original, index) => {
+        const lower = lowercasedIngredients[index];
+        if (!uniqueIngredients.has(lower)) {
+            uniqueIngredients.add(lower);
+            resultIngredients.push(original);
+        }
+    });
+
+    return resultIngredients.join(', ');
+}
+
+async function fetchAndProcessProduct(upc, isScanned = false) {
+    displayMessage('Searching for product...', 'info');
+    if (productInfoDiv) {
+        productInfoDiv.innerHTML = ''; // Clear previous product info
+        productInfoDiv.classList.remove('error-card');
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/ingredients/${upc}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            if (data && data.name) {
+                displayProductInfo(data);
+                // CRUCIAL: Re-setup accordions AFTER product info is rendered
+                setTimeout(() => {
+                    setupAccordions(); // This will only apply to product detail accordions now
+                    // Auto-expand the "Ingredients" accordion in the product details
+                    const ingredientsHeader = productInfoDiv.querySelector('.section-card .accordion-header');
+                    if (ingredientsHeader && ingredientsHeader.nextElementSibling) {
+                        toggleAccordion(ingredientsHeader, ingredientsHeader.nextElementSibling, true);
+                    }
+                }, 50); // Small delay to ensure DOM is ready and accordions are set up
+                if (isScanned) {
+                    addProductToHistory(data);
+                }
+                displayMessage(`Found: ${data.name}`, 'success');
+            } else {
+                displayMessage(`Product with UPC ${upc} not found or data incomplete.`, 'warning');
+                if (productInfoDiv) productInfoDiv.innerHTML = '<p class="no-product">Product not found. Please try another UPC or scan again.</p>';
+            }
+        } else {
+            const errorMsg = data.message || 'An error occurred while fetching product data.';
+            displayMessage(`Error: ${errorMsg}`, 'error');
+            if (productInfoDiv) productInfoDiv.innerHTML = `<div class="info-card error-card"><h2>Error</h2><p>${errorMsg}</p></div>`;
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+        displayMessage(`Network error or API unavailable: ${error.message}`, 'error');
+        if (productInfoDiv) productInfoDiv.innerHTML = `<div class="info-card error-card"><h2>Network Error</h2><p>Could not connect to the server or API. Please check your internet connection.</p></div>`;
+    }
+}
+
+
+function displayProductInfo(product) {
+    if (!productInfoDiv) return; // Ensure productInfoDiv is available
+
+    let html = '';
+
+    const hasServingData = product.serving_quantity && product.serving_quantity > 0;
+    const servingSizeText = hasServingData ? `per serving (${product.serving_size || product.serving_quantity + 'g'})` : 'per 100g/ml';
+
+    const getPerServingValue = (valuePer100g) => {
+        if (!hasServingData || valuePer100g === null || isNaN(valuePer100g)) {
+            return valuePer100g;
+        }
+        return ((parseFloat(valuePer100g) / 100) * product.serving_quantity).toFixed(1);
+    };
+
+    const preferences = JSON.parse(localStorage.getItem('dietaryPreferences')) || {};
+    const allergensToAvoidList = preferences.allergens || [];
+
+    const generalAllergenMappings = {
+        'nuts': ['almond', 'brazil nut', 'cashew', 'hazelnut', 'macadamia', 'pecan', 'pistachio', 'walnut', 'nut'],
+        'peanuts': ['peanut'],
+        'dairy': ['milk', 'lactose', 'whey', 'casein', 'butter', 'cheese'],
+        'gluten': ['wheat', 'barley', 'rye', 'oats'],
+        'soy': ['soy', 'soya'],
+        'egg': ['egg'],
+        'fish': ['fish'],
+        'shellfish': ['shellfish', 'shrimp', 'crab', 'lobster', 'mussel', 'oyster', 'clam', 'scallop'],
+        'sesame': ['sesame'],
+        'mustard': ['mustard'],
+        'celery': ['celery'],
+        'sulfites': ['sulfite', 'sulphite'],
+        'lupin': ['lupin'],
+        'molluscs': ['mollusc']
+    };
+
+    html += `
+            <div class="product-header">
+                <h1>${product.name || 'Unknown Product'}</h1>
+                ${product.image ? `<img src="${product.image}" alt="${product.name || 'Product Image'}" class="product-image">` : ''}
+            </div>
+        `;
+
+    let preferenceHighlights = [];
+    const ingredientsLower = product.ingredients ? product.ingredients.toLowerCase() : '';
+    const labelsLower = product.labels ? product.labels.map(l => l.toLowerCase()) : [];
+
+    if (preferences.vegetarian && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish') &&
+        (labelsLower.includes('vegetarian') || labelsLower.includes('lacto-vegetarian') || labelsLower.includes('ovo-vegetarian'))) {
+        preferenceHighlights.push('<span class="diet-badge diet-vegetarian">Vegetarian Friendly</span>');
+    } else if (preferences.vegetarian && product.ingredients && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish')) {
+        preferenceHighlights.push('<span class="diet-badge diet-vegetarian-potential">Potentially Vegetarian</span>');
+    }
+
+    if (preferences.vegan && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish') &&
+        !ingredientsLower.includes('dairy') && !ingredientsLower.includes('egg') &&
+        (labelsLower.includes('vegan'))) {
+        preferenceHighlights.push('<span class="diet-badge diet-vegan">Vegan Friendly</span>');
+    } else if (preferences.vegan && product.ingredients && !ingredientsLower.includes('meat') && !ingredientsLower.includes('fish') && !ingredientsLower.includes('dairy') && !ingredientsLower.includes('egg')) {
+        preferenceHighlights.push('<span class="diet-badge diet-vegan-potential">Potentially Vegan</span>');
+    }
+
+    if (preferences.glutenFree && (labelsLower.includes('gluten-free') || labelsLower.includes('sans gluten'))) {
+        preferenceHighlights.push('<span class="diet-badge diet-gluten-free">Gluten-Free</span>');
+    } else if (preferences.glutenFree && product.ingredients && !ingredientsLower.includes('wheat') && !ingredientsLower.includes('barley') && !ingredientsLower.includes('rye')) {
+        preferenceHighlights.push('<span class="diet-badge diet-gluten-free-potential">Potentially Gluten-Free</span>');
+    }
+
+    let foundAvoidedAllergens = new Set();
+    if (allergensToAvoidList.length > 0 && product.allergens && product.allergens.length > 0) {
+        const normalizedProductImagesAllergens = product.allergens.map(a => a.toLowerCase().replace(/en:|from:|fr:/g, '').replace(/-/g, ' ').trim());
+
+        allergensToAvoidList.forEach(avoidedTerm => {
+            let termsToCheck = [avoidedTerm];
+
+            if (generalAllergenMappings[avoidedTerm]) {
+                termsToCheck = termsToCheck.concat(generalAllergenMappings[avoidedTerm]);
+            } else if (avoidedTerm.endsWith('s') && avoidedTerm.length > 2) {
+                termsToCheck.push(avoidedTerm.slice(0, -1));
+            }
+
+            termsToCheck.forEach(checkTerm => {
+                normalizedProductImagesAllergens.forEach(productAllergen => {
+                    if (productAllergen.includes(checkTerm) && !foundAvoidedAllergens.has(productAllergen)) {
+                        foundAvoidedAllergens.add(productAllergen);
+                    }
+                });
+            });
+        });
+    }
+
+    if (foundAvoidedAllergens.size > 0) {
+        preferenceHighlights.push(`<span class="allergen-alert-badge">Contains: ${Array.from(foundAvoidedAllergens).join(', ')}</span>`);
+    }
+
+    if (preferenceHighlights.length > 0) {
+        html += `<div class="section-card preference-highlights">
+                            <h3>Your Preferences:</h3>
+                            <p>${preferenceHighlights.join(' ')}</p>
+                        </div>`;
+    }
+
+    html += `
+            <div class="section-card nova-info nova-group-${String(product.novaGroup || '').toLowerCase().replace(' ', '-') || 'unknown'}">
+                <h2>Processing Level: NOVA Group ${product.novaGroup || 'N/A'}</h2>
+                <p>This classification describes how much a food has been processed:</p>
+                <p>
+                    <strong>${product.novaExplanation || 'No detailed NOVA group explanation available.'}</strong>
+                </p>
+                <p class="nova-description">
+                    <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" title="Learn more about NOVA classification" rel="noopener noreferrer">
+                        Learn more about NOVA classification
+                    </a>
+                </p>
+                <p class="nova-source-note">
+                    <small>
+                        Classification provided by Open Food Facts. View product details on
+                        <a href="https://world.openfoodfacts.org/product/${product.upc}" target="_blank" class="external-link" rel="noopener noreferrer">Open Food Facts</a>.
+                    </small>
+                </p>
+            </div>
+        `;
+
     if (product.additives && product.additives.length > 0) {
         const additiveCount = product.additives.length;
         let additiveNote = '';
@@ -827,6 +1304,30 @@ async function stopScanner() {
     });
 }
 
+/**
+ * Toggles the visibility of the sidebar and its overlay.
+ * @param {boolean|null} forceState If true/false, forces the state; otherwise, toggles.
+ */
+function toggleSidebar(forceState = null) {
+    if (!sidebar || !sidebarOverlay) {
+        console.error('Sidebar or overlay elements not found.');
+        return;
+    }
+
+    const isSidebarOpen = sidebar.classList.contains('sidebar-open');
+    let newState = forceState !== null ? forceState : !isSidebarOpen;
+
+    if (newState) {
+        sidebar.classList.add('sidebar-open');
+        sidebarOverlay.classList.add('sidebar-overlay-active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling on main content
+    } else {
+        sidebar.classList.remove('sidebar-open');
+        sidebarOverlay.classList.remove('sidebar-overlay-active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+}
+
 
 // --- DOMContentLoaded Event Listener ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -841,8 +1342,8 @@ document.addEventListener('DOMContentLoaded', () => {
     clearHistoryButton = document.getElementById('clearHistoryButton');
     savePreferencesButton = document.getElementById('savePreferencesButton');
     clearPreferencesButton = document.getElementById('clearPreferencesButton');
-    dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection');
-    scanHistorySection = document.getElementById('scanHistorySection');
+    // dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // Removed
+    // scanHistorySection = document.getElementById('scanHistorySection');         // Removed
     modalOverlay = document.getElementById('customConfirmModal');
     modalMessage = document.getElementById('customConfirmMessage');
     modalButtonYes = document.getElementById('modalConfirmYes');
@@ -855,8 +1356,14 @@ document.addEventListener('DOMContentLoaded', () => {
     veganCheckbox = document.getElementById('veganCheckbox');
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
-    dietaryAccordionButton = document.getElementById('dietary-information-accordion-button');
-    scanHistoryAccordionButton = document.getElementById('scan-history-accordion-button');
+    // dietaryAccordionButton = document.getElementById('dietary-information-accordion-button'); // Removed
+    // scanHistoryAccordionButton = document.getElementById('scan-history-accordion-button');     // Removed
+
+    // NEW: Assign sidebar DOM elements
+    sidebar = document.getElementById('sidebar');
+    sidebarOverlay = document.getElementById('sidebarOverlay');
+    sidebarToggleButton = document.getElementById('sidebarToggleButton');
+    sidebarCloseButton = document.getElementById('sidebarCloseButton');
 
 
     // Initial display of sections
@@ -883,21 +1390,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Explicit accordion listeners for static accordions (Dietary, Scan History)
-    // Their content elements are guaranteed to have IDs in index.html
-    if (dietaryAccordionButton) {
-        dietaryAccordionButton.addEventListener('click', () => {
-            // console.log('Dietary Accordion Button CLICKED!');
-            toggleAccordion(dietaryAccordionButton, document.getElementById('dietary-information-body'));
-        });
-    }
-
-    if (scanHistoryAccordionButton) {
-        scanHistoryAccordionButton.addEventListener('click', () => {
-            // console.log('Scan History Accordion Button CLICKED!');
-            toggleAccordion(scanHistoryAccordionButton, document.getElementById('scan-history-body'));
-        });
-    }
+    // Removed specific accordion listeners for dietaryPreferencesSection and scanHistorySection
+    // as they are now part of the sidebar and not accordions in the main content.
 
     if (scanButton && scannerContainer) {
         scanButton.addEventListener('click', async () => {
@@ -994,8 +1488,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial setup for static accordions (Preferences, History)
-    // The accordions related to product details will be set up after scan
+    // NEW: Sidebar Event Listeners
+    if (sidebarToggleButton) {
+        sidebarToggleButton.addEventListener('click', () => {
+            toggleSidebar(); // Toggle sidebar state
+        });
+    }
+
+    if (sidebarCloseButton) {
+        sidebarCloseButton.addEventListener('click', () => {
+            toggleSidebar(false); // Force close sidebar
+        });
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', () => {
+            toggleSidebar(false); // Force close sidebar when clicking overlay
+        });
+    }
+
+    // Initial setup for accordions (now only applies to product detail sections)
     setupAccordions();
 
 }); // End DOMContentLoaded
