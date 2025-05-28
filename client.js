@@ -762,30 +762,56 @@ function toggleSidebar(forceState = null) {
 /**
  * Shows a specific section in the main content area and hides others.
  * Designed for use with sidebar navigation.
- * @param {HTMLElement} sectionToShow The DOM element of the section to display.
+ *@param {HTMLElement} sectionToShow The DOM element of the section to display.
+ * @param {boolean} [closeSidebar=true] Optional: If true, closes the sidebar after showing the section. Defaults to true.
  */
-function showMainContentSection(sectionToShow) {
-    // Hide all main content sections (except the product info which is always visible unless cleared)
-    const sections = [dietaryPreferencesSection, scanHistorySection];
-    sections.forEach(section => {
-        if (section && section !== sectionToShow) {
+function showContentSection(sectionToShow, closeSidebar = true) { // RENAMED and ADDED PARAMETER
+    // List ALL sections that this function should manage (hide/show).
+    // Ensure these global variables are declared at the top of your client.js.
+    const allManageableSections = [
+        productInfoDiv,             // The main product display area
+        manualScanSection,          // Your manual UPC entry area
+        scannerContainer,           // The scanner display area
+        dietaryPreferencesSection,  // The dietary preferences section in the sidebar
+        scanHistorySection          // The scan history section in the sidebar
+    ];
+
+    // First, hide all of them
+    allManageableSections.forEach(section => {
+        if (section) {
             section.style.display = 'none';
         }
     });
 
-    // Show the selected section
+    // Then, show the specific section that was requested
     if (sectionToShow) {
-        sectionToShow.style.display = 'block'; // Or 'flex', depending on its default styling
+        sectionToShow.style.display = 'block';
     }
 
-    // Clear product info when showing a section from sidebar (optional, but logical for navigation)
-    if (productInfoDiv) {
+    // Special handling for the product info div:
+    // If the section being shown is *not* the product info div itself,
+    // we want to display a message in the product info div.
+    if (productInfoDiv && sectionToShow !== productInfoDiv) {
+        // You might need to add manualScanSection and scannerContainer IDs here if they don't have them
+        const sectionNames = {
+            'dietaryPreferencesSection': 'Dietary Preferences',
+            'scanHistorySection': 'Scan History',
+            'manualScanSection': 'Manual UPC Entry', // Assuming manualScanSection has this ID
+            'scanner-container': 'Scanner'           // Assuming scannerContainer has this ID
+        };
+        const message = sectionNames[sectionToShow.id] || 'Viewing a section';
+        productInfoDiv.innerHTML = `<p class="no-product">Viewing: ${message}</p>`;
+        productInfoDiv.style.display = 'block'; // Ensure product info div is visible to show the message
+    } else if (productInfoDiv && sectionToShow === productInfoDiv) {
+        // If productInfoDiv itself is the sectionToShow, clear any previous "Viewing:" message
+        // This might be handled by renderProductInfo, but good to be explicit
         productInfoDiv.innerHTML = '';
-        displayMessage('Select an option from the sidebar or scan a product.', 'info');
     }
 
-    // Close the sidebar after selection
-    toggleSidebar(false);
+    // Now, conditionally close the sidebar
+    if (closeSidebar) {
+        toggleSidebar(false);
+    }
 }
 
 
@@ -973,7 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
     veganCheckbox = document.getElementById('veganCheckbox');
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
-
+ manualScanSection = document.getElementById('manualScanSection');
     // Corrected Sidebar DOM element assignments
     sidebar = document.getElementById('mySidebar'); // Corrected ID
     sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -1129,18 +1155,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // New: Sidebar navigation buttons
-    if (showPreferencesButton) {
-        showPreferencesButton.addEventListener('click', () => {
-            showMainContentSection(dietaryPreferencesSection);
-        });
-    }
+if (showPreferencesButton) {
+    showPreferencesButton.addEventListener('click', (event) => { // Added 'event' parameter
+        event.stopPropagation(); // <-- ADD THIS LINE to prevent click from reaching overlay
+        showContentSection(dietaryPreferencesSection, false); // <--- Call new function, pass false to keep sidebar open
+    });
+}
 
-    if (showHistoryButton) {
-        showHistoryButton.addEventListener('click', () => {
-            loadScanHistory(); // Ensure history is fresh when shown
-            showMainContentSection(scanHistorySection);
-        });
-    }
+if (showHistoryButton) {
+    showHistoryButton.addEventListener('click', (event) => { // Added 'event' parameter
+        event.stopPropagation(); // <-- ADD THIS LINE to prevent click from reaching overlay
+        loadScanHistory(); // Ensure history is fresh when shown
+        showContentSection(scanHistorySection, false); // <--- Call new function, pass false to keep sidebar open
+    });
+}
 
 
     // Initial setup for accordions that are present on page load (e.g., in sidebar or if initial product data exists)
