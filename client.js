@@ -1,25 +1,4 @@
-// Global Variables (Declare these at the very top of your client.js file)
-let upcInput;
-let lookupButton;
-let productInfoDiv;
-let messageDiv;
-let scannerContainer;
-let scanHistoryList;
-let clearHistoryButton;
-let savePreferencesButton;
-let clearPreferencesButton;
-let modalOverlay;
-let modalMessage;
-let modalButtonYes;
-let modalButtonNo;
-let cameraControls;
-let switchCameraButton;
-let stopCameraButton;
-let startCameraButton; // New start button
-let vegetarianCheckbox;
-let veganCheckbox;
-let glutenFreeCheckbox;
-let allergensToAvoid;
+
 
 // Sidebar specific DOM elements
 let sidebar;
