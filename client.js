@@ -58,7 +58,22 @@ document.addEventListener('DOMContentLoaded', () => {
             displayMessage('Please enter a UPC.', 'warning');
         }
     });
+const dietaryAccordionButton = document.getElementById('dietary-information-accordion-button');
+    const scanHistoryAccordionButton = document.getElementById('scan-history-accordion-button');
 
+    if (dietaryAccordionButton) { // Always good to check if element exists
+        dietaryAccordionButton.addEventListener('click', () => {
+            console.log('Dietary Accordion Button CLICKED!'); // <-- ADD THIS LINE
+            toggleAccordion(dietaryAccordionButton, 'dietary-information-body');
+        });
+    }
+
+    if (scanHistoryAccordionButton) { // Always good to check if element exists
+        scanHistoryAccordionButton.addEventListener('click', () => {
+            console.log('Scan History Accordion Button CLICKED!'); // <-- ADD THIS LINE
+            toggleAccordion(scanHistoryAccordionButton, 'scan-history-body');
+        });
+    }
     scanButton.addEventListener('click', async () => {
         if (!isScannerRunning) {
             scannerContainer.style.display = 'block'; // Show scanner container
