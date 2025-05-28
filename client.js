@@ -556,7 +556,7 @@ async function onScanSuccess(decodedText, decodedResult) {
     await fetchAndProcessProduct(decodedText, true);
     // After a successful scan, you might want to stop the scanner automatically
     // or keep it running for continuous scanning.
-    // await stopScanner(); // Uncomment if you want the scanner to stop after one successful scan
+    await stopScanner(); // Uncomment if you want the scanner to stop after one successful scan
 }
 
 function onScanError(errorMessage) {
