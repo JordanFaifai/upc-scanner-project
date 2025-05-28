@@ -29,7 +29,11 @@ app.get('/test', (req, res) => {
     console.log('[SERVER] /test route was hit!');
     res.json({ message: 'Hello from the simple Render backend!' });
 });
-
+// Add this simple health check route
+app.get('/', (req, res) => {
+    console.log('[SERVER] Health check / route was hit!'); // Optional: add a log for verification
+    res.send('Backend API is running!');
+});
 // API route to get product information by UPC
 app.get('/api/ingredients/:upc', async (req, res) => {
     const upc = req.params.upc;
