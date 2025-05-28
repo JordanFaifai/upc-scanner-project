@@ -284,6 +284,7 @@ input[type="text"]::placeholder {
 }
 
 /* Old Accordion Styles (not used in sidebar accordion) */
+/* Keeping these here in case they are used elsewhere in your main content */
 .accordion-header {
     background-color: #4a627a; /* Darker than card, lighter than background */
     color: #ecf0f1;
@@ -450,19 +451,15 @@ input[type="text"]::placeholder {
 .nutrient-high { color: #e74c3c; font-weight: bold; } /* Red */
 .nutrient-good { color: #3498db; font-weight: bold; } /* Blue for good nutrients like protein/fiber */
 
-/* Dietary Preferences Section (controlled by accordion classes) */
+/* Dietary Preferences Section */
+/* These IDs now serve as wrappers for the content *within* the accordion */
 #dietaryPreferencesSection {
-    /* No 'display: none' here, now controlled by .sidebar-collapsible-content */
     padding: 0;
     background-color: transparent;
     border-radius: 0;
     box-shadow: none;
     margin-bottom: 0;
-}
-
-#dietaryPreferencesSection h2 {
-    /* This H2 is now the accordion header and will be styled by .sidebar-collapsible-header */
-    display: none; /* Hide this h2 as the .sidebar-collapsible-header (which is also an h2 in the HTML) now handles its display */
+    /* Removed display:none; as accordion JS will control visibility */
 }
 
 #dietaryPreferencesSection div {
@@ -541,19 +538,15 @@ input[type="text"]::placeholder {
     text-align: center;
 }
 
-/* Scan History Section (controlled by accordion classes) */
+/* Scan History Section */
+/* These IDs now serve as wrappers for the content *within* the accordion */
 #scanHistorySection {
-    /* No 'display: none' here, now controlled by .sidebar-collapsible-content */
     padding: 0;
     background-color: transparent;
     border-radius: 0;
     box-shadow: none;
     margin-bottom: 0;
-}
-
-#scanHistorySection h2 {
-    /* This H2 is now the accordion header and will be styled by .sidebar-collapsible-header */
-    display: none; /* Hide this h2 as the .sidebar-collapsible-header (which is also an h2 in the HTML) now handles its display */
+    /* Removed display:none; as accordion JS will control visibility */
 }
 
 #scanHistoryList {
@@ -905,7 +898,7 @@ div[id^="html5-qrcode-info"] {
     color: #e74c3c; /* Red accent on hover for close */
 }
 
-/* Hide the old sidebar navigation buttons */
+/* Hide the old sidebar navigation buttons (now using accordion headers) */
 .sidebar-nav {
     display: none;
 }
@@ -987,7 +980,8 @@ div[id^="html5-qrcode-info"] {
     padding: 15px 20px; /* Final padding when open (adjust as needed) */
 }
 
-/* Styles for the content wrappers within dietary preferences and scan history */
+/* Styles for the actual content wrappers within dietary preferences and scan history */
+/* These make the inner content distinct inside the sidebar */
 #dietary-information-body,
 #scan-history-body {
     background-color: #4a627a; /* Darker shade for content within sections */
