@@ -706,7 +706,7 @@ async function stopScanner() {
     return new Promise(async (resolve) => {
         if (isScannerRunning && html5QrcodeScanner) {
             try {
-                await html5QrcodeScanner.stop();
+                await html5QrcodeScanner.clear();
                 isScannerRunning = false;
                 displayMessage('Scanner stopped.', 'info');
 
