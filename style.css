@@ -875,14 +875,24 @@ div[id^="html5-qrcode-info"] {
 /* Close button for sidebar */
 .sidebar .closebtn {
     position: absolute;
-    top: 0;
+    top: 15px;
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
     color: #ecf0f1;
-    text-decoration: none;
-    transition: 0.3s;
     cursor: pointer;
+    background: none; /* IMPORTANT: Ensures no background color */
+    border: none; /* IMPORTANT: Removes any default border */
+    padding: 0; /* IMPORTANT: Removes default padding */
+    margin: 0; /* IMPORTANT: Removes any default or conflicting margins */
+    line-height: 1; /* Helps vertically center the 'X' character */
+    height: 1em; /* Makes the button's clickable area match font size */
+    width: 1em; /* Makes the button's clickable area match font size */
+    display: flex; /* Use flexbox to precisely center the 'X' */
+    align-items: center;
+    justify-content: center;
+    text-decoration: none; /* In case it's an anchor, remove underline */
+    transition: 0.3s; /* Keep existing transition */
 }
 
 .sidebar .closebtn:hover {
