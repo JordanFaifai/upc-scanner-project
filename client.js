@@ -227,14 +227,21 @@ function renderScanHistory(history) {
     }
 
     history.forEach(item => {
+        // --- THIS IS THE CRUCIAL LINE ---
+        // Ensure image URL is valid. If item.image is null, undefined, an empty string, or the string "null",
+        // use the fallback image URL.
+        const imageUrl = (item.image && item.image !== 'null' && item.image !== '')
+                         ? item.image
+                         : 'https://via.placeholder.com/60x60?text=No+Image';
+
         const li = document.createElement('li');
         li.className = 'scan-history-item';
         li.dataset.upc = item.upc;
         li.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="history-item-image">
+            <img src="${imageUrl}" alt="${item.name || 'No Image'}" class="history-item-image">
             <div class="history-item-details">
-                <span class="history-item-name">${item.name}</span>
-                <span class="history-item-upc">${item.upc}</span>
+                <span class="history-item-name">${item.name || 'Unknown Product'}</span>
+                <span class="history-item-upc">${item.upc || 'N/A'}</span>
             </div>
         `;
         li.addEventListener('click', async () => {
