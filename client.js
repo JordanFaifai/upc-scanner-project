@@ -21,7 +21,8 @@ let veganCheckbox;
 let glutenFreeCheckbox;
 let allergensToAvoid;
 let scanButton; // Added scanButton to global vars for broader access
-
+let sidebarDietaryPreferencesHeader;
+let sidebarScanHistoryHeader;
 // Sidebar specific DOM elements
 let sidebar;
 let sidebarOverlay;
@@ -762,56 +763,33 @@ function toggleSidebar(forceState = null) {
 /**
  * Shows a specific section in the main content area and hides others.
  * Designed for use with sidebar navigation.
- *@param {HTMLElement} sectionToShow The DOM element of the section to display.
- * @param {boolean} [closeSidebar=true] Optional: If true, closes the sidebar after showing the section. Defaults to true.
+ *@param {HTMLElement} sectionToShow The DOM element of the main content section to display.
+ * @param {string} [initialMessage=''] An optional message to display in the product info area if it's not the sectionToShow.
  */
-function showContentSection(sectionToShow, closeSidebar = true) { // RENAMED and ADDED PARAMETER
-    // List ALL sections that this function should manage (hide/show).
-    // Ensure these global variables are declared at the top of your client.js.
-    const allManageableSections = [
-        productInfoDiv,             // The main product display area
-        manualScanSection,          // Your manual UPC entry area
-        scannerContainer,           // The scanner display area
-        dietaryPreferencesSection,  // The dietary preferences section in the sidebar
-        scanHistorySection          // The scan history section in the sidebar
-    ];
+function showMainContent(sectionToShow, initialMessage = '') {
+    // List all main content sections
+    const mainContentSections = [productInfoDiv, scannerContainer, manualScanSection];
 
-    // First, hide all of them
-    allManageableSections.forEach(section => {
+    mainContentSections.forEach(section => {
         if (section) {
-            section.style.display = 'none';
+            section.style.display = 'none'; // Hide all main content sections
         }
     });
 
-    // Then, show the specific section that was requested
     if (sectionToShow) {
-        sectionToShow.style.display = 'block';
+        sectionToShow.style.display = 'block'; // Show the requested main content section
     }
 
-    // Special handling for the product info div:
-    // If the section being shown is *not* the product info div itself,
-    // we want to display a message in the product info div.
+    // Ensure productInfoDiv is visible for messages if another section is showing
     if (productInfoDiv && sectionToShow !== productInfoDiv) {
-        // You might need to add manualScanSection and scannerContainer IDs here if they don't have them
-        const sectionNames = {
-            'dietaryPreferencesSection': 'Dietary Preferences',
-            'scanHistorySection': 'Scan History',
-            'manualScanSection': 'Manual UPC Entry', // Assuming manualScanSection has this ID
-            'scanner-container': 'Scanner'           // Assuming scannerContainer has this ID
-        };
-        const message = sectionNames[sectionToShow.id] || 'Viewing a section';
-        productInfoDiv.innerHTML = `<p class="no-product">Viewing: ${message}</p>`;
-        productInfoDiv.style.display = 'block'; // Ensure product info div is visible to show the message
+        productInfoDiv.innerHTML = `<p class="no-product">${initialMessage || 'Select an option from the sidebar or scan a product.'}</p>`;
+        productInfoDiv.style.display = 'block';
     } else if (productInfoDiv && sectionToShow === productInfoDiv) {
-        // If productInfoDiv itself is the sectionToShow, clear any previous "Viewing:" message
-        // This might be handled by renderProductInfo, but good to be explicit
-        productInfoDiv.innerHTML = '';
+        productInfoDiv.innerHTML = ''; // Clear if product info is the primary display
     }
 
-    // Now, conditionally close the sidebar
-    if (closeSidebar) {
-        toggleSidebar(false);
-    }
+    // Always close the sidebar when a main content section is activated
+    toggleSidebar(false);
 }
 
 
@@ -891,7 +869,7 @@ function loadScanHistory() {
                     listItem.className = 'scan-history-item';
                     listItem.dataset.upc = item.upc;
                     listItem.innerHTML = `
-                        ${item.image_url ? `<img src="<span class="math-inline">\{item\.image\_url\}" alt\="</span>{item.name}" class="history-item-image">` : ''}
+                       ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="history-item-image">` : ''}
                         <div class="history-item-details">
                             <span class="history-item-name">${item.name}</span>
                             <small class="history-item-upc">${item.upc}</small>
@@ -999,8 +977,7 @@ document.addEventListener('DOMContentLoaded', () => {
     veganCheckbox = document.getElementById('veganCheckbox');
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
- manualScanSection = document.getElementById('manualScanSection');
-    // Corrected Sidebar DOM element assignments
+manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
     sidebar = document.getElementById('mySidebar'); // Corrected ID
     sidebarOverlay = document.getElementById('sidebarOverlay');
     hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
@@ -1009,7 +986,8 @@ document.addEventListener('DOMContentLoaded', () => {
     showHistoryButton = document.getElementById('showHistoryButton');     // New: Button in sidebar
     dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // New: Section to show/hide
     scanHistorySection = document.getElementById('scanHistorySection');       // New: Section to show/hide
-
+    sidebarDietaryPreferencesHeader = document.getElementById('sidebarDietaryPreferencesHeader');
+    sidebarScanHistoryHeader = document.getElementById('sidebarScanHistoryHeader');
 
     // Initial display of sections
     if (productInfoDiv) productInfoDiv.innerHTML = '<p class="no-product">Scan a barcode or enter a UPC to get started!</p>';
@@ -1154,29 +1132,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // New: Sidebar navigation buttons
-if (showPreferencesButton) {
-    showPreferencesButton.addEventListener('click', (event) => { // Added 'event' parameter
-        event.stopPropagation(); // <-- ADD THIS LINE to prevent click from reaching overlay
-        showContentSection(dietaryPreferencesSection, false); // <--- Call new function, pass false to keep sidebar open
-    });
-}
-
-if (showHistoryButton) {
-    showHistoryButton.addEventListener('click', (event) => { // Added 'event' parameter
-        event.stopPropagation(); // <-- ADD THIS LINE to prevent click from reaching overlay
-        loadScanHistory(); // Ensure history is fresh when shown
-        showContentSection(scanHistorySection, false); // <--- Call new function, pass false to keep sidebar open
-    });
-}
-
-
     // Initial setup for accordions that are present on page load (e.g., in sidebar or if initial product data exists)
     // IMPORTANT: For product info accordions loaded dynamically, setupAccordions is called in fetchAndProcessProduct.
     setupAccordions();
 
     // Initial display of the "no product" message and hiding of other sections
-    if (dietaryPreferencesSection) dietaryPreferencesSection.style.display = 'none';
-    if (scanHistorySection) scanHistorySection.style.display = 'none';
+   
+  // --- New: Sidebar Section Toggling ---
+    function setupSidebarAccordions() {
+        const toggleHeaders = [sidebarDietaryPreferencesHeader, sidebarScanHistoryHeader];
+        const contentDivs = [dietaryPreferencesSection.querySelector('.sidebar-collapsible-content'), scanHistorySection.querySelector('.sidebar-collapsible-content')];
+
+        // Ensure you get the correct content divs within the sidebar structure
+        const dietaryContent = document.getElementById('dietary-information-body');
+        const historyContent = document.getElementById('scan-history-body');
+
+        if (sidebarDietaryPreferencesHeader && dietaryContent) {
+            sidebarDietaryPreferencesHeader.addEventListener('click', () => {
+                sidebarDietaryPreferencesHeader.classList.toggle('active');
+                dietaryContent.classList.toggle('active');
+                // Ensure history is loaded only when its section is activated
+                if (sidebarDietaryPreferencesHeader.classList.contains('active')) {
+                    loadDietaryPreferences(); // Re-load preferences when section opens
+                }
+            });
+        }
+
+        if (sidebarScanHistoryHeader && historyContent) {
+            sidebarScanHistoryHeader.addEventListener('click', () => {
+                sidebarScanHistoryHeader.classList.toggle('active');
+                historyContent.classList.toggle('active');
+                // Ensure history is loaded only when its section is activated
+                if (sidebarScanHistoryHeader.classList.contains('active')) {
+                    loadScanHistory(); // Load history when section opens
+                }
+            });
+        }
+    }
+
+    // Call this new setup function
+    setupSidebarAccordions();
+
+    // Initial display of the main product info section, as the default view
+    showMainContent(productInfoDiv, 'Scan a barcode or enter a UPC to get started!');
 
 }); // End DOMContentLoaded

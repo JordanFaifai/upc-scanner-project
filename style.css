@@ -283,7 +283,7 @@ input[type="text"]::placeholder {
     padding: 0 10px;
 }
 
-/* Accordion Styles */
+/* Old Accordion Styles (not used in sidebar accordion) */
 .accordion-header {
     background-color: #4a627a; /* Darker than card, lighter than background */
     color: #ecf0f1;
@@ -450,27 +450,19 @@ input[type="text"]::placeholder {
 .nutrient-high { color: #e74c3c; font-weight: bold; } /* Red */
 .nutrient-good { color: #3498db; font-weight: bold; } /* Blue for good nutrients like protein/fiber */
 
-
-/* Dietary Preferences Section */
-/* These are now inside the sidebar, so they'll be hidden by default
-   and toggled by JavaScript via the .sidebar-section-visible class */
+/* Dietary Preferences Section (controlled by accordion classes) */
 #dietaryPreferencesSection {
-    padding: 0; /* Handled by .sidebar-content-wrapper or specific inner divs */
-    background-color: transparent; /* No background, use sidebar's or content-wrapper's */
+    /* No 'display: none' here, now controlled by .sidebar-collapsible-content */
+    padding: 0;
+    background-color: transparent;
     border-radius: 0;
     box-shadow: none;
     margin-bottom: 0;
-    display: none; /* Initially hidden */
 }
 
 #dietaryPreferencesSection h2 {
-    color: #a3e635;
-    margin-top: 20px; /* Space above heading */
-    margin-bottom: 15px;
-    border-bottom: 2px solid #557088;
-    padding-bottom: 10px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.5em;
+    /* This H2 is now the accordion header and will be styled by .sidebar-collapsible-header */
+    display: none; /* Hide this h2 as the .sidebar-collapsible-header (which is also an h2 in the HTML) now handles its display */
 }
 
 #dietaryPreferencesSection div {
@@ -549,26 +541,19 @@ input[type="text"]::placeholder {
     text-align: center;
 }
 
-/* Scan History Section */
-/* These are now inside the sidebar, so they'll be hidden by default
-   and toggled by JavaScript via the .sidebar-section-visible class */
+/* Scan History Section (controlled by accordion classes) */
 #scanHistorySection {
-    padding: 0; /* Handled by .sidebar-content-wrapper or specific inner divs */
-    background-color: transparent; /* No background, use sidebar's or content-wrapper's */
+    /* No 'display: none' here, now controlled by .sidebar-collapsible-content */
+    padding: 0;
+    background-color: transparent;
     border-radius: 0;
     box-shadow: none;
     margin-bottom: 0;
-    display: none; /* Initially hidden */
 }
 
 #scanHistorySection h2 {
-    color: #a3e635;
-    margin-top: 20px; /* Space above heading */
-    margin-bottom: 15px;
-    border-bottom: 2px solid #557088;
-    padding-bottom: 10px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.5em;
+    /* This H2 is now the accordion header and will be styled by .sidebar-collapsible-header */
+    display: none; /* Hide this h2 as the .sidebar-collapsible-header (which is also an h2 in the HTML) now handles its display */
 }
 
 #scanHistoryList {
@@ -920,32 +905,10 @@ div[id^="html5-qrcode-info"] {
     color: #e74c3c; /* Red accent on hover for close */
 }
 
+/* Hide the old sidebar navigation buttons */
 .sidebar-nav {
-    padding: 0 20px; /* Padding for the navigation buttons */
-    margin-bottom: 20px;
+    display: none;
 }
-
-.sidebar-nav .sidebar-menu-button {
-    background-color: #4a627a;
-    color: #ecf0f1;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 5px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%; /* Make buttons full width */
-    text-align: left;
-    margin-bottom: 8px; /* Space between buttons */
-}
-
-.sidebar-nav .sidebar-menu-button:hover,
-.sidebar-nav .sidebar-menu-button.active {
-    background-color: #557088;
-    color: #a3e635; /* Accent color for active/hover */
-}
-
 
 /* Main content area for sections shown in sidebar */
 .sidebar-content-area {
@@ -954,20 +917,84 @@ div[id^="html5-qrcode-info"] {
     flex-grow: 1; /* Allow content to take available space */
 }
 
+/* --- Sidebar Accordion Styles --- */
+
+/* Base style for the collapsible section containers */
+.sidebar-collapsible-section {
+    margin-bottom: 10px; /* Space between the accordion items */
+    background-color: #34495e; /* Match sidebar background for seamless look */
+    border-radius: 8px; /* Consistent rounded corners */
+    overflow: hidden; /* Important for hiding content during collapse */
+}
+
+/* Style for the clickable header of each accordion item */
+.sidebar-collapsible-header {
+    background-color: #4a627a; /* Darker than sidebar, lighter than content body */
+    color: #ecf0f1;
+    cursor: pointer;
+    padding: 15px 20px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1.2em;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease;
+    display: flex; /* For alignment of text and potential arrow */
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.sidebar-collapsible-header:hover {
+    background-color: #557088; /* Slightly lighter on hover */
+}
+
+/* Style when the header is active (content is shown) */
+.sidebar-collapsible-header.active {
+    background-color: #557088; /* Stays lighter when active */
+    color: #a3e635; /* Accent color for active header */
+    border-bottom: 1px solid #6688a4; /* Visual separation when open */
+}
+
+/* Optional: Add an arrow icon to accordion headers */
+.sidebar-collapsible-header::after {
+    content: '\25B6'; /* Right-pointing triangle (▶) */
+    font-size: 0.8em;
+    color: #ecf0f1; /* White color for the arrow */
+    transition: transform 0.3s ease-in-out;
+    margin-left: 10px;
+}
+
+.sidebar-collapsible-header.active::after {
+    transform: rotate(90deg); /* Rotate arrow when active */
+    color: #a3e635; /* Change arrow color when active */
+}
+
+/* Style for the collapsible content area */
+.sidebar-collapsible-content {
+    background-color: #34495e; /* Match the main sidebar body */
+    max-height: 0; /* Initially hidden */
+    overflow: hidden;
+    transition: max-height 0.4s ease-out; /* Smooth transition for collapsing */
+    padding: 0 20px; /* Initial horizontal padding */
+    box-sizing: border-box;
+}
+
+/* Style when the content is shown */
+.sidebar-collapsible-content.active {
+    max-height: 1000px; /* A value larger than the expected content height */
+    padding: 15px 20px; /* Final padding when open (adjust as needed) */
+}
+
 /* Styles for the content wrappers within dietary preferences and scan history */
-/* These make the inner content distinct inside the sidebar */
 #dietary-information-body,
 #scan-history-body {
     background-color: #4a627a; /* Darker shade for content within sections */
     padding: 15px;
     border-radius: 8px;
-    margin-top: 15px; /* Space from the heading */
-    margin-bottom: 15px; /* Space between content blocks if multiple */
-}
-
-/* Class to make sections visible when toggled by JavaScript */
-.sidebar-section-visible {
-    display: block !important; /* Use !important to ensure visibility */
+    margin-top: 0; /* Remove top margin, as padding on .sidebar-collapsible-content.active will provide space */
+    margin-bottom: 0; /* Remove bottom margin, as .sidebar-collapsible-section provides spacing */
 }
 
 /* Hamburger menu button */

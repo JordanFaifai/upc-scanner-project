@@ -53,15 +53,11 @@
                 &times;
             </button>
         </div>
-        <div class="sidebar-nav">
-            <button id="showPreferencesButton" class="sidebar-menu-button">Dietary Preferences</button>
-<button id="showHistoryButton" class="sidebar-menu-button">Scan History</button>
-        </div>
 
         <div class="sidebar-content-area">
-            <section id="dietaryPreferencesSection">
-                <h2>Dietary Preferences</h2>
-                <div id="dietary-information-body" class="sidebar-content-wrapper">
+            <section id="dietaryPreferencesSection" class="sidebar-collapsible-section">
+                <h2 id="sidebarDietaryPreferencesHeader" class="sidebar-collapsible-header">Dietary Preferences</h2>
+                <div id="dietary-information-body" class="sidebar-collapsible-content">
                     <div class="preference-group">
                         <h3>General Dietary Needs</h3>
                         <div class="checkbox-group">
@@ -88,9 +84,9 @@
                 </div>
             </section>
 
-            <section id="scanHistorySection">
-                <h2>Scan History</h2>
-                <div id="scan-history-body" class="sidebar-content-wrapper">
+            <section id="scanHistorySection" class="sidebar-collapsible-section">
+                <h2 id="sidebarScanHistoryHeader" class="sidebar-collapsible-header">Scan History</h2>
+                <div id="scan-history-body" class="sidebar-collapsible-content">
                     <ul id="scanHistoryList" class="scan-history-list">
                     </ul>
                     <div class="flex justify-center">
