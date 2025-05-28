@@ -977,7 +977,10 @@ document.addEventListener('DOMContentLoaded', () => {
     veganCheckbox = document.getElementById('veganCheckbox');
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
-manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
+    const manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
+    if (manualScanSection) {
+        manualScanSection.style.display = 'block'; // Or 'flex' if you use flexbox for its internal layout
+    }
     sidebar = document.getElementById('mySidebar'); // Corrected ID
     sidebarOverlay = document.getElementById('sidebarOverlay');
     hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
@@ -1138,37 +1141,37 @@ manualScanSection = document.getElementById('manualScanSection');    // Correcte
 
     // Initial display of the "no product" message and hiding of other sections
    
-  // --- New: Sidebar Section Toggling ---
-    function setupSidebarAccordions() {
-        const toggleHeaders = [sidebarDietaryPreferencesHeader, sidebarScanHistoryHeader];
-        const contentDivs = [dietaryPreferencesSection.querySelector('.sidebar-collapsible-content'), scanHistorySection.querySelector('.sidebar-collapsible-content')];
+  // --- Sidebar Section Toggling ---
+function setupSidebarAccordions() {
+    // These variables (dietaryPreferencesSection, scanHistorySection, sidebarDietaryPreferencesHeader, sidebarScanHistoryHeader)
+    // are already assigned at the top of your DOMContentLoaded listener, so they are available here.
 
-        // Ensure you get the correct content divs within the sidebar structure
-        const dietaryContent = document.getElementById('dietary-information-body');
-        const historyContent = document.getElementById('scan-history-body');
+    if (sidebarDietaryPreferencesHeader && dietaryPreferencesSection) {
+        sidebarDietaryPreferencesHeader.addEventListener('click', () => {
+            sidebarDietaryPreferencesHeader.classList.toggle('active');
+            // Toggle 'active' on the correct parent content div (which has the max-height CSS)
+            dietaryPreferencesSection.classList.toggle('active'); 
 
-        if (sidebarDietaryPreferencesHeader && dietaryContent) {
-            sidebarDietaryPreferencesHeader.addEventListener('click', () => {
-                sidebarDietaryPreferencesHeader.classList.toggle('active');
-                dietaryContent.classList.toggle('active');
-                // Ensure history is loaded only when its section is activated
-                if (sidebarDietaryPreferencesHeader.classList.contains('active')) {
-                    loadDietaryPreferences(); // Re-load preferences when section opens
-                }
-            });
-        }
-
-        if (sidebarScanHistoryHeader && historyContent) {
-            sidebarScanHistoryHeader.addEventListener('click', () => {
-                sidebarScanHistoryHeader.classList.toggle('active');
-                historyContent.classList.toggle('active');
-                // Ensure history is loaded only when its section is activated
-                if (sidebarScanHistoryHeader.classList.contains('active')) {
-                    loadScanHistory(); // Load history when section opens
-                }
-            });
-        }
+            // Ensure preferences are loaded only when its section is activated
+            if (sidebarDietaryPreferencesHeader.classList.contains('active')) {
+                loadDietaryPreferences(); // Re-load preferences when section opens
+            }
+        });
     }
+
+    if (sidebarScanHistoryHeader && scanHistorySection) {
+        sidebarScanHistoryHeader.addEventListener('click', () => {
+            sidebarScanHistoryHeader.classList.toggle('active');
+            // Toggle 'active' on the correct parent content div (which has the max-height CSS)
+            scanHistorySection.classList.toggle('active'); 
+
+            // Ensure history is loaded only when its section is activated
+            if (sidebarScanHistoryHeader.classList.contains('active')) {
+                loadScanHistory(); // Load history when section opens
+            }
+        });
+    }
+}
 
     // Call this new setup function
     setupSidebarAccordions();
