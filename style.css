@@ -926,13 +926,31 @@ div[id^="html5-qrcode-info"] {
 .hamburger-menu {
     position: absolute;
     top: 50%;
-    left: 20px; /* Position on the left side of the header */
+    left: 20px;
     transform: translateY(-50%);
     display: none; /* Hidden by default, shown on smaller screens */
     cursor: pointer;
-    font-size: 30px;
-    color: #ecf0f1;
-    z-index: 1; /* Ensure it's above header content if any */
+    color: #ecf0f1; /* This color will now apply to the SVG fill */
+    z-index: 1;
+    background: none; /* Ensure no default button background */
+    border: none; /* Remove default button border */
+    padding: 0; /* Remove default button padding */
+    width: 35px; /* Explicit width for the button/SVG container */
+    height: 35px; /* Explicit height for the button/SVG container */
+    display: flex; /* Use flexbox to center the SVG inside */
+    align-items: center;
+    justify-content: center;
+}
+
+.hamburger-menu:hover {
+    color: #a3e635; /* Change color on hover for feedback */
+}
+
+/* Style the SVG inside the button */
+.hamburger-menu svg {
+    display: block; /* Ensures it behaves as a block element */
+    width: 100%; /* Make SVG fill its parent button's width */
+    height: 100%; /* Make SVG fill its parent button's height */
 }
 
 /* Responsive Design */
@@ -977,7 +995,7 @@ div[id^="html5-qrcode-info"] {
 
     /* Show hamburger menu on smaller screens */
     .hamburger-menu {
-        display: block;
+        display: flex;
     }
 
     /* Adjust header padding to make space for hamburger */
