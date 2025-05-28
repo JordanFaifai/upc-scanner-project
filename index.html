@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pure Scan: Simple Food Transparency</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;606;700&family=Open+Sans:wght@400;606&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
     <header>
+        <div id="message" class="message" style="display: none;"></div>
         <h1>Pure Scan: Simple Food Transparency</h1>
         <p>Scan product barcodes or enter UPCs manually to get detailed ingredient, nutrition, and additive information.</p>
     </header>
@@ -18,39 +19,33 @@
         <section class="section-card controls">
             <h2>Scan Product</h2>
             <div id="scanner-container">
-                <p>Click "Request Camera Access" to activate your camera.</p>
+                <p>Click "Start Scan" to activate your camera.</p>
             </div>
-            <p id="scanner-message" class="message info">Awaiting camera activation.</p>
-                       </div>
+            <div id="cameraControls" style="display: none;"> <button id="startCameraButton" class="scanner-control-button">Start Scan</button>
+                <button id="switchCameraButton" class="scanner-control-button">Switch Camera</button>
+                <button id="stopCameraButton" class="scanner-control-button button-danger">Stop Scan</button>
+            </div>
+            <button id="scanButton" class="button" style="margin-top: 15px;">Start Scan</button>
         </section>
 
-        <section id="manualScanSection" class="section-card" style="display: none;">
-            <h2>Manual UPC Entry</h2>
+        <section id="manualScanSection" class="section-card"> <h2>Manual UPC Entry</h2>
             <input type="text" id="upcInput" placeholder="Enter UPC code (e.g., 049000000427)">
-            <button id="fetchUpcBtn">Get Product Info</button>
-        </section>
-        <div class="flex justify-center">
-            <button id="toggleManualScanBtn">Show Manual Scan</button>
-        </div>
-
-
+            <button id="lookupButton" class="button">Lookup Product Info</button> </section>
         <section id="dietaryPreferencesSection" class="section-card">
             <button class="accordion-header">
                 <h2>Dietary Preferences <span class="arrow">▼</span></h2>
             </button>
-            <div class="accordion-content"> <div class="preference-group">
+            <div class="accordion-content">
+                <div class="preference-group">
                     <h3>General Dietary Needs</h3>
                     <div class="checkbox-group">
-                        <input type="checkbox" id="prefVegetarian">
-                        <label for="prefVegetarian">Vegetarian</label>
+                        <input type="checkbox" id="vegetarianCheckbox"> <label for="vegetarianCheckbox">Vegetarian</label>
                     </div>
                     <div class="checkbox-group">
-                        <input type="checkbox" id="prefVegan">
-                        <label for="prefVegan">Vegan</label>
+                        <input type="checkbox" id="veganCheckbox"> <label for="veganCheckbox">Vegan</label>
                     </div>
                     <div class="checkbox-group">
-                        <input type="checkbox" id="prefGlutenFree">
-                        <label for="prefGlutenFree">Gluten-Free</label>
+                        <input type="checkbox" id="glutenFreeCheckbox"> <label for="glutenFreeCheckbox">Gluten-Free</label>
                     </div>
                 </div>
 
@@ -61,17 +56,14 @@
 
                 <p id="preferenceMessage" class="message info" style="display: none;"></p>
                 <div class="flex justify-center flex-wrap">
-                    <button id="savePreferencesBtn" class="save-button">Save Preferences</button>
-                    <button id="clearPreferencesBtn" class="save-button" style="background-image: linear-gradient(to right, #f39c12, #f5b041);">Clear Preferences</button>
-                </div>
+                    <button id="savePreferencesButton" class="button">Save Preferences</button> <button id="clearPreferencesButton" class="button button-danger">Clear Preferences</button> </div>
             </div>
         </section>
 
         <section id="productInfo" class="section-card">
             <h2>Product Details</h2>
             <p>Scan a UPC or enter it manually to see results.</p>
-            <button id="clearResultsBtn" style="display: none;">Clear Results</button>
-        </section>
+            </section>
 
         <section id="scanHistorySection" class="section-card">
             <button class="accordion-header">
@@ -81,8 +73,7 @@
                 <ul id="scanHistoryList" class="scan-history-list">
                     </ul>
                 <div class="flex justify-center">
-                    <button id="clearHistoryBtn" style="display: none;">Clear History</button>
-                </div>
+                    <button id="clearHistoryButton" class="button button-danger">Clear History</button> </div>
             </div>
         </section>
     </main>
@@ -91,8 +82,8 @@
         <div class="custom-modal-content">
             <p id="customConfirmMessage"></p>
             <div class="custom-modal-buttons">
-                <button id="customConfirmYes" class="modal-button-yes">Yes</button>
-                <button id="customConfirmNo" class="modal-button-no">No</button>
+                <button id="modalConfirmYes" class="modal-button-yes">Yes</button>
+                <button id="modalConfirmNo" class="modal-button-no">No</button>
             </div>
         </div>
     </div>
