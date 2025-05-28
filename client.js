@@ -570,6 +570,644 @@ async function initializeScanner(cameraId) {
         if (scannerContainer) scannerContainer.innerHTML = `<p>${errorMessage}</p>`;
     }
 }
+// Global Variables (Declare these at the very top of your client.js file)
+let upcInput;
+let lookupButton;
+let productInfoDiv;
+let messageDiv;
+let scannerContainer;
+let scanHistoryList;
+let clearHistoryButton;
+let savePreferencesButton;
+let clearPreferencesButton;
+let modalOverlay;
+let modalMessage;
+let modalButtonYes;
+let modalButtonNo;
+let cameraControls;
+let switchCameraButton;
+let stopCameraButton;
+let startCameraButton; // New start button
+let vegetarianCheckbox;
+let veganCheckbox;
+let glutenFreeCheckbox;
+let allergensToAvoid;
+let scanButton; // Added scanButton to global vars for broader access
+
+// Sidebar specific DOM elements
+let sidebar;
+let sidebarOverlay;
+let hamburgerMenu;
+let sidebarCloseButton;
+
+// Html5Qrcode related variables
+let html5QrcodeScanner = null;
+let isScannerRunning = false;
+let lastScannedCode = null;
+let lastScanTimestamp = 0;
+const LAST_SCAN_DEBOUNCE_MS = 1500; // Debounce time for consecutive scans
+let availableCameras = [];
+let currentCameraId = null;
+
+// API Endpoint (replace with your actual API endpoint if different)
+const API_BASE_URL = 'https://upc-scanner-backend-api.onrender.com/api'; // Your Render.com API URL
+
+// --- Utility Functions ---
+
+/**
+ * Displays a message to the user.
+ * @param {string} message The message text.
+ * @param {string} type The type of message (info, success, warning, error).
+ */
+function displayMessage(message, type = 'info') {
+    if (messageDiv) {
+        messageDiv.textContent = message;
+        messageDiv.className = `message ${type}`; // Reset and apply new classes
+        messageDiv.style.display = 'block';
+    } else {
+        console.warn('Message display div not found. Message:', message, type);
+    }
+}
+
+/**
+ * Hides the displayed message.
+ */
+function hideMessage() {
+    if (messageDiv) {
+        messageDiv.style.display = 'none';
+    }
+}
+
+/**
+ * Custom confirmation modal logic.
+ * @param {string} message The message to display in the modal.
+ * @returns {Promise<boolean>} Resolves true if 'Yes', false if 'No'.
+ */
+let resolveModalPromise;
+function showCustomConfirm(message) {
+    if (modalOverlay && modalMessage) {
+        modalMessage.textContent = message;
+        modalOverlay.style.display = 'flex'; // Use flex to center
+        return new Promise(resolve => {
+            resolveModalPromise = resolve;
+        });
+    } else {
+        console.error('Modal elements not found for custom confirmation.');
+        return Promise.resolve(window.confirm(message)); // Fallback to native confirm
+    }
+}
+
+/**
+ * Sets up accordion functionality for elements with class 'accordion-header'.
+ * Ensures accordions are initially closed, and optionally opens the first one.
+ */
+function setupAccordions() {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        // Remove existing listener to prevent duplicates if called multiple times
+        header.removeEventListener('click', handleAccordionClick);
+        header.addEventListener('click', handleAccordionClick);
+
+        // Ensure accordion content is initially closed
+        header.classList.remove('active'); // Remove active class from header
+        const content = header.nextElementSibling;
+        if (content && content.classList.contains('accordion-content')) {
+            content.classList.remove('show'); // Ensure content is not 'show'
+            content.style.maxHeight = null; // Reset max-height
+        }
+    });
+
+    // Optional: Open the first accordion (e.g., Product Details or Ingredients) by default
+    // after content is loaded. Adjust ID as needed based on which section you want open.
+    const firstHeader = document.querySelector('.accordion-header');
+    if (firstHeader) {
+        firstHeader.classList.add('active');
+        const firstContent = firstHeader.nextElementSibling;
+        if (firstContent && firstContent.classList.contains('accordion-content')) {
+            firstContent.classList.add('show');
+            // Set max-height for the initial open state, crucial for transition.
+            // Use setTimeout to ensure the element is rendered and scrollHeight is accurate.
+            setTimeout(() => {
+                firstContent.style.maxHeight = firstContent.scrollHeight + 'px';
+            }, 0);
+        }
+    }
+}
+
+/**
+ * Handles the click event for accordion headers.
+ * @param {Event} event The click event.
+ */
+function handleAccordionClick(event) {
+    const header = event.currentTarget; // The clicked accordion header (the button itself)
+    const content = header.nextElementSibling; // Get the next sibling element (accordion-content)
+
+    // Toggle the 'active' class on the header
+    header.classList.toggle('active');
+
+    // Toggle the 'show' class on the content and manage max-height for smooth transition
+    if (content.classList.contains('show')) {
+        content.style.maxHeight = null; // Collapse the content
+        content.classList.remove('show');
+    } else {
+        content.classList.add('show');
+        // Set max-height to the scrollHeight to enable smooth transition
+        // A slight delay or fixed large value is sometimes needed for proper animation
+        // Setting it to scrollHeight immediately then transitioning to that.
+        content.style.maxHeight = content.scrollHeight + 'px';
+    }
+}
+
+
+// --- API Interaction and Product Display ---
+
+/**
+ * Fetches product information from the API.
+ * @param {string} upc The UPC code to look up.
+ * @returns {Promise<object|null>} The product data or null if not found/error.
+ */
+async function fetchProductData(upc) {
+    displayMessage('Searching for product...', 'info');
+    try {
+        const response = await fetch(`${API_BASE_URL}/product/${upc}`);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        hideMessage();
+        return data;
+    } catch (error) {
+        console.error('Error fetching product data:', error);
+        displayMessage(`Error: ${error.message}. Please try again or check the UPC.`, 'error');
+        return null;
+    }
+}
+
+/**
+ * Checks product against user's dietary preferences.
+ * @param {object} product The product object.
+ * @param {object} preferences The user's preferences.
+ * @returns {Array<string>} An array of feedback messages (e.g., "Contains Gluten").
+ */
+function checkDietaryCompliance(product, preferences) {
+    const feedback = [];
+    // Ensure product.ingredients is a string for lowerCase and includes check
+    const lowerCaseIngredients = (product.ingredients || '').toLowerCase();
+    const lowerCaseAllergens = (product.allergens || []).map(a => a.toLowerCase());
+
+    // Check Vegan/Vegetarian statuses
+    // Backend should ideally provide 'is_vegan', 'is_vegetarian' booleans
+    // Adapting to existing backend structure with 'vegan_status', 'vegetarian_status'
+    if (preferences.vegan) {
+        if (product.vegan_status === 'not-vegan') {
+            feedback.push('Not Vegan: Contains non-vegan ingredients.');
+        } else if (product.vegan_status === 'potential-vegan') {
+            feedback.push('Potentially Vegan: May contain animal-derived ingredients. Check carefully.');
+        }
+    }
+    if (preferences.vegetarian) {
+        if (product.vegetarian_status === 'not-vegetarian') {
+            feedback.push('Not Vegetarian: Contains non-vegetarian ingredients.');
+        } else if (product.vegetarian_status === 'potential-vegetarian') {
+            feedback.push('Potentially Vegetarian: May contain non-vegetarian ingredients. Check carefully.');
+        }
+    }
+
+    // Check Gluten-Free
+    if (preferences.glutenFree) {
+        if (product.gluten_free_status === 'not-gluten-free') {
+            feedback.push('Not Gluten-Free: Contains gluten.');
+        } else if (product.gluten_free_status === 'potential-gluten-free') {
+            feedback.push('Potentially Gluten-Free: May contain gluten. Check carefully.');
+        }
+    }
+
+    // Check Allergens against user preferences
+    if (preferences.allergens && preferences.allergens.length > 0) {
+        preferences.allergers.forEach(allergenPref => {
+            // Trim and convert preference to lowercase for comparison
+            const trimmedAllergenPref = allergenPref.toLowerCase().trim();
+            if (lowerCaseAllergens.includes(trimmedAllergenPref)) {
+                feedback.push(`Allergen Alert: Contains "${allergenPref}"`);
+            }
+        });
+    }
+
+    // Check additives against preferences (if API provides additive risk data and you have preferences for them)
+    if (product.additives && product.additives.length > 0) {
+        product.additives.forEach(add => {
+            if (add.status && add.status.includes('BANNED in EU')) {
+                feedback.push(`Additive Alert: ${add.eNumber || add.name || 'Unknown Additive'} is BANNED in EU.`);
+            }
+            // Add other additive checks based on your preferences
+            // e.g., if you have a list of 'additivesToAvoid' in preferences
+            // if (preferences.additivesToAvoid.includes(add.eNumber)) { ... }
+        });
+    }
+
+    return feedback;
+}
+
+
+/**
+ * Fetches and processes product data, then displays it.
+ * @param {string} upc The UPC code.
+ * @param {boolean} fromScan True if the call originated from a scanner scan.
+ */
+async function fetchAndProcessProduct(upc, fromScan) {
+    displayMessage('Fetching product details...', 'info');
+    productInfoDiv.innerHTML = ''; // Clear previous product info
+
+    // Only add to history if it's a new scan, not a manual lookup
+    // (addToScanHistory already handles duplicates, but this avoids fetching for history if it's a lookup)
+    if (fromScan) {
+        addToScanHistory(upc);
+    }
+
+    const product = await fetchProductData(upc);
+
+    if (product) {
+        renderProductInfo(product);
+
+        // Apply dietary preferences after product info is rendered
+        const preferences = loadDietaryPreferences(); // Make sure to load preferences again if needed
+        const complianceFeedback = checkDietaryCompliance(product, preferences);
+
+        if (complianceFeedback.length > 0) {
+            let feedbackHtml = '<div class="section-card info-card error-card"><h2>Dietary Warnings</h2><ul class="allergen-list">';
+            complianceFeedback.forEach(msg => {
+                feedbackHtml += `<li><span class="allergen-alert-badge">${msg}</span></li>`;
+            });
+            feedbackHtml += '</ul></div>';
+            // Insert at the top of the product info display
+            productInfoDiv.insertAdjacentHTML('afterbegin', feedbackHtml);
+        }
+
+        // Re-setup accordions after content is rendered
+        // This setTimeout is a good safeguard, but ensure setupAccordions itself handles initial state
+        setTimeout(() => {
+            setupAccordions();
+        }, 50); // Small delay to ensure DOM is ready
+    } else {
+        productInfoDiv.innerHTML = '<div class="section-card info-card error-card"><h2>Product Not Found</h2><p>No information available for this UPC code.</p></div>';
+    }
+}
+
+
+/**
+ * Helper to get a nutrient value per serving.
+ * @param {object} nutrient The nutrient object from product.nutrition_facts.
+ * @returns {number|string} The value per serving or 'N/A'.
+ */
+function getPerServingValue(nutrient) {
+    if (nutrient && nutrient.per_serving !== undefined && nutrient.per_serving !== null) {
+        const value = parseFloat(nutrient.per_serving);
+        return isNaN(value) ? 'N/A' : value.toFixed(1);
+    }
+    return 'N/A';
+}
+
+/**
+ * Determines a CSS class based on nutrient value for visual feedback.
+ * (Thresholds are examples, adjust based on dietary guidelines)
+ * @param {string} nutrientName e.g., 'sugar', 'salt', 'fat'
+ * @param {string|number} value The nutrient value (can be 'N/A' string or number).
+ * @returns {string} CSS class (e.g., 'nutrient-low', 'nutrient-high').
+ */
+function getNutrientStatusClass(nutrientName, value) {
+    if (value === 'N/A' || isNaN(parseFloat(value))) {
+        return '';
+    }
+    const val = parseFloat(value);
+    switch (nutrientName) {
+        case 'sugar':
+            if (val > 22.5) return 'nutrient-high'; // >22.5g/100g or 100ml is high
+            if (val < 5) return 'nutrient-low'; // <5g/100g or 100ml is low
+            return 'nutrient-moderate';
+        case 'salt':
+            if (val > 1.5) return 'nutrient-high'; // >1.5g/100g or 100ml is high
+            if (val < 0.3) return 'nutrient-low'; // <0.3g/100g or 100ml is low
+            return 'nutrient-moderate';
+        case 'fat':
+            if (val > 17.5) return 'nutrient-high'; // >17.5g/100g or 100ml is high
+            if (val < 3) return 'nutrient-low'; // <3g/100g or 100ml is low
+            return 'nutrient-moderate';
+        case 'calories':
+            if (val > 400) return 'nutrient-high'; // Example threshold
+            if (val < 100) return 'nutrient-low';
+            return 'nutrient-moderate';
+        case 'protein':
+        case 'fiber':
+            if (val > 5) return 'nutrient-good'; // Good to have higher protein/fiber
+            return '';
+        default:
+            return '';
+    }
+}
+
+
+/**
+ * Renders the product information into the DOM.
+ * @param {object} product The product data object.
+ */
+function renderProductInfo(product) {
+    let html = '';
+
+    // Product Header
+    html += `
+        <div class="section-card product-header">
+            <h1>${product.product_name || 'Unknown Product'}</h1>
+            ${product.image_url ? `<img src="${product.image_url}" alt="${product.product_name || 'Product'}" class="product-image">` : ''}
+            <p><small>UPC: ${product.barcode || 'N/A'}</small></p>
+        </div>
+    `;
+
+    // NOVA Group (if available)
+    if (product.nova_group) {
+        const novaClass = `nova-group-${product.nova_group}`;
+        const novaDescription = product.nova_group_description || 'No description available.';
+        const novaAdvice = product.nova_group_advice || 'No specific advice.'; // Assuming this field exists from backend
+        html += `
+            <div class="section-card info-card nova-info ${novaClass}">
+                <h2>NOVA Group ${product.nova_group}</h2>
+                <p><strong>Processing Level:</strong> ${novaDescription}</p>
+                <p class="nova-description">${novaAdvice}</p>
+                <p class="nova-source-note"><small>NOVA groups classify foods by level of processing. Learn more on <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia</a>.</small></p>
+            </div>
+        `;
+    }
+
+    // Ingredients
+    if (product.ingredients && product.ingredients.length > 0) {
+        let ingredientTagsHtml = '';
+        // Assuming product.ingredients_analysis_tags is an array of strings like ["en:palm-oil-free"]
+        if (product.ingredients_analysis_tags && Array.isArray(product.ingredients_analysis_tags) && product.ingredients_analysis_tags.length > 0) {
+            product.ingredients_analysis_tags.forEach(tag => {
+                // Example: split tag like 'en:palm-oil-free' to 'Palm Oil Free'
+                const displayTag = tag.replace(/^en:/, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                ingredientTagsHtml += `<span class="allergen-tag">${displayTag}</span>`;
+            });
+        }
+        html += `
+            <div class="section-card">
+                <button class="accordion-header" aria-expanded="false" id="ingredientsHeader">
+                    <h2>Ingredients <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content"> <p>${product.ingredients || 'No ingredients listed.'}</p>
+                    ${ingredientTagsHtml ? `<div class="info-card preference-highlights">${ingredientTagsHtml}</div>` : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    // Allergens (if available)
+    if (product.allergens && Array.isArray(product.allergens) && product.allergens.length > 0) {
+        let allergenListHtml = '<ul class="allergen-list">';
+        product.allergens.forEach(allergen => {
+            allergenListHtml += `<li><span class="allergen-tag">${allergen}</span></li>`;
+        });
+        allergenListHtml += '</ul>';
+
+        html += `
+            <div class="section-card">
+                <button class="accordion-header" aria-expanded="false">
+                    <h2>Allergens <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content"> ${allergenListHtml}
+                    <p class="additive-lookup-note"><small>Always check the product packaging for the most accurate and up-to-date allergen information.</small></p>
+                </div>
+            </div>
+        `;
+    } else {
+        html += `
+            <div class="section-card">
+                <button class="accordion-header" aria-expanded="false">
+                    <h2>Allergens <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content"> <p>No common allergens found or listed for this product.</p>
+                    <p class="additive-lookup-note"><small>Always check the product packaging for the most accurate and up-to-date allergen information.</small></p>
+                </div>
+            </div>
+        `;
+    }
+
+    // Additives
+    if (product.additives && Array.isArray(product.additives) && product.additives.length > 0) {
+        html += `
+            <div class="section-card">
+                <button class="accordion-header" aria-expanded="false">
+                    <h2>Additives (${product.additives.length}) <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content"> <div class="additive-list-container">
+                        <ul class="additive-list">
+        `;
+        product.additives.forEach(add => {
+            let statusText = 'Unknown Status'; // Default
+            let statusClass = 'additive-risk-badge info'; // Default class
+
+            if (add.status) {
+                if (add.status.includes('BANNED in EU')) {
+                    statusText = 'BANNED in EU';
+                    statusClass = 'additive-risk-badge banned';
+                } else if (add.status.includes('Requires warning')) {
+                    statusText = 'Requires warning';
+                    statusClass = 'additive-risk-badge warning';
+                } else if (add.status === 'Not banned in EU') {
+                    statusText = 'Not banned in EU'; // Can be info or just no badge
+                    statusClass = 'additive-risk-badge safe'; // New 'safe' class for clarity
+                } else if (add.status !== 'Unknown Status' && add.status !== 'Details from Wikipedia.') {
+                    statusText = add.status; // Use specific status if present
+                    statusClass = 'additive-risk-badge info';
+                }
+            }
+
+            html += `
+                            <li>
+                                <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
+                                <br>
+                                <small>
+                                    Type: ${add.type || 'N/A'}
+                                    <span class="${statusClass}">${statusText}</span>
+                                </small>
+                            </li>
+            `;
+        });
+        html += `
+                        </ul>
+                    </div>
+                    <p class="additive-lookup-note">
+                        <small>
+                            For more information on E-numbers, consult resources like
+                            <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
+                        </small>
+                    </p>
+                </div>
+            </div>
+        `;
+    } else {
+        html += `
+            <div class="section-card">
+                <button class="accordion-header" aria-expanded="false">
+                    <h2>Additives (0) <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content"> <p>No specific additives found or listed for this product.</p>
+                    <p class="additive-lookup-note">
+                        <small>
+                            For more information on E-numbers, consult resources like
+                            <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
+                        </small>
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+
+    // Nutrition Facts
+    if (product.nutrition_facts) {
+        const servingSizeText = product.serving_size ? `<small> (per ${product.serving_size})</small>` : '';
+        html += `
+            <div class="section-card">
+                <button class="accordion-header" aria-expanded="false">
+                    <h2>Nutrition Facts ${servingSizeText} <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content"> <div class="nutrition-grid">
+                        <p><strong>Calories:</strong> <span class="${getNutrientStatusClass('calories', getPerServingValue(product.nutrition_facts.calories))}">${getPerServingValue(product.nutrition_facts.calories)} kcal</span></p>
+                        <p><strong>Protein:</strong> <span class="${getNutrientStatusClass('protein', getPerServingValue(product.nutrition_facts.protein))}">${getPerServingValue(product.nutrition_facts.protein)} g</span></p>
+                        <p><strong>Carbohydrates:</strong> <span class="${getNutrientStatusClass('carbohydrates', getPerServingValue(product.nutrition_facts.carbohydrates))}">${getPerServingValue(product.nutrition_facts.carbohydrates)} g</span></p>
+                        <p><strong>Fat:</strong> <span class="${getNutrientStatusClass('fat', getPerServingValue(product.nutrition_facts.fat))}">${getPerServingValue(product.nutrition_facts.fat)} g</span></p>
+                        <p><strong>Sugar:</strong> <span class="${getNutrientStatusClass('sugar', getPerServingValue(product.nutrition_facts.sugar))}">${getPerServingValue(product.nutrition_facts.sugar)} g</span></p>
+                        <p><strong>Salt:</strong> <span class="${getNutrientStatusClass('salt', getPerServingValue(product.nutrition_facts.salt))}">${getPerServingValue(product.nutrition_facts.salt)} g</span></p>
+                        <p><strong>Fiber:</strong> <span class="${getNutrientStatusClass('fiber', getPerServingValue(product.nutrition_facts.fiber))}">${getPerServingValue(product.nutrition_facts.fiber)} g</span></p>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        html += `
+            <div class="section-card">
+                <button class="accordion-header" aria-expanded="false">
+                    <h2>Nutrition Facts <span class="arrow">▼</span></h2>
+                </button>
+                <div class="accordion-content"> <p>No nutrition facts available for this product.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    html += `
+        <div class="section-card">
+            <button class="accordion-header" aria-expanded="false">
+                <h2>Data Source <span class="arrow">▼</span></h2>
+            </button>
+            <div class="accordion-content"> <p>Information provided by ${product.source || 'Open Food Facts'}.</p>
+            </div>
+        </div>
+    `;
+
+    productInfoDiv.innerHTML = html;
+}
+
+// --- Scanner Logic ---
+
+async function onScanSuccess(decodedText, decodedResult) {
+    const currentTime = new Date().getTime();
+
+    if (decodedText === lastScannedCode && (currentTime - lastScanTimestamp < LAST_SCAN_DEBOUNCE_MS)) {
+        console.log("Debouncing: Same code scanned too quickly.");
+        return;
+    }
+
+    lastScannedCode = decodedText;
+    lastScanTimestamp = currentTime;
+
+    console.log(`Scan result: ${decodedText}`, decodedResult);
+    if (upcInput) upcInput.value = decodedText;
+
+    await fetchAndProcessProduct(decodedText, true);
+    // After a successful scan, you might want to stop the scanner automatically
+    // or keep it running for continuous scanning.
+    // await stopScanner(); // Uncomment if you want the scanner to stop after one successful scan
+}
+
+function onScanError(errorMessage) {
+    if (isScannerRunning) {
+        // console.warn('Scanner error during active scan:', errorMessage); // Too verbose for console
+    }
+}
+
+async function initializeScanner(cameraId) {
+    if (html5QrcodeScanner && isScannerRunning) {
+        console.log("Stopping existing scanner to re-initialize.");
+        await stopScanner();
+    }
+
+    if (scannerContainer) scannerContainer.innerHTML = '';
+    displayMessage('Starting scanner...', 'info');
+
+    // Html5QrcodeScanner takes the ID of the div where the scanner UI will be rendered
+    html5QrcodeScanner = new Html5QrcodeScanner(
+        "scanner-container",
+        {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            supportedScanFormats: [
+                Html5QrcodeSupportedFormats.EAN_13,
+                Html5QrcodeSupportedFormats.EAN_8,
+                Html5QrcodeSupportedFormats.UPC_A,
+                Html5QrcodeSupportedFormats.UPC_E,
+            ],
+            disableFlip: false, // Allow flipping horizontally
+        },
+        /* verbose= */ false
+    );
+
+    try {
+        const renderConfig = {
+            deviceId: { exact: cameraId },
+            rememberLastUsedCamera: false
+        };
+
+        await html5QrcodeScanner.render(
+            onScanSuccess,
+            onScanError,
+            renderConfig
+        );
+
+        isScannerRunning = true;
+        currentCameraId = cameraId;
+
+        displayMessage('Scanner active. Point to a barcode.', 'success');
+        if (cameraControls) cameraControls.style.display = 'flex'; // Show camera controls once scanner starts
+        if (scanButton) scanButton.textContent = 'Hide Scanner'; // Update main scan button
+    } catch (err) {
+        console.error('Error starting scanner with ID ' + cameraId + ':', err);
+        isScannerRunning = false;
+        if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls on error
+        if (scanButton) scanButton.textContent = 'Start Scan'; // Reset main scan button
+        let errorMessage = 'Error starting scanner.';
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            errorMessage = 'Camera access denied by user. Please enable camera permissions in your browser settings (e.g., Site Settings > Permissions > Camera).';
+        } else if (err.name === 'NotFoundError') {
+            errorMessage = 'No camera found on this device or the selected camera is unavailable.';
+        } else if (err.name === 'OverconstrainedError') {
+            errorMessage = 'Camera constraints cannot be satisfied (e.g., specific resolution not supported). Trying to switch cameras...';
+            // Try to switch to another camera if available
+            if (availableCameras.length > 1) {
+                const currentIndex = availableCameras.findIndex(camera => camera.id === currentCameraId);
+                const nextIndex = (currentIndex + 1) % availableCameras.length;
+                const nextCamera = availableCameras[nextIndex];
+                displayMessage(`Trying next camera: ${nextCamera.label || 'unknown'}`, 'warning');
+                await initializeScanner(nextCamera.id); // Recursive call to try next camera
+                return; // Exit current function to prevent further error messages
+            }
+        } else {
+            errorMessage += ` (${err.message})`;
+        }
+        displayMessage(errorMessage, 'error');
+        if (scannerContainer) scannerContainer.innerHTML = `<p>${errorMessage}</p>`;
+    }
+}
 
 async function getCameras() {
     try {
@@ -706,6 +1344,7 @@ function loadDietaryPreferences() {
         const preferencesJson = localStorage.getItem(DIETARY_PREFERENCES_KEY);
         const preferences = preferencesJson ? JSON.parse(preferencesJson) : {};
 
+        // Update UI elements based on loaded preferences
         if (vegetarianCheckbox) vegetarianCheckbox.checked = preferences.vegetarian || false;
         if (veganCheckbox) veganCheckbox.checked = preferences.vegan || false;
         if (glutenFreeCheckbox) glutenFreeCheckbox.checked = preferences.glutenFree || false;
@@ -761,7 +1400,8 @@ function loadScanHistory() {
             if (history.length === 0) {
                 scanHistoryList.innerHTML = '<li class="text-center text-gray-500">No scan history yet.</li>';
             } else {
-                history.forEach(item => {
+                // Display history in reverse chronological order (newest first)
+                history.slice().reverse().forEach(item => {
                     const listItem = document.createElement('li');
                     listItem.className = 'scan-history-item';
                     listItem.dataset.upc = item.upc;
@@ -774,10 +1414,10 @@ function loadScanHistory() {
                     `;
                     listItem.addEventListener('click', () => {
                         upcInput.value = item.upc;
-                        fetchAndProcessProduct(item.upc, false);
+                        fetchAndProcessProduct(item.upc, false); // False because it's a history lookup, not a live scan
                         toggleSidebar(false); // Close sidebar after selecting from history
                     });
-                    scanHistoryList.prepend(listItem); // Add to the top
+                    scanHistoryList.appendChild(listItem); // Add to the end (since we reversed the array)
                 });
             }
         }
@@ -800,13 +1440,15 @@ async function addToScanHistory(upc) {
         console.error("Failed to read scan history for adding:", e);
     }
 
-    // Prevent adding duplicates to history right after a scan
-    if (history.some(item => item.upc === upc)) {
-        return;
-    }
+    // Remove existing item with the same UPC to ensure it's always the latest
+    history = history.filter(item => item.upc !== upc);
 
-    // Fetch product details for history display (name, image)
-    const productDataForHistory = await fetchProductData(upc); // Re-fetch or pass data from main product fetch
+    // Fetch product details for history display (name, image) if not already fetched
+    // (This part is crucial: if you fetch product data in fetchAndProcessProduct,
+    // you should pass that data here to avoid a duplicate API call.
+    // For simplicity, I'm keeping the re-fetch as per your original code,
+    // but optimizing this would be good for performance.)
+    const productDataForHistory = await fetchProductData(upc);
     let name = productDataForHistory ? productDataForHistory.product_name : 'Unknown Product';
     let imageUrl = productDataForHistory ? productDataForHistory.image_url : null;
 
@@ -1023,7 +1665,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial setup for accordions (now only applies to product detail sections)
+    // Initial setup for accordions that are present on page load (e.g., in sidebar or if initial product data exists)
+    // IMPORTANT: For product info accordions loaded dynamically, setupAccordions is called in fetchAndProcessProduct.
     setupAccordions();
 
 }); // End DOMContentLoaded
