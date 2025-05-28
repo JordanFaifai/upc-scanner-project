@@ -1,4 +1,3 @@
-
 // Global Variables (Declare these at the very top of your client.js file)
 let upcInput;
 let lookupButton;
@@ -28,6 +27,11 @@ let sidebar;
 let sidebarOverlay;
 let hamburgerMenu;
 let sidebarCloseButton;
+let dietaryPreferencesSection; // New: Section to show/hide
+let scanHistorySection;     // New: Section to show/hide
+let showPreferencesButton;  // New: Button in sidebar
+let showHistoryButton;      // New: Button in sidebar
+
 
 // Html5Qrcode related variables
 let html5QrcodeScanner = null;
@@ -214,7 +218,7 @@ function checkDietaryCompliance(product, preferences) {
 
     // Check Allergens against user preferences
     if (preferences.allergens && preferences.allergens.length > 0) {
-        preferences.allergers.forEach(allergenPref => {
+        preferences.allergens.forEach(allergenPref => {
             // Trim and convert preference to lowercase for comparison
             const trimmedAllergenPref = allergenPref.toLowerCase().trim();
             if (lowerCaseAllergens.includes(trimmedAllergenPref)) {
@@ -288,7 +292,7 @@ async function fetchAndProcessProduct(upc, fromScan) {
  * Helper to get a nutrient value per serving.
  * @param {object} nutrient The nutrient object from product.nutrition_facts.
  * @returns {number|string} The value per serving or 'N/A'.
- */
+*/
 function getPerServingValue(nutrient) {
     if (nutrient && nutrient.per_serving !== undefined && nutrient.per_serving !== null) {
         const value = parseFloat(nutrient.per_serving);
@@ -303,7 +307,7 @@ function getPerServingValue(nutrient) {
  * @param {string} nutrientName e.g., 'sugar', 'salt', 'fat'
  * @param {string|number} value The nutrient value (can be 'N/A' string or number).
  * @returns {string} CSS class (e.g., 'nutrient-low', 'nutrient-high').
- */
+*/
 function getNutrientStatusClass(nutrientName, value) {
     if (value === 'N/A' || isNaN(parseFloat(value))) {
         return '';
@@ -452,14 +456,14 @@ function renderProductInfo(product) {
             }
 
             html += `
-                            <li>
-                                <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
-                                <br>
-                                <small>
-                                    Type: ${add.type || 'N/A'}
-                                    <span class="${statusClass}">${statusText}</span>
-                                </small>
-                            </li>
+                                <li>
+                                    <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
+                                    <br>
+                                    <small>
+                                        Type: ${add.type || 'N/A'}
+                                        <span class="${statusClass}">${statusText}</span>
+                                    </small>
+                                </li>
             `;
         });
         html += `
@@ -605,7 +609,6 @@ async function initializeScanner(cameraId) {
 
         isScannerRunning = true;
         currentCameraId = cameraId;
-
         displayMessage('Scanner active. Point to a barcode.', 'success');
         if (cameraControls) cameraControls.style.display = 'flex'; // Show camera controls once scanner starts
         if (scanButton) scanButton.textContent = 'Hide Scanner'; // Update main scan button
@@ -732,8 +735,13 @@ async function stopScanner() {
     });
 }
 
-// --- Sidebar Logic ---
+---
 
+## Sidebar and Section Toggling Logic
+
+This is the new part that makes the sidebar work and controls the visibility of your Dietary Preferences and Scan History sections.
+
+```javascript
 /**
  * Toggles the visibility of the sidebar and its overlay.
  * @param {boolean|null} forceState If true/false, forces the state; otherwise, toggles.
@@ -758,6 +766,35 @@ function toggleSidebar(forceState = null) {
     }
 }
 
+/**
+ * Shows a specific section in the main content area and hides others.
+ * Designed for use with sidebar navigation.
+ * @param {HTMLElement} sectionToShow The DOM element of the section to display.
+ */
+function showMainContentSection(sectionToShow) {
+    // Hide all main content sections (except the product info which is always visible unless cleared)
+    const sections = [dietaryPreferencesSection, scanHistorySection];
+    sections.forEach(section => {
+        if (section && section !== sectionToShow) {
+            section.style.display = 'none';
+        }
+    });
+
+    // Show the selected section
+    if (sectionToShow) {
+        sectionToShow.style.display = 'block'; // Or 'flex', depending on its default styling
+    }
+
+    // Clear product info when showing a section from sidebar (optional, but logical for navigation)
+    if (productInfoDiv) {
+        productInfoDiv.innerHTML = '';
+        displayMessage('Select an option from the sidebar or scan a product.', 'info');
+    }
+
+    // Close the sidebar after selection
+    toggleSidebar(false);
+}
+
 
 // --- Preferences and History Logic ---
 
@@ -767,7 +804,7 @@ const SCAN_HISTORY_KEY = 'scanHistory';
 /**
  * Loads dietary preferences from local storage.
  * @returns {object} The loaded preferences or defaults.
- */
+*/
 function loadDietaryPreferences() {
     try {
         const preferencesJson = localStorage.getItem(DIETARY_PREFERENCES_KEY);
@@ -788,7 +825,7 @@ function loadDietaryPreferences() {
 
 /**
  * Saves dietary preferences to local storage.
- */
+*/
 function saveDietaryPreferences() {
     const preferences = {
         vegetarian: vegetarianCheckbox ? vegetarianCheckbox.checked : false,
@@ -806,7 +843,7 @@ function saveDietaryPreferences() {
 
 /**
  * Clears dietary preferences from local storage and resets UI.
- */
+*/
 function clearDietaryPreferences() {
     try {
         localStorage.removeItem(DIETARY_PREFERENCES_KEY);
@@ -819,7 +856,7 @@ function clearDietaryPreferences() {
 
 /**
  * Loads scan history from local storage and populates the list.
- */
+*/
 function loadScanHistory() {
     try {
         const historyJson = localStorage.getItem(SCAN_HISTORY_KEY);
@@ -835,7 +872,7 @@ function loadScanHistory() {
                     listItem.className = 'scan-history-item';
                     listItem.dataset.upc = item.upc;
                     listItem.innerHTML = `
-                        ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="history-item-image">` : ''}
+                        ${item.image_url ? `<img src="<span class="math-inline">\{item\.image\_url\}" alt\="</span>{item.name}" class="history-item-image">` : ''}
                         <div class="history-item-details">
                             <span class="history-item-name">${item.name}</span>
                             <small class="history-item-upc">${item.upc}</small>
@@ -859,7 +896,7 @@ function loadScanHistory() {
 /**
  * Adds a scanned product to history.
  * @param {string} upc The UPC of the scanned product.
- */
+*/
 async function addToScanHistory(upc) {
     let history = [];
     try {
@@ -907,7 +944,7 @@ async function addToScanHistory(upc) {
 
 /**
  * Clears the entire scan history.
- */
+*/
 function clearScanHistory() {
     try {
         localStorage.removeItem(SCAN_HISTORY_KEY);
@@ -949,6 +986,10 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarOverlay = document.getElementById('sidebarOverlay');
     hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
     sidebarCloseButton = document.getElementById('sidebarCloseButton');
+    showPreferencesButton = document.getElementById('showPreferencesButton'); // New: Button in sidebar
+    showHistoryButton = document.getElementById('showHistoryButton');     // New: Button in sidebar
+    dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // New: Section to show/hide
+    scanHistorySection = document.getElementById('scanHistorySection');       // New: Section to show/hide
 
 
     // Initial display of sections
@@ -1094,8 +1135,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // New: Sidebar navigation buttons
+    if (showPreferencesButton) {
+        showPreferencesButton.addEventListener('click', () => {
+            showMainContentSection(dietaryPreferencesSection);
+        });
+    }
+
+    if (showHistoryButton) {
+        showHistoryButton.addEventListener('click', () => {
+            loadScanHistory(); // Ensure history is fresh when shown
+            showMainContentSection(scanHistorySection);
+        });
+    }
+
+
     // Initial setup for accordions that are present on page load (e.g., in sidebar or if initial product data exists)
     // IMPORTANT: For product info accordions loaded dynamically, setupAccordions is called in fetchAndProcessProduct.
     setupAccordions();
+
+    // Initial display of the "no product" message and hiding of other sections
+    if (dietaryPreferencesSection) dietaryPreferencesSection.style.display = 'none';
+    if (scanHistorySection) scanHistorySection.style.display = 'none';
 
 }); // End DOMContentLoaded

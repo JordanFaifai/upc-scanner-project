@@ -452,20 +452,25 @@ input[type="text"]::placeholder {
 
 
 /* Dietary Preferences Section */
+/* These are now inside the sidebar, so they'll be hidden by default
+   and toggled by JavaScript via the .sidebar-section-visible class */
 #dietaryPreferencesSection {
-    padding: 25px;
-    background-color: #34495e;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
+    padding: 0; /* Handled by .sidebar-content-wrapper or specific inner divs */
+    background-color: transparent; /* No background, use sidebar's or content-wrapper's */
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+    display: none; /* Initially hidden */
 }
 
 #dietaryPreferencesSection h2 {
     color: #a3e635;
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin-top: 20px; /* Space above heading */
+    margin-bottom: 15px;
     border-bottom: 2px solid #557088;
     padding-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
 }
 
 #dietaryPreferencesSection div {
@@ -545,20 +550,25 @@ input[type="text"]::placeholder {
 }
 
 /* Scan History Section */
+/* These are now inside the sidebar, so they'll be hidden by default
+   and toggled by JavaScript via the .sidebar-section-visible class */
 #scanHistorySection {
-    background-color: #34495e;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
+    padding: 0; /* Handled by .sidebar-content-wrapper or specific inner divs */
+    background-color: transparent; /* No background, use sidebar's or content-wrapper's */
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+    display: none; /* Initially hidden */
 }
 
 #scanHistorySection h2 {
     color: #a3e635;
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin-top: 20px; /* Space above heading */
+    margin-bottom: 15px;
     border-bottom: 2px solid #557088;
     padding-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
 }
 
 #scanHistoryList {
@@ -861,7 +871,6 @@ div[id^="html5-qrcode-info"] {
     background-color: #34495e; /* Match header/card background */
     overflow-x: hidden;
     transition: 0.5s; /* Smooth slide-in/out effect */
-    padding-top: 60px; /* Space for close button */
     box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3); /* Shadow on the left */
     box-sizing: border-box; /* Include padding in width */
     display: flex;
@@ -872,64 +881,93 @@ div[id^="html5-qrcode-info"] {
     width: 300px; /* Desired width when open */
 }
 
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 20px 1rem; /* Adjust padding for top bar */
+    border-bottom: 2px solid #557088;
+    margin-bottom: 20px; /* Space between header and content */
+}
+
+.sidebar-header h2 {
+    color: #a3e635;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8em;
+}
+
 /* Close button for sidebar */
 .sidebar .closebtn {
-    position: absolute;
-    top: 15px;
-    right: 25px;
     font-size: 36px;
-    margin-left: 50px;
     color: #ecf0f1;
     cursor: pointer;
-    background: none; /* IMPORTANT: Ensures no background color */
-    border: none; /* IMPORTANT: Removes any default border */
-    padding: 0; /* IMPORTANT: Removes default padding */
-    margin: 0; /* IMPORTANT: Removes any default or conflicting margins */
-    line-height: 1; /* Helps vertically center the 'X' character */
-    height: 1em; /* Makes the button's clickable area match font size */
-    width: 1em; /* Makes the button's clickable area match font size */
-    display: flex; /* Use flexbox to precisely center the 'X' */
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    height: 1em;
+    width: 1em;
+    display: flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none; /* In case it's an anchor, remove underline */
-    transition: 0.3s; /* Keep existing transition */
+    text-decoration: none;
+    transition: 0.3s;
 }
 
 .sidebar .closebtn:hover {
-    color: #a3e635; /* Green accent on hover */
+    color: #e74c3c; /* Red accent on hover for close */
 }
 
-.sidebar-content {
-    padding: 20px;
+.sidebar-nav {
+    padding: 0 20px; /* Padding for the navigation buttons */
+    margin-bottom: 20px;
+}
+
+.sidebar-nav .sidebar-menu-button {
+    background-color: #4a627a;
+    color: #ecf0f1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make buttons full width */
+    text-align: left;
+    margin-bottom: 8px; /* Space between buttons */
+}
+
+.sidebar-nav .sidebar-menu-button:hover,
+.sidebar-nav .sidebar-menu-button.active {
+    background-color: #557088;
+    color: #a3e635; /* Accent color for active/hover */
+}
+
+
+/* Main content area for sections shown in sidebar */
+.sidebar-content-area {
+    padding: 0 20px 20px; /* Padding for the actual content sections */
     overflow-y: auto; /* Enable scrolling for content if it overflows */
     flex-grow: 1; /* Allow content to take available space */
 }
 
-.sidebar-content h2 {
-    color: #a3e635;
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #557088;
-    padding-bottom: 10px;
-    font-family: 'Poppins', sans-serif;
+/* Styles for the content wrappers within dietary preferences and scan history */
+/* These make the inner content distinct inside the sidebar */
+#dietary-information-body,
+#scan-history-body {
+    background-color: #4a627a; /* Darker shade for content within sections */
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px; /* Space from the heading */
+    margin-bottom: 15px; /* Space between content blocks if multiple */
 }
 
-/* Style for individual sidebar links/items */
-.sidebar-content a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 1.1em;
-    color: #ecf0f1;
-    display: block;
-    transition: 0.3s;
-    border-radius: 5px;
-    margin-bottom: 8px;
-    background-color: #4a627a; /* Background for items */
-}
-
-.sidebar-content a:hover {
-    color: #a3e635;
-    background-color: #557088;
+/* Class to make sections visible when toggled by JavaScript */
+.sidebar-section-visible {
+    display: block !important; /* Use !important to ensure visibility */
 }
 
 /* Hamburger menu button */
