@@ -21,21 +21,25 @@
             <div id="scanner-container">
                 <p>Click "Start Scan" to activate your camera.</p>
             </div>
-            <div id="cameraControls" style="display: none;"> <button id="startCameraButton" class="scanner-control-button">Start Scan</button>
+            <div id="cameraControls" style="display: none;">
+                <button id="startCameraButton" class="scanner-control-button">Start Scan</button>
                 <button id="switchCameraButton" class="scanner-control-button">Switch Camera</button>
                 <button id="stopCameraButton" class="scanner-control-button button-danger">Stop Scan</button>
             </div>
             <button id="scanButton" class="button" style="margin-top: 15px;">Start Scan</button>
         </section>
 
-        <section id="manualScanSection" class="section-card"> <h2>Manual UPC Entry</h2>
+        <section id="manualScanSection" class="section-card">
+            <h2>Manual UPC Entry</h2>
             <input type="text" id="upcInput" placeholder="Enter UPC code (e.g., 049000000427)">
-            <button id="lookupButton" class="button">Lookup Product Info</button> </section>
+            <button id="lookupButton" class="button">Lookup Product Info</button>
+        </section>
+
         <section id="dietaryPreferencesSection" class="section-card">
-            <button class="accordion-header">
+            <button id="dietary-information-accordion-button" class="accordion-header" aria-expanded="false">
                 <h2>Dietary Preferences <span class="arrow">▼</span></h2>
             </button>
-            <div class="accordion-content">
+            <div id="dietary-information-body" class="accordion-content hidden">
                 <div class="preference-group">
                     <h3>General Dietary Needs</h3>
                     <div class="checkbox-group">
@@ -56,24 +60,27 @@
 
                 <p id="preferenceMessage" class="message info" style="display: none;"></p>
                 <div class="flex justify-center flex-wrap">
-                    <button id="savePreferencesButton" class="button">Save Preferences</button> <button id="clearPreferencesButton" class="button button-danger">Clear Preferences</button> </div>
+                    <button id="savePreferencesButton" class="button">Save Preferences</button>
+                    <button id="clearPreferencesButton" class="button button-danger">Clear Preferences</button>
+                </div>
             </div>
         </section>
 
         <section id="productInfo" class="section-card">
             <h2>Product Details</h2>
             <p>Scan a UPC or enter it manually to see results.</p>
-            </section>
+        </section>
 
         <section id="scanHistorySection" class="section-card">
-            <button class="accordion-header">
+            <button id="scan-history-accordion-button" class="accordion-header" aria-expanded="false">
                 <h2>Scan History <span class="arrow">▼</span></h2>
             </button>
-            <div class="accordion-content">
+            <div id="scan-history-body" class="accordion-content hidden">
                 <ul id="scanHistoryList" class="scan-history-list">
-                    </ul>
+                </ul>
                 <div class="flex justify-center">
-                    <button id="clearHistoryButton" class="button button-danger">Clear History</button> </div>
+                    <button id="clearHistoryButton" class="button button-danger">Clear History</button>
+                </div>
             </div>
         </section>
     </main>
