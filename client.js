@@ -31,7 +31,7 @@ const stopCameraButton = document.getElementById('stopCameraButton'); // New sto
 const startCameraButton = document.getElementById('startCameraButton'); // New start camera button
 
 // API Base URL (replace with your actual server URL if different)
-const API_BASE_URL = 'https://upc-scanner-backend-api.onrender.com:10000/api'; // Or your deployed backend URL
+const API_BASE_URL = 'https://upc-scanner-backend-api.onrender.com/api'; // Or your deployed backend URL
 
 // State variables for custom modal
 let resolveModalPromise;
