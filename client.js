@@ -37,7 +37,7 @@ let availableCameras = [];
 let currentCameraId = null;
 
 // API Endpoint (replace with your actual API endpoint if different)
-const API_BASE_URL = 'https://pure-scan-api.onrender.com/api'; // Your Render.com API URL
+const API_BASE_URL = 'https://upc-scanner-backend-api.onrender.com/api'; // Your Render.com API URL
 
 // --- Utility Functions ---
 
