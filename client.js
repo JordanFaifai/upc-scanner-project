@@ -735,13 +735,6 @@ async function stopScanner() {
     });
 }
 
----
-
-## Sidebar and Section Toggling Logic
-
-This is the new part that makes the sidebar work and controls the visibility of your Dietary Preferences and Scan History sections.
-
-```javascript
 /**
  * Toggles the visibility of the sidebar and its overlay.
  * @param {boolean|null} forceState If true/false, forces the state; otherwise, toggles.
