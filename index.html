@@ -10,12 +10,11 @@
 </head>
 <body>
     <header>
-        <div id="message" class="message" style="display: none;"></div>
+        <button id="hamburgerMenu" class="hamburger-menu" aria-label="Open menu">
+            &#9776; </button>
         <h1>Pure Scan: Simple Food Transparency</h1>
         <p>Scan product barcodes or enter UPCs manually to get detailed ingredient, nutrition, and additive information.</p>
-        <button id="sidebarToggleButton" class="hamburger-button" aria-label="Open menu">
-            ☰
-        </button>
+        <div id="messageDisplay" class="message" style="display: none;"></div>
     </header>
 
     <main class="container">
@@ -41,19 +40,20 @@
         <section id="productInfo" class="section-card">
             <h2>Product Details</h2>
             <p>Scan a UPC or enter it manually to see results.</p>
-        </section>
+            </section>
     </main>
 
-    <div id="sidebar" class="sidebar">
+    <div id="mySidebar" class="sidebar">
         <div class="sidebar-header">
             <h2>Settings & History</h2>
-            <button id="sidebarCloseButton" class="sidebar-close-button" aria-label="Close menu">
+            <button id="sidebarCloseButton" class="closebtn" aria-label="Close menu">
                 &times;
             </button>
         </div>
         <section id="dietaryPreferencesSection" class="section-card no-margin-top">
             <h2 class="sidebar-section-title">Dietary Preferences</h2>
-            <div id="dietary-information-body" class="accordion-content flex"> <div class="preference-group">
+            <div id="dietary-information-body" class="accordion-content flex">
+                <div class="preference-group">
                     <h3>General Dietary Needs</h3>
                     <div class="checkbox-group">
                         <input type="checkbox" id="vegetarianCheckbox"> <label for="vegetarianCheckbox">Vegetarian</label>
@@ -81,7 +81,8 @@
 
         <section id="scanHistorySection" class="section-card">
             <h2 class="sidebar-section-title">Scan History</h2>
-            <div id="scan-history-body" class="accordion-content flex"> <ul id="scanHistoryList" class="scan-history-list">
+            <div id="scan-history-body" class="accordion-content flex">
+                <ul id="scanHistoryList" class="scan-history-list">
                 </ul>
                 <div class="flex justify-center">
                     <button id="clearHistoryButton" class="button button-danger">Clear History</button>

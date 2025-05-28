@@ -1,6 +1,6 @@
 /* General Body and Container Styles */
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif; /* Keep this font as per your HTML */
     background-color: #2c3e50; /* Dark blue-grey */
     color: #ecf0f1; /* Off-white for text */
     margin: 0;
@@ -12,14 +12,15 @@ body {
 }
 
 header {
-    background-color: #34495e; /* Slightly lighter blue-grey */
+    background-color: #34495e;
     color: #ecf0f1;
     padding: 1.5rem 0;
     width: 100%;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin-bottom: 20px;
-    position: relative; /* Needed for hamburger menu positioning */
+    position: relative; /* CRUCIAL: Establishes positioning context for absolute children */
+    overflow: hidden; /* Helps contain absolutely positioned elements within the header */
 }
 
 header h1 {
@@ -27,615 +28,327 @@ header h1 {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 2.5rem;
+    /* You might adjust margin-left if hamburger overlaps title on small screens */
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: row; /* Default to row for larger screens */
-    flex-wrap: wrap; /* Allow wrapping */
-    gap: 20px; /* Space between sections */
-    padding-bottom: 30px;
+header p {
+    font-size: 1.1em;
+    margin-top: 5px;
+    margin-bottom: 0;
+    color: #bdc3c7; /* Lighter grey for description */
 }
 
-.section-card {
+/* --- Hamburger Menu Button Styles --- */
+/* Targets the ID #hamburgerMenu which also has class .hamburger-menu in your HTML */
+.hamburger-menu {
+    position: absolute; /* Positioned relative to the 'header' */
+    top: 50%; /* Vertically center within header */
+    left: 20px; /* 20px from the left edge of the header */
+    transform: translateY(-50%); /* Fine-tune vertical centering */
+    display: none; /* Hidden by default, shown in media query */
+    cursor: pointer;
+    font-size: 30px;
+    color: #ecf0f1; /* Your preferred color */
+    z-index: 1001; /* Ensure it's on top of other content */
+    background: none; /* No background */
+    border: none; /* No border */
+    padding: 0; /* No extra padding */
+    line-height: 1; /* Prevents extra space around the character */
+}
+
+/* --- Sidebar Overlay Styles --- */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999; /* Below sidebar, above main content */
+    display: none;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* --- Sidebar Container Styles --- */
+/* Targets the ID #mySidebar which also has class .sidebar in your HTML */
+.sidebar {
+    height: 100%;
+    width: 0; /* Closed by default */
+    position: fixed;
+    z-index: 1000; /* Above overlay, below hamburger */
+    top: 0;
+    right: 0; /* Opens from the right */
     background-color: #34495e;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px; /* Space between cards when stacked */
-    flex: 1 1 48%; /* Allows two columns on wider screens, single column on smaller */
-    box-sizing: border-box; /* Include padding in width calculation */
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 0; /* Header is inside sidebar, so no top padding needed here */
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    display: flex;
+    flex-direction: column;
 }
 
-/* Specific sizing for scanner and results sections */
-.section-card.controls {
-    flex: 1 1 45%; /* Slightly less width for scanner, allowing results more room */
-    min-width: 300px; /* Ensure scanner doesn't get too squashed */
+.sidebar.open {
+    width: 300px; /* Open width */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #2c3e50; /* A darker shade for the sidebar header */
+    border-bottom: 2px solid #557088;
+}
+
+.sidebar-header h2 {
+    color: #a3e635;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- Sidebar Close Button Styles --- */
+/* Targets the class .closebtn as specified in your HTML */
+.closebtn {
+    font-size: 36px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: 0.3s;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1; /* Helps vertical alignment */
+}
+
+.closebtn:hover {
+    color: #a3e635;
+}
+
+.sidebar-content {
+    padding: 20px;
+    overflow-y: auto; /* Allows scrolling if content overflows */
+    flex-grow: 1; /* Allows it to take up available space */
+}
+
+.sidebar-section-title {
+    color: #a3e635;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #557088;
+    padding-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- Responsive Design (Media Query) --- */
+@media (max-width: 768px) {
+    /* Show hamburger menu on smaller screens */
+    .hamburger-menu {
+        display: block; /* Make it visible */
+    }
+
+    header {
+        padding-left: 60px; /* Make space for the hamburger icon on the left */
+        /* If header h1 needs to shift, you might adjust its margin-left here too */
+    }
+
+    .sidebar.open {
+        width: 250px; /* Slightly smaller width for sidebar on smaller screens */
+    }
+}
+
+
+/* --- Main Content Section Cards --- */
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
+    padding: 0; /* No padding needed here, sections will have it */
 }
 
-.section-card.results {
-    flex: 2 1 50%; /* Allow results to take more space */
-    min-width: 300px; /* Ensure results don't get too squashed */
-}
-
-/* Flex utilities */
-.flex {
-    display: flex;
-}
-.justify-center {
-    justify-content: center;
-}
-.flex-wrap {
-    flex-wrap: wrap;
-}
-
-/* Input and Button Styles */
-input[type="text"] {
-    width: calc(100% - 20px); /* Account for padding */
-    padding: 12px 10px;
-    margin-bottom: 15px;
-    border: 1px solid #557088;
-    border-radius: 5px;
-    background-color: #4a627a; /* Darker input background */
+.section-card {
+    background-color: #34495e; /* Match header color */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 25px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
     color: #ecf0f1;
-    font-size: 1em;
 }
 
-input[type="text"]::placeholder {
-    color: #aebfd1;
-}
-
-.button {
-    background-color: #a3e635; /* Green accent color */
-    color: #2c3e50;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
+.section-card h2 {
+    color: #a3e635;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #557088;
+    padding-bottom: 10px;
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
+}
+
+/* --- Buttons --- */
+.button {
+    background-color: #a3e635;
+    color: #2c3e50;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin: 5px; /* Space out multiple buttons */
-    white-space: nowrap; /* Prevent button text from wrapping */
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin: 5px; /* Add some margin for spacing between buttons */
+    display: inline-block; /* Ensure buttons sit side-by-side if flex container */
 }
 
 .button:hover {
-    background-color: #82b32b; /* Darker green on hover */
-    transform: translateY(-2px);
+    background-color: #8cc63e;
 }
 
 .button-danger {
-    background-color: #e74c3c; /* Red for danger actions */
+    background-color: #e74c3c;
     color: #ecf0f1;
 }
 
 .button-danger:hover {
-    background-color: #c0392b; /* Darker red on hover */
+    background-color: #c0392b;
 }
 
-/* Scanner Specific Styles */
+.scanner-control-button {
+    background-color: #557088;
+    color: #ecf0f1;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+.scanner-control-button:hover {
+    background-color: #4a627a;
+}
+
+/* Flex utility for buttons/groups */
+.flex {
+    display: flex;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+/* --- Input Fields --- */
+input[type="text"],
+textarea {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #557088;
+    border-radius: 5px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    font-size: 1em;
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+    color: #95a5a6;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #a3e635;
+    box-shadow: 0 0 5px rgba(163, 230, 53, 0.5);
+}
+
+/* --- Message Display --- */
+/* Targets the ID #messageDisplay */
+#messageDisplay {
+    padding: 10px;
+    margin: 10px auto; /* Center the message div */
+    border-radius: 5px;
+    font-weight: 600;
+    text-align: center;
+    width: calc(100% - 40px); /* Adjust width for padding on small screens if needed */
+    max-width: 600px; /* Limit width on large screens */
+    box-sizing: border-box;
+}
+
+#messageDisplay.info {
+    background-color: #3498db; /* Blue */
+    color: white;
+}
+
+#messageDisplay.warning {
+    background-color: #f39c12; /* Orange */
+    color: white;
+}
+
+#messageDisplay.error {
+    background-color: #e74c3c; /* Red */
+    color: white;
+}
+
+#messageDisplay.success {
+    background-color: #2ecc71; /* Green */
+    color: white;
+}
+
+/* --- Scanner Container --- */
 #scanner-container {
     width: 100%;
-    min-height: 300px; /* Give scanner a decent initial height */
-    background-color: #2c3e50; /* Dark background for video feed */
+    min-height: 250px; /* Ensure space for the scanner */
+    background-color: #2c3e50;
     border-radius: 8px;
-    overflow: hidden;
-    position: relative; /* For scanner elements positioning */
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #ecf0f1; /* Light text for messages */
     text-align: center;
-    font-size: 1.1em;
-    padding: 15px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-/* Message styles */
-.message {
-    padding: 10px 15px;
+    overflow: hidden; /* Important for camera feed */
     margin-bottom: 15px;
-    border-radius: 5px;
-    font-weight: 500;
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
 }
 
-.message.info {
-    background-color: #3498db; /* Blue */
-    color: #ecf0f1;
-}
-
-.message.success {
-    background-color: #2ecc71; /* Green */
-    color: #ecf0f1;
-}
-
-.message.warning {
-    background-color: #f1c40f; /* Yellow */
-    color: #34495e; /* Dark text for contrast */
-}
-
-.message.error {
-    background-color: #e74c3c; /* Red */
-    color: #ecf0f1;
-}
-
-/* Product Info Display */
-.product-header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.product-header h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 2em;
-    color: #a3e635;
-    margin-bottom: 10px;
-}
-
-.product-image {
-    max-width: 100%;
-    height: auto;
+/* Styles specific to Html5QrcodeScanner elements */
+#scanner-container video {
+    width: 100% !important; /* Override inline styles from library */
+    height: auto !important;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    margin-top: 15px;
 }
 
-.info-card {
-    background-color: #4a627a; /* Darker background for nested info */
-    padding: 20px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.info-card h2 {
-    font-size: 1.4em;
-    color: #a3e635;
-    margin-top: 0;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #557088;
-    padding-bottom: 5px;
-}
-
-.info-card p {
-    font-size: 1em;
-    line-height: 1.6;
-    margin-bottom: 10px;
-}
-
-.no-product {
-    text-align: center;
-}
-
-.no-product p {
-    color: #ffcc00;
-}
-
-.error-card {
-    border-left: 5px solid #e74c3c;
-}
-
-.error-card h2 {
-    color: #e74c3c;
-}
-
-.external-link {
-    color: #74b9ff; /* Light blue for links */
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.external-link:hover {
-    color: #4a90e2; /* Darker blue on hover */
-    text-decoration: underline;
-}
-
-/* NOVA Group Styling */
-.nova-info {
-    border-left: 5px solid; /* Will be colored by specific group */
-    padding-left: 20px;
-}
-
-.nova-group-1 { border-color: #27ae60; /* Dark green */ }
-.nova-group-2 { border-color: #2ecc71; /* Medium green */ }
-.nova-group-3 { border-color: #f1c40f; /* Yellow */ }
-.nova-group-4 { border-color: #e74c3c; /* Red */ }
-.nova-group-unknown { border-color: #95a5a6; /* Grey */ }
-
-.nova-info h2 {
-    font-size: 1.5em;
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.nova-info p strong {
-    font-weight: 700;
-    color: #a3e635;
-}
-
-.nova-info .nova-description {
-    font-size: 0.9em;
-    color: #bdc3c7;
-}
-
-.nova-source-note {
-    font-size: 0.8em;
-    color: #95a5a6;
-    margin-top: 15px;
-}
-
-/* Additive Note */
-.additive-nova-note {
-    font-size: 0.9em;
-    color: #ffcc00;
-    margin-top: -10px;
-    margin-bottom: 15px;
-    padding: 0 10px;
-}
-
-/* Accordion Styles */
-.accordion-header {
-    background-color: #4a627a; /* Darker than card, lighter than background */
-    color: #ecf0f1;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 1.2em;
-    font-family: 'Poppins', sans-serif;
-    transition: background-color 0.3s ease;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px; /* Space between accordion headers */
-}
-
-.accordion-header h2 {
-    margin: 0;
-    font-size: 1.2em; /* Ensure consistent font size */
-}
-
-.accordion-header:hover, .accordion-header.active {
-    background-color: #557088;
-}
-
-.accordion-header .arrow {
-    font-size: 1.2em;
-    transition: transform 0.3s ease;
-}
-
-.accordion-header.active .arrow {
-    transform: rotate(180deg);
-}
-
-.accordion-content {
-    background-color: #34495e;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out; /* Slower transition */
-    padding: 0 18px; /* Initial padding */
-    border-radius: 6px;
-    margin-top: -5px; /* Overlap slightly for seamless look */
-}
-
-.accordion-content.show {
-    max-height: 1000px; /* Large enough to accommodate content */
-    padding: 15px 18px; /* Final padding when open */
-}
-
-.accordion-content p, .accordion-content ul {
-    margin-bottom: 10px;
-    line-height: 1.6;
-}
-
-.accordion-content ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.accordion-content ul li {
-    background-color: #4a627a;
-    margin-bottom: 5px;
-    padding: 8px 12px;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.allergen-tag {
-    background-color: #f1c40f;
-    color: #34495e;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    font-weight: 600;
-    margin: 2px;
-    display: inline-block;
-}
-
-.additive-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.additive-list li {
-    background-color: #4a627a;
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin-bottom: 8px;
-    font-size: 0.95em;
-    border-left: 4px solid #a3e635; /* Default accent */
-}
-
-.additive-list li strong {
-    color: #ecf0f1;
-}
-
-.additive-list li small {
-    color: #bdc3c7;
-    font-size: 0.85em;
-}
-
-.additive-risk-badge {
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-weight: 700;
-    font-size: 0.75em;
-    white-space: nowrap;
-    display: inline-block;
-    margin-left: 5px;
-}
-
-.additive-risk-badge.banned {
-    background-color: #e74c3c; /* Red */
-    color: #ecf0f1;
-}
-
-.additive-risk-badge.warning {
-    background-color: #f1c40f; /* Yellow */
-    color: #34495e;
-}
-
-.additive-risk-badge.info {
-    background-color: #3498db; /* Blue */
-    color: #ecf0f1;
-}
-
-.additive-lookup-note {
-    font-size: 0.8em;
-    color: #95a5a6;
-    margin-top: 15px;
-    text-align: center;
-}
-
-/* Nutrition Grid */
-.nutrition-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 10px;
-    background-color: #4a627a;
-    border-radius: 6px;
-}
-
-.nutrition-grid p {
-    margin: 0;
-    padding: 5px 0;
-    border-bottom: 1px dashed #557088;
-}
-
-.nutrition-grid p:last-child {
-    border-bottom: none;
-}
-
-.nutrition-grid p strong {
-    color: #a3e635;
-}
-
-/* Nutrient status classes */
-.nutrient-low { color: #2ecc71; font-weight: bold; } /* Green */
-.nutrient-moderate { color: #f1c40f; font-weight: bold; } /* Yellow */
-.nutrient-high { color: #e74c3c; font-weight: bold; } /* Red */
-.nutrient-good { color: #3498db; font-weight: bold; } /* Blue for good nutrients like protein/fiber */
-
-
-/* Dietary Preferences Section */
-#dietaryPreferencesSection {
-    padding: 25px;
-    background-color: #34495e;
+#scanner-container div { /* Target divs inside scanner-container for qrbox etc. */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
 }
 
-#dietaryPreferencesSection h2 {
-    color: #a3e635;
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #557088;
-    padding-bottom: 10px;
-}
-
-#dietaryPreferencesSection div {
-    margin-bottom: 15px;
-}
-
-#dietaryPreferencesSection label {
-    display: flex;
-    align-items: center;
-    font-size: 1.1em;
-    color: #ecf0f1;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-#dietaryPreferencesSection input[type="checkbox"] {
-    margin-right: 10px;
-    width: 20px;
-    height: 20px;
-    accent-color: #a3e635; /* Custom color for checkbox */
-    cursor: pointer;
-}
-
-#dietaryPreferencesSection textarea {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #557088;
-    border-radius: 5px;
-    background-color: #4a627a;
-    color: #ecf0f1;
-    font-size: 1em;
-    min-height: 80px;
-    resize: vertical;
-    margin-top: 10px;
-}
-
-.preference-message {
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 15px;
-    font-weight: 500;
-    text-align: center;
-    display: none; /* Hidden by default, shown by JS */
-}
-
-/* Badges for dietary preferences */
-.diet-badge {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 15px; /* Pill shape */
-    font-size: 0.85em;
-    font-weight: 600;
-    margin: 5px;
-    color: #2c3e50; /* Dark text for contrast */
-}
-
-.diet-vegetarian { background-color: #2ecc71; } /* Green */
-.diet-vegan { background-color: #3498db; } /* Blue */
-.diet-gluten-free { background-color: #9b59b6; } /* Purple */
-.diet-vegetarian-potential { background-color: #7bed9f; } /* Lighter Green */
-.diet-vegan-potential { background-color: #82cced; } /* Lighter Blue */
-.diet-gluten-free-potential { background-color: #c09de0; } /* Lighter Purple */
-
-.allergen-alert-badge {
-    background-color: #e74c3c; /* Red for alert */
-    color: #ecf0f1;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.85em;
-    font-weight: 600;
-    margin: 5px;
-    display: inline-block;
-}
-
-.preference-highlights {
-    text-align: center;
-}
-
-/* Scan History Section */
-#scanHistorySection {
-    background-color: #34495e;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
-}
-
-#scanHistorySection h2 {
-    color: #a3e635;
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #557088;
-    padding-bottom: 10px;
-}
-
-#scanHistoryList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 400px; /* Limit height for scrollability */
-    overflow-y: auto;
-    border: 1px solid #4a627a;
-    border-radius: 6px;
-    background-color: #2c3e50;
-}
-
-.scan-history-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    border-bottom: 1px solid #4a627a;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.scan-history-item:hover {
-    background-color: #4a627a;
-}
-
-.scan-history-item:last-child {
-    border-bottom: none;
-}
-
-.history-item-image {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-right: 15px;
-    border: 1px solid #557088;
-}
-
-.history-item-details {
-    flex-grow: 1;
-}
-
-.history-item-name {
-    display: block;
-    font-weight: 600;
-    color: #ecf0f1;
-    margin-bottom: 2px;
-}
-
-.history-item-upc {
-    display: block;
-    font-size: 0.85em;
-    color: #bdc3c7;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-gray-500 {
-    color: #95a5a6;
-}
-
-/* Custom Confirmation Modal */
+/* --- Custom Modal --- */
 .custom-modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
+    z-index: 2000; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 .custom-modal-content {
@@ -646,348 +359,134 @@ input[type="text"]::placeholder {
     border-radius: 10px;
     width: 80%;
     max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: #ecf0f1;
 }
 
-#customConfirmMessage {
-    margin-bottom: 25px;
+.custom-modal-content p {
+    margin-bottom: 20px;
     font-size: 1.1em;
-    color: #ecf0f1;
 }
 
 .custom-modal-buttons {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 15px; /* Space between buttons */
+}
+
+.modal-button-yes,
+.modal-button-no {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
 }
 
 .modal-button-yes {
-    background-color: #2ecc71; /* Green for Yes */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+    background-color: #a3e635;
+    color: #2c3e50;
 }
 
 .modal-button-yes:hover {
-    background-color: #27ae60;
+    background-color: #8cc63e;
 }
 
 .modal-button-no {
-    background-color: #e74c3c; /* Red for No */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+    background-color: #e74c3c;
+    color: #ecf0f1;
 }
 
 .modal-button-no:hover {
     background-color: #c0392b;
 }
 
-/* Camera Controls */
-#cameraControls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-    width: 100%; /* Ensure it spans the width if needed */
+/* --- Scan History List --- */
+.scan-history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
 }
 
-.scanner-control-button {
-    background-color: #a3e635; /* Green accent color */
-    color: #2c3e50;
-    padding: 10px 20px;
-    border: none;
+.scan-history-list li {
+    background-color: #2c3e50;
+    padding: 10px 15px;
+    margin-bottom: 10px;
     border-radius: 5px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    white-space: nowrap;
-}
-
-.scanner-control-button:hover {
-    background-color: #82b32b;
-    transform: translateY(-2px);
-}
-
-/* --- Html5QrcodeScanner Internal UI Styling --- */
-
-/* Styles for the main scanner container itself, ensuring good contrast */
-/* This is already defined above, but reiterating its role for clarity */
-#scanner-container {
-    background-color: #2c3e50; /* Dark background for video feed */
-    border-radius: 8px;
-    overflow: hidden; /* Ensures video respects border-radius */
-    min-height: 250px; /* Ensure it has some height even before camera starts */
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    color: #ecf0f1; /* Light text for messages */
-    text-align: center;
-    font-size: 1.1em;
-    padding: 15px;
-    box-sizing: border-box;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 10px; /* Space between elements */
 }
 
-/* Specific styles for the permission/error messages displayed directly in the scanner-container */
-#scanner-container p {
-    margin: 0;
-    padding: 10px;
-    font-weight: 600;
+.scan-history-list li span {
+    flex-grow: 1; /* Allow text to take available space */
 }
 
+.scan-history-list li .timestamp {
+    font-size: 0.85em;
+    color: #bdc3c7;
+    margin-right: 10px;
+}
 
-/* Styles for the camera selection dropdown (if it still appears) */
-/* Html5Qrcode generates these IDs/classes. They might be within the scanner-container. */
+.button-small {
+    padding: 5px 10px;
+    font-size: 0.8em;
+}
 
-/* Main dropdown container */
-div[id^="html5-qrcode-select-camera"] {
-    background-color: #34495e; /* Darker background for the dropdown */
-    border-radius: 6px;
-    padding: 10px 15px;
-    margin: 15px auto; /* Center it */
-    width: fit-content; /* Only take necessary width */
-    max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-family: 'Open Sans', sans-serif;
+.button-clear-item {
+    background-color: #e74c3c; /* Red for clear individual item */
     color: #ecf0f1;
 }
 
-/* The label for the camera selection */
-div[id^="html5-qrcode-select-camera"] label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    font-size: 1em;
-    color: #a3e635; /* A subtle accent color for the label */
-}
-
-/* The select element itself */
-div[id^="html5-qrcode-select-camera"] select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #557088;
-    border-radius: 4px;
-    background-color: #4a627a; /* Slightly lighter than container for contrast */
-    color: #ecf0f1;
-    font-size: 1em;
-    appearance: none; /* Remove default dropdown arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ecf0f1'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E"); /* Custom arrow */
-    background-repeat: no-repeat;
-    background-position: right 0.7em top 50%;
-    background-size: 0.8em auto;
-    cursor: pointer;
-}
-
-/* Options within the dropdown */
-div[id^="html5-qrcode-select-camera"] select option {
-    background-color: #34495e; /* Match dropdown background */
-    color: #ecf0f1;
-    padding: 5px 0;
-}
-
-/* Button generated by html5-qrcode (e.g., 'start' button if it has one) */
-button[id^="html5-qrcode-button"] {
-    background-color: #a3e635; /* Your existing button color */
-    color: #2c3e50;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 15px; /* Spacing from dropdown */
-    transition: background-color 0.3s ease;
-}
-
-button[id^="html5-qrcode-button"]:hover {
-    background-color: #82b32b; /* Darker green on hover */
-}
-
-/* Ensure any error/info messages inside html5-qrcode are styled similarly to your app's messages */
-div[id^="html5-qrcode-error"] {
-    color: #e74c3c; /* Red for errors */
-    font-weight: bold;
-    margin-top: 10px;
-    font-size: 0.95em;
-}
-
-div[id^="html5-qrcode-info"] {
-    color: #3498db; /* Blue for info */
-    font-weight: bold;
-    margin-top: 10px;
-    font-size: 0.95em;
+.button-clear-item:hover {
+    background-color: #c0392b;
 }
 
 
-/* --- Sidebar Specific Styles --- */
-
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black overlay */
-    z-index: 999; /* Below sidebar, above main content */
-    display: none; /* Hidden by default */
-    transition: opacity 0.3s ease;
-    opacity: 0; /* For fade-in/out effect */
-}
-
-.sidebar-overlay.active {
-    display: block; /* Show when active */
-    opacity: 1;
-}
-
-.sidebar {
-    height: 100%;
-    width: 0; /* Initially hidden */
-    position: fixed;
-    z-index: 1000; /* On top of everything */
-    top: 0;
-    right: 0; /* Appears from the right */
-    background-color: #34495e; /* Match header/card background */
-    overflow-x: hidden;
-    transition: 0.5s; /* Smooth slide-in/out effect */
-    padding-top: 60px; /* Space for close button */
-    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.3); /* Shadow on the left */
-    box-sizing: border-box; /* Include padding in width */
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar.open {
-    width: 300px; /* Desired width when open */
-}
-
-/* Close button for sidebar */
-.sidebar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-    color: #ecf0f1;
-    text-decoration: none;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.sidebar .closebtn:hover {
-    color: #a3e635; /* Green accent on hover */
-}
-
-.sidebar-content {
-    padding: 20px;
-    overflow-y: auto; /* Enable scrolling for content if it overflows */
-    flex-grow: 1; /* Allow content to take available space */
-}
-
-.sidebar-content h2 {
-    color: #a3e635;
-    margin-top: 0;
+/* --- Dietary Preferences --- */
+.preference-group {
     margin-bottom: 20px;
-    border-bottom: 2px solid #557088;
-    padding-bottom: 10px;
-    font-family: 'Poppins', sans-serif;
 }
 
-/* Style for individual sidebar links/items */
-.sidebar-content a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 1.1em;
-    color: #ecf0f1;
-    display: block;
-    transition: 0.3s;
-    border-radius: 5px;
-    margin-bottom: 8px;
-    background-color: #4a627a; /* Background for items */
-}
-
-.sidebar-content a:hover {
+.preference-group h3 {
     color: #a3e635;
-    background-color: #557088;
+    margin-bottom: 10px;
 }
 
-/* Hamburger menu button */
-.hamburger-menu {
-    position: absolute;
-    top: 50%;
-    left: 20px; /* Position on the left side of the header */
-    transform: translateY(-50%);
-    display: none; /* Hidden by default, shown on smaller screens */
+.checkbox-group {
+    margin-bottom: 5px;
+}
+
+.checkbox-group label {
+    margin-left: 5px;
     cursor: pointer;
-    font-size: 30px;
-    color: #ecf0f1;
-    z-index: 1; /* Ensure it's above header content if any */
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2rem;
-    }
+#preferenceMessage {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-align: center;
+    display: none; /* Hidden by default */
+}
 
-    .container {
-        flex-direction: column; /* Stack sections on smaller screens */
-        width: 95%;
-    }
+#preferenceMessage.success {
+    background-color: #2ecc71;
+    color: white;
+}
 
-    .section-card {
-        flex: 1 1 100%; /* Take full width */
-        margin-bottom: 20px;
-    }
+#preferenceMessage.info {
+    background-color: #3498db;
+    color: white;
+}
 
-    .section-card.controls,
-    .section-card.results {
-        min-width: unset; /* Remove min-width override for small screens */
-    }
-
-    /* Adjust padding/margins for smaller screens if needed */
-    .section-card {
-        padding: 20px;
-    }
-
-    .product-header h1 {
-        font-size: 1.8em;
-    }
-
-    .button {
-        width: 100%; /* Make buttons full width on small screens */
-        margin: 5px 0;
-    }
-
-    .custom-modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-
-    /* Show hamburger menu on smaller screens */
-    .hamburger-menu {
-        display: block;
-    }
-
-    /* Adjust header padding to make space for hamburger */
-    header {
-        padding-left: 60px; /* Make space for hamburger */
-        text-align: center; /* Re-center title if needed */
-    }
-
-    /* Adjust sidebar width for smaller screens if desired */
-    .sidebar.open {
-        width: 250px; /* Slightly smaller width on small screens */
-    }
+/* Ensure margins on top of sections within sidebar are removed if you use no-margin-top */
+.section-card.no-margin-top {
+    margin-top: 0;
 }
