@@ -255,9 +255,9 @@ async function fetchAndProcessProduct(upc, fromScan) {
 
     // Only add to history if it's a new scan, not a manual lookup
     // (addToScanHistory already handles duplicates, but this avoids fetching for history if it's a lookup)
-    if (fromScan) {
+    
         addToScanHistory(upc);
-    }
+    
 
     const product = await fetchProductData(upc);
 
