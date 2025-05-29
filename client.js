@@ -385,10 +385,6 @@ function renderProductInfo(product) {
                         ? `This product contains <strong>${additivesCount}</strong> food additives.`
                         : `No food additives found in this product.`
                     }
-                    ${additivesCount > 0 && !(product.additives_tags && Array.isArray(product.additives_tags) && product.additives_tags.length > 0)
-                        ? `<br>Detailed names are not available.`
-                        : ''
-                    }
                 </p>
                 ${additivesListHtml}
                 <p class="additives-info"><small>Lower numbers of additives are generally preferred. You can research specific additives (like E-numbers) online for more details.</small></p>
