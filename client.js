@@ -607,6 +607,17 @@ async function initializeScanner(cameraId) {
             onScanError,
             renderConfig
         );
+        // ******************************************************************
+        // ADD THESE LINES RIGHT HERE
+        const manualScanSection = document.getElementById('manualScanSection');
+        if (manualScanSection) {
+            manualScanSection.style.setProperty('display', 'block', 'important');
+            manualScanSection.style.setProperty('visibility', 'visible', 'important');
+            console.log("Manual Scan Section forced visible after scanner render."); // For debugging
+        }
+        // ******************************************************************
+
+
 
         isScannerRunning = true;
         currentCameraId = cameraId;
