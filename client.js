@@ -494,7 +494,7 @@ function renderProductInfo(product) {
                     <p class="additive-lookup-note">
                         <small>
                             For more information on E-numbers, consult resources like
-                            <a href="https://en.wikipedia.org/wiki/E_number" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
+                            <a href="https://en.wikipedia.org/wiki/E_number" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of  E-numbers</a>.
                         </small>
                     </p>
                 </div>
