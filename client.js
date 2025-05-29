@@ -989,11 +989,6 @@ document.addEventListener('DOMContentLoaded', () => {
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
     const manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
-    if (manualScanSection) {
-    // Forcefully set display to block, overriding any previous inline styles
-    manualScanSection.style.setProperty('display', 'block', 'important');
-    manualScanSection.style.setProperty('visibility', 'visible', 'important'); // Just to be absolutely sure
-}
     sidebar = document.getElementById('mySidebar'); // Corrected ID
     sidebarOverlay = document.getElementById('sidebarOverlay');
     hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
