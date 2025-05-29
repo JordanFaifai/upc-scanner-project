@@ -29,10 +29,10 @@ let sidebarOverlay;
 let hamburgerMenu;
 let sidebarCloseButton;
 let dietaryPreferencesSection; // New: Section to show/hide
-let scanHistorySection;     // New: Section to show/hide
-let showPreferencesButton;  // New: Button in sidebar
-let showHistoryButton;      // New: Button in sidebar
-
+let scanHistorySection; // New: Section to show/hide
+let showPreferencesButton; // New: Button in sidebar
+let showHistoryButton; // New: Button in sidebar
+let manualScanSection; // Added to global vars for broader access and observer
 
 // Html5Qrcode related variables
 let html5QrcodeScanner = null;
@@ -42,6 +42,7 @@ let lastScanTimestamp = 0;
 const LAST_SCAN_DEBOUNCE_MS = 1500; // Debounce time for consecutive scans
 let availableCameras = [];
 let currentCameraId = null;
+let manualScanObserver = null; // Declare observer globally
 
 // API Endpoint (replace with your actual API endpoint if different)
 const API_BASE_URL = 'https://upc-scanner-backend-api.onrender.com/api'; // Your Render.com API URL
@@ -357,39 +358,15 @@ function renderProductInfo(product) {
         </div>
     `;
 
-    // NOVA Group (if available)
+    // NOVA Group (if available) - REVERTED TO ORIGINAL, NO ADDITIVE INFO HERE
     if (product.nova_group) {
         const novaClass = `nova-group-${product.nova_group}`;
         const novaDescription = product.nova_group_description || 'No description available.';
-        // --- NEW: Additives Count Calculation ---
-        let additivesCount = 0;
-        let additivesListHtml = ''; // Will hold the detailed list or general message
-
-        if (product.additives_n !== undefined && product.additives_n !== null) {
-            additivesCount = product.additives_n;
-        } else if (product.additives_tags && Array.isArray(product.additives_tags)) {
-            additivesCount = product.additives_tags.length;
-        }
-
-        if (product.additives_tags && Array.isArray(product.additives_tags) && product.additives_tags.length > 0) {
-            // Format the list of additives (e.g., remove "en:" prefix)
-            const formattedAdditives = product.additives_tags
-                .map(tag => tag.replace(/^en:/, '').replace(/-/g, ' ').toUpperCase())
-                .join(', ');
-            additivesListHtml = `<p><strong>Details:</strong> ${formattedAdditives}</p>`;
-        } else if (additivesCount > 0) {
-            additivesListHtml = `<p>The product lists **${additivesCount}** additives, but detailed names are not available.</p>`;
-        } else {
-            additivesListHtml = `<p>No food additives found in this product.</p>`;
-        }
-        // --- END NEW: Additives Count Calculation ---
         html += `
             <div class="section-card info-card nova-info ${novaClass}">
                 <h2>NOVA Group ${product.nova_group}</h2>
                 <p><strong>Processing Level:</strong> ${novaDescription}</p>
-                <p>This product contains **${additivesCount}** food additives.</p>
-                ${additivesListHtml}
-                <p class="additives-info"><small>Lower numbers of additives are generally preferred. You can research specific additives (like E-numbers) online for more details.</small></p>                <p class="nova-source-note"><small>NOVA groups classify foods by level of processing. Learn more on <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia</a>.</small></p>
+                <p class="nova-source-note"><small>NOVA groups classify foods by level of processing. Learn more on <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia</a>.</small></p>
             </div>
         `;
     }
@@ -448,16 +425,20 @@ function renderProductInfo(product) {
         `;
     }
 
-    // Additives
+    // Additives (Consolidated Logic Here)
+    let additivesCount = 0;
+    let additivesContentHtml = '';
+
+    // Prioritize additives_n for count if available and valid
+    if (typeof product.additives_n === 'number' && product.additives_n >= 0) {
+        additivesCount = product.additives_n;
+    } else if (product.additives_tags && Array.isArray(product.additives_tags)) {
+        // Fallback to additives_tags length for count
+        additivesCount = product.additives_tags.length;
+    }
+
     if (product.additives && Array.isArray(product.additives) && product.additives.length > 0) {
-        html += `
-            <div class="section-card">
-                <button class="accordion-header" aria-expanded="false">
-                    <h2>Additives (${product.additives.length}) <span class="arrow">▼</span></h2>
-                </button>
-                <div class="accordion-content"> <div class="additive-list-container">
-                        <ul class="additive-list">
-        `;
+        additivesContentHtml += '<div class="additive-list-container"><ul class="additive-list">';
         product.additives.forEach(add => {
             let statusText = 'Unknown Status'; // Default
             let statusClass = 'additive-risk-badge info'; // Default class
@@ -478,46 +459,44 @@ function renderProductInfo(product) {
                 }
             }
 
-            html += `
-                                <li>
-                                    <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
-                                    <br>
-                                    <small>
-                                        Type: ${add.type || 'N/A'}
-                                        <span class="${statusClass}">${statusText}</span>
-                                    </small>
-                                </li>
+            additivesContentHtml += `
+                <li>
+                    <strong>${add.eNumber && add.eNumber !== 'N/A' ? add.eNumber + ' - ' : ''}${add.name || 'Unknown Additive'}</strong>
+                    <br>
+                    <small>
+                        Type: ${add.type || 'N/A'}
+                        <span class="${statusClass}">${statusText}</span>
+                    </small>
+                </li>
             `;
         });
-        html += `
-                        </ul>
-                    </div>
-                    <p class="additive-lookup-note">
-                        <small>
-                            For more information on E-numbers, consult resources like
-                            <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
-                        </small>
-                    </p>
-                </div>
-            </div>
-        `;
-    } else {
-        html += `
-            <div class="section-card">
-                <button class="accordion-header" aria-expanded="false">
-                    <h2>Additives (0) <span class="arrow">▼</span></h2>
-                </button>
-                <div class="accordion-content"> <p>No specific additives found or listed for this product.</p>
-                    <p class="additive-lookup-note">
-                        <small>
-                            For more information on E-numbers, consult resources like
-                            <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
-                        </small>
-                    </p>
-                </div>
-            </div>
-        `;
+        additivesContentHtml += '</ul></div>';
+        additivesContentHtml += `<p class="additives-info"><small>This product contains <strong>${additivesCount}</strong> food additives.</small></p>`;
+    } else if (additivesCount > 0) {
+         // Case where additives_n or additives_tags indicate count but no detailed 'additives' array
+        additivesContentHtml += `<p>The product lists <strong>${additivesCount}</strong> additives, but detailed names are not available.</p>`;
     }
+    else {
+        additivesContentHtml += `<p>No specific additives found or listed for this product.</p>`;
+    }
+
+    additivesContentHtml += `
+        <p class="additive-lookup-note">
+            <small>
+                For more information on E-numbers, consult resources like
+                <a href="https://en.wikipedia.org/wiki/List_of_food_additives" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of Food Additives</a>.
+            </small>
+        </p>
+    `;
+
+    html += `
+        <div class="section-card">
+            <button class="accordion-header" aria-expanded="false">
+                <h2>Additives (${additivesCount}) <span class="arrow">▼</span></h2>
+            </button>
+            <div class="accordion-content"> ${additivesContentHtml} </div>
+        </div>
+    `;
 
     // Nutrition Facts
     if (product.nutrition_facts) {
@@ -630,16 +609,13 @@ async function initializeScanner(cameraId) {
             renderConfig
         );
         // ******************************************************************
-        // ADD THESE LINES RIGHT HERE
-        const manualScanSection = document.getElementById('manualScanSection');
+        // ADD THESE LINES RIGHT HERE (already present in your code, keeping as is)
         if (manualScanSection) {
             manualScanSection.style.setProperty('display', 'block', 'important');
             manualScanSection.style.setProperty('visibility', 'visible', 'important');
             console.log("Manual Scan Section forced visible after scanner render."); // For debugging
         }
         // ******************************************************************
-
-
 
         isScannerRunning = true;
         currentCameraId = cameraId;
@@ -756,6 +732,13 @@ async function stopScanner() {
 
                 // Reset main scan button text
                 if (scanButton) scanButton.textContent = 'Start Scan';
+
+                // Disconnect the observer when the scanner stops
+                if (manualScanObserver) {
+                    manualScanObserver.disconnect();
+                    manualScanObserver = null;
+                    console.log("MutationObserver disconnected.");
+                }
 
             } catch (err) {
                 console.error('Error stopping scanner:', err);
@@ -902,7 +885,7 @@ function loadScanHistory() {
                     listItem.className = 'scan-history-item';
                     listItem.dataset.upc = item.upc;
                     listItem.innerHTML = `
-                       ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="history-item-image">` : ''}
+                        ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="history-item-image">` : ''}
                         <div class="history-item-details">
                             <span class="history-item-name">${item.name}</span>
                             <small class="history-item-upc">${item.upc}</small>
@@ -1010,48 +993,42 @@ document.addEventListener('DOMContentLoaded', () => {
     veganCheckbox = document.getElementById('veganCheckbox');
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
-    const manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
-if (manualScanSection) {
-    // 1. Initial force (in case it's hidden on page load)
-    manualScanSection.style.setProperty('display', 'block', 'important');
-    manualScanSection.style.setProperty('visibility', 'visible', 'important');
+    manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
 
-    // 2. Create a MutationObserver to watch for style changes
-    const observer = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
-            // Check if the change was to the 'style' attribute
-            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                // If 'display' is currently 'none'
-                if (manualScanSection.style.display === 'none') {
-                    // Force it back to 'block !important'
-                    manualScanSection.style.setProperty('display', 'block', 'important');
-                    manualScanSection.style.setProperty('visibility', 'visible', 'important');
-                    console.log("MutationObserver: manualScanSection forced visible.");
+    if (manualScanSection) {
+        // 1. Initial force (in case it's hidden on page load)
+        manualScanSection.style.setProperty('display', 'block', 'important');
+        manualScanSection.style.setProperty('visibility', 'visible', 'important');
+
+        // 2. Create a MutationObserver to watch for style changes
+        manualScanObserver = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+                // Check if the change was to the 'style' attribute
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    // If 'display' is currently 'none'
+                    if (manualScanSection.style.display === 'none') {
+                        // Force it back to 'block !important'
+                        manualScanSection.style.setProperty('display', 'block', 'important');
+                        manualScanSection.style.setProperty('visibility', 'visible', 'important');
+                        console.log("MutationObserver: manualScanSection forced visible.");
+                    }
                 }
             }
-        }
-    });
+        });
 
-    // 3. Start observing the manualScanSection element
-    //    We want to watch for changes to its 'attributes' (specifically 'style')
-    observer.observe(manualScanSection, { attributes: true, attributeFilter: ['style'] });
+        // 3. Start observing the manualScanSection element
+        //    We want to watch for changes to its 'attributes' (specifically 'style')
+        manualScanObserver.observe(manualScanSection, { attributes: true, attributeFilter: ['style'] });
+    }
 
-    // IMPORTANT: If you have a 'stopScanner' function,
-    // you might want to call observer.disconnect() when the scanner stops
-    // to prevent it from running unnecessarily.
-    // E.g., in your stopScanner function:
-    // if (observer) {
-    //     observer.disconnect();
-    // }
-}
     sidebar = document.getElementById('mySidebar'); // Corrected ID
     sidebarOverlay = document.getElementById('sidebarOverlay');
     hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
     sidebarCloseButton = document.getElementById('sidebarCloseButton');
     showPreferencesButton = document.getElementById('showPreferencesButton'); // New: Button in sidebar
-    showHistoryButton = document.getElementById('showHistoryButton');     // New: Button in sidebar
+    showHistoryButton = document.getElementById('showHistoryButton');      // New: Button in sidebar
     dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // New: Section to show/hide
-    scanHistorySection = document.getElementById('scanHistorySection');       // New: Section to show/hide
+    scanHistorySection = document.getElementById('scanHistorySection');        // New: Section to show/hide
     sidebarDietaryPreferencesHeader = document.getElementById('sidebarDietaryPreferencesHeader');
     sidebarScanHistoryHeader = document.getElementById('sidebarScanHistoryHeader');
 
@@ -1202,39 +1179,37 @@ if (manualScanSection) {
     // IMPORTANT: For product info accordions loaded dynamically, setupAccordions is called in fetchAndProcessProduct.
     setupAccordions();
 
-    // Initial display of the "no product" message and hiding of other sections
-   
-  // --- Sidebar Section Toggling ---
-function setupSidebarAccordions() {
-    // These variables (dietaryPreferencesSection, scanHistorySection, sidebarDietaryPreferencesHeader, sidebarScanHistoryHeader)
-    // are already assigned at the top of your DOMContentLoaded listener, so they are available here.
+    // --- Sidebar Section Toggling ---
+    function setupSidebarAccordions() {
+        // These variables (dietaryPreferencesSection, scanHistorySection, sidebarDietaryPreferencesHeader, sidebarScanHistoryHeader)
+        // are already assigned at the top of your DOMContentLoaded listener, so they are available here.
 
-    if (sidebarDietaryPreferencesHeader && dietaryPreferencesSection) {
-        sidebarDietaryPreferencesHeader.addEventListener('click', () => {
-            sidebarDietaryPreferencesHeader.classList.toggle('active');
-            // Toggle 'active' on the correct parent content div (which has the max-height CSS)
-            dietaryPreferencesSection.classList.toggle('active'); 
+        if (sidebarDietaryPreferencesHeader && dietaryPreferencesSection) {
+            sidebarDietaryPreferencesHeader.addEventListener('click', () => {
+                sidebarDietaryPreferencesHeader.classList.toggle('active');
+                // Toggle 'active' on the correct parent content div (which has the max-height CSS)
+                dietaryPreferencesSection.classList.toggle('active');
 
-            // Ensure preferences are loaded only when its section is activated
-            if (sidebarDietaryPreferencesHeader.classList.contains('active')) {
-                loadDietaryPreferences(); // Re-load preferences when section opens
-            }
-        });
+                // Ensure preferences are loaded only when its section is activated
+                if (sidebarDietaryPreferencesHeader.classList.contains('active')) {
+                    loadDietaryPreferences(); // Re-load preferences when section opens
+                }
+            });
+        }
+
+        if (sidebarScanHistoryHeader && scanHistorySection) {
+            sidebarScanHistoryHeader.addEventListener('click', () => {
+                sidebarScanHistoryHeader.classList.toggle('active');
+                // Toggle 'active' on the correct parent content div (which has the max-height CSS)
+                scanHistorySection.classList.toggle('active');
+
+                // Ensure history is loaded only when its section is activated
+                if (sidebarScanHistoryHeader.classList.contains('active')) {
+                    loadScanHistory(); // Load history when section opens
+                }
+            });
+        }
     }
-
-    if (sidebarScanHistoryHeader && scanHistorySection) {
-        sidebarScanHistoryHeader.addEventListener('click', () => {
-            sidebarScanHistoryHeader.classList.toggle('active');
-            // Toggle 'active' on the correct parent content div (which has the max-height CSS)
-            scanHistorySection.classList.toggle('active'); 
-
-            // Ensure history is loaded only when its section is activated
-            if (sidebarScanHistoryHeader.classList.contains('active')) {
-                loadScanHistory(); // Load history when section opens
-            }
-        });
-    }
-}
 
     // Call this new setup function
     setupSidebarAccordions();
