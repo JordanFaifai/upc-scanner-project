@@ -361,13 +361,35 @@ function renderProductInfo(product) {
     if (product.nova_group) {
         const novaClass = `nova-group-${product.nova_group}`;
         const novaDescription = product.nova_group_description || 'No description available.';
-        const novaAdvice = product.nova_group_advice || 'No specific advice.'; // Assuming this field exists from backend
+        // --- NEW: Additives Count Calculation ---
+        let additivesCount = 0;
+        let additivesListHtml = ''; // Will hold the detailed list or general message
+
+        if (product.additives_n !== undefined && product.additives_n !== null) {
+            additivesCount = product.additives_n;
+        } else if (product.additives_tags && Array.isArray(product.additives_tags)) {
+            additivesCount = product.additives_tags.length;
+        }
+
+        if (product.additives_tags && Array.isArray(product.additives_tags) && product.additives_tags.length > 0) {
+            // Format the list of additives (e.g., remove "en:" prefix)
+            const formattedAdditives = product.additives_tags
+                .map(tag => tag.replace(/^en:/, '').replace(/-/g, ' ').toUpperCase())
+                .join(', ');
+            additivesListHtml = `<p><strong>Details:</strong> ${formattedAdditives}</p>`;
+        } else if (additivesCount > 0) {
+            additivesListHtml = `<p>The product lists **${additivesCount}** additives, but detailed names are not available.</p>`;
+        } else {
+            additivesListHtml = `<p>No food additives found in this product.</p>`;
+        }
+        // --- END NEW: Additives Count Calculation ---
         html += `
             <div class="section-card info-card nova-info ${novaClass}">
                 <h2>NOVA Group ${product.nova_group}</h2>
                 <p><strong>Processing Level:</strong> ${novaDescription}</p>
-                <p class="nova-description">${novaAdvice}</p>
-                <p class="nova-source-note"><small>NOVA groups classify foods by level of processing. Learn more on <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia</a>.</small></p>
+                <p>This product contains **${additivesCount}** food additives.</p>
+                ${additivesListHtml}
+                <p class="additives-info"><small>Lower numbers of additives are generally preferred. You can research specific additives (like E-numbers) online for more details.</small></p>                <p class="nova-source-note"><small>NOVA groups classify foods by level of processing. Learn more on <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia</a>.</small></p>
             </div>
         `;
     }
