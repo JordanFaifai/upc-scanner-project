@@ -362,14 +362,9 @@ function renderProductInfo(product) {
         const novaClass = `nova-group-${product.nova_group}`;
         const novaDescription = product.nova_group_description || 'No description available.';
         // --- NEW: Additives Count Calculation ---
-        let additivesCount = 0;
-        let additivesListHtml = ''; // Will hold the detailed list or general message
-
-        if (product.additives_n !== undefined && product.additives_n !== null) {
-            additivesCount = product.additives_n;
-        } else if (product.additives_tags && Array.isArray(product.additives_tags)) {
-            additivesCount = product.additives_tags.length;
-        }
+        // --- Correct Additives Count Calculation ---
+const additivesCount = (product.additives && Array.isArray(product.additives)) ? product.additives.length : 0;
+let additivesListHtml = ''; // Will hold the detailed list or general message
 
         if (product.additives_tags && Array.isArray(product.additives_tags) && product.additives_tags.length > 0) {
             // Format the list of additives (e.g., remove "en:" prefix)
