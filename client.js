@@ -989,6 +989,39 @@ document.addEventListener('DOMContentLoaded', () => {
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
     const manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
+if (manualScanSection) {
+    // 1. Initial force (in case it's hidden on page load)
+    manualScanSection.style.setProperty('display', 'block', 'important');
+    manualScanSection.style.setProperty('visibility', 'visible', 'important');
+
+    // 2. Create a MutationObserver to watch for style changes
+    const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            // Check if the change was to the 'style' attribute
+            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                // If 'display' is currently 'none'
+                if (manualScanSection.style.display === 'none') {
+                    // Force it back to 'block !important'
+                    manualScanSection.style.setProperty('display', 'block', 'important');
+                    manualScanSection.style.setProperty('visibility', 'visible', 'important');
+                    console.log("MutationObserver: manualScanSection forced visible.");
+                }
+            }
+        }
+    });
+
+    // 3. Start observing the manualScanSection element
+    //    We want to watch for changes to its 'attributes' (specifically 'style')
+    observer.observe(manualScanSection, { attributes: true, attributeFilter: ['style'] });
+
+    // IMPORTANT: If you have a 'stopScanner' function,
+    // you might want to call observer.disconnect() when the scanner stops
+    // to prevent it from running unnecessarily.
+    // E.g., in your stopScanner function:
+    // if (observer) {
+    //     observer.disconnect();
+    // }
+}
     sidebar = document.getElementById('mySidebar'); // Corrected ID
     sidebarOverlay = document.getElementById('sidebarOverlay');
     hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
