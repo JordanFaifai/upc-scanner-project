@@ -842,7 +842,7 @@ const SCAN_HISTORY_KEY = 'scanHistory';
 /**
  * Loads dietary preferences from local storage.
  * @returns {object} The loaded preferences or defaults.
-*/
+/*
 function loadDietaryPreferences() {
     try {
         const preferencesJson = localStorage.getItem(DIETARY_PREFERENCES_KEY);
@@ -861,9 +861,9 @@ function loadDietaryPreferences() {
     }
 }
 
-/**
- * Saves dietary preferences to local storage.
 */
+ * Saves dietary preferences to local storage.
+/*
 function saveDietaryPreferences() {
     const preferences = {
         vegetarian: vegetarianCheckbox ? vegetarianCheckbox.checked : false,
@@ -881,13 +881,13 @@ function saveDietaryPreferences() {
     }
 }
 
-/**
+*/
  * Clears dietary preferences from local storage and resets UI.
 */
 function clearDietaryPreferences() {
     try {
         localStorage.removeItem(DIETARY_PREFERENCES_KEY);
-        loadDietaryPreferences(); // Reset UI elements
+        //loadDietaryPreferences(); // Reset UI elements
     } catch (e) {
         console.error("Failed to clear dietary preferences:", e);
         displayMessage("Error clearing preferences. Your browser might be in private mode or storage is full.", "error");
@@ -1006,8 +1006,8 @@ document.addEventListener('DOMContentLoaded', () => {
     scannerContainer = document.getElementById('scanner-container');
     scanHistoryList = document.getElementById('scanHistoryList');
     clearHistoryButton = document.getElementById('clearHistoryButton');
-    savePreferencesButton = document.getElementById('savePreferencesButton');
-    clearPreferencesButton = document.getElementById('clearPreferencesButton');
+    //savePreferencesButton = document.getElementById('savePreferencesButton');
+    //clearPreferencesButton = document.getElementById('clearPreferencesButton');
     modalOverlay = document.getElementById('customConfirmModal');
     modalMessage = document.getElementById('customConfirmMessage');
     modalButtonYes = document.getElementById('modalConfirmYes');
@@ -1016,10 +1016,10 @@ document.addEventListener('DOMContentLoaded', () => {
     switchCameraButton = document.getElementById('switchCameraButton');
     stopCameraButton = document.getElementById('stopCameraButton');
     startCameraButton = document.getElementById('startCameraButton'); // New button element
-    vegetarianCheckbox = document.getElementById('vegetarianCheckbox');
-    veganCheckbox = document.getElementById('veganCheckbox');
-    glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
-    allergensToAvoid = document.getElementById('allergensToAvoid');
+    //vegetarianCheckbox = document.getElementById('vegetarianCheckbox');
+    //veganCheckbox = document.getElementById('veganCheckbox');
+    //glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
+    //allergensToAvoid = document.getElementById('allergensToAvoid');
     const manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
 if (manualScanSection) {
     // 1. Initial force (in case it's hidden on page load)
@@ -1058,11 +1058,11 @@ if (manualScanSection) {
     sidebarOverlay = document.getElementById('sidebarOverlay');
     hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
     sidebarCloseButton = document.getElementById('sidebarCloseButton');
-    showPreferencesButton = document.getElementById('showPreferencesButton'); // New: Button in sidebar
+    //showPreferencesButton = document.getElementById('showPreferencesButton'); // New: Button in sidebar
     showHistoryButton = document.getElementById('showHistoryButton');     // New: Button in sidebar
-    dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // New: Section to show/hide
+    //dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // New: Section to show/hide
     scanHistorySection = document.getElementById('scanHistorySection');       // New: Section to show/hide
-    sidebarDietaryPreferencesHeader = document.getElementById('sidebarDietaryPreferencesHeader');
+    //sidebarDietaryPreferencesHeader = document.getElementById('sidebarDietaryPreferencesHeader');
     sidebarScanHistoryHeader = document.getElementById('sidebarScanHistoryHeader');
 
     // Initial display of sections
@@ -1116,7 +1116,7 @@ if (manualScanSection) {
                 });
         });
     }
-
+    /*
     if (savePreferencesButton) {
         savePreferencesButton.addEventListener('click', () => {
             saveDietaryPreferences();
@@ -1126,7 +1126,8 @@ if (manualScanSection) {
             }
         });
     }
-
+    */
+     /*
     if (clearPreferencesButton) {
         clearPreferencesButton.addEventListener('click', () => {
             showCustomConfirm('Are you sure you want to clear all dietary preferences?')
@@ -1139,7 +1140,7 @@ if (manualScanSection) {
                 });
         });
     }
-
+   */
     // Camera control buttons (inside #cameraControls)
     if (switchCameraButton) {
         switchCameraButton.addEventListener('click', async () => {
@@ -1225,7 +1226,7 @@ if (manualScanSection) {
 function setupSidebarAccordions() {
     // These variables (dietaryPreferencesSection, scanHistorySection, sidebarDietaryPreferencesHeader, sidebarScanHistoryHeader)
     // are already assigned at the top of your DOMContentLoaded listener, so they are available here.
-
+    /*
     if (sidebarDietaryPreferencesHeader && dietaryPreferencesSection) {
         sidebarDietaryPreferencesHeader.addEventListener('click', () => {
             sidebarDietaryPreferencesHeader.classList.toggle('active');
@@ -1238,7 +1239,7 @@ function setupSidebarAccordions() {
             }
         });
     }
-
+   */
     if (sidebarScanHistoryHeader && scanHistorySection) {
         sidebarScanHistoryHeader.addEventListener('click', () => {
             sidebarScanHistoryHeader.classList.toggle('active');
