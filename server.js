@@ -13,7 +13,9 @@ const allowedOrigins = [
     'http://localhost:10000',
     'http://localhost:3000', // Your local backend dev port (from PORT variable)
     'http://localhost:8080', // Common local dev port for frontend frameworks (e.g., React, Vue)
-    'http://127.0.0.1:5500' // Common local dev port for VS Code Live Server
+    'http://127.0.0.1:5500', // Common local dev port for VS Code Live Server
+    'https://purescan.net' // <--- You need to add your custom domain here!
+
 ];
 
 app.use(cors({
