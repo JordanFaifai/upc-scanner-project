@@ -862,7 +862,7 @@ function loadDietaryPreferences() {
 }
 
 */
- * Saves dietary preferences to local storage.
+  Saves dietary preferences to local storage.
 /*
 function saveDietaryPreferences() {
     const preferences = {
