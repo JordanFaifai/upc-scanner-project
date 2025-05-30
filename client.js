@@ -842,7 +842,7 @@ const SCAN_HISTORY_KEY = 'scanHistory';
 /**
  * Loads dietary preferences from local storage.
  * @returns {object} The loaded preferences or defaults.
-/*
+*/
 function loadDietaryPreferences() {
     try {
         const preferencesJson = localStorage.getItem(DIETARY_PREFERENCES_KEY);
@@ -861,9 +861,9 @@ function loadDietaryPreferences() {
     }
 }
 
-*/
-  Saves dietary preferences to local storage.
 /*
+  Saves dietary preferences to local storage.
+*/
 function saveDietaryPreferences() {
     const preferences = {
         vegetarian: vegetarianCheckbox ? vegetarianCheckbox.checked : false,
@@ -881,7 +881,7 @@ function saveDietaryPreferences() {
     }
 }
 
-*/
+/*
  * Clears dietary preferences from local storage and resets UI.
 */
 function clearDietaryPreferences() {
@@ -894,7 +894,7 @@ function clearDietaryPreferences() {
     }
 }
 
-/**
+*/
  * Loads scan history from local storage and populates the list.
 */
 function loadScanHistory() {
