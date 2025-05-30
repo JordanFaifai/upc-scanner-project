@@ -167,9 +167,9 @@ if (!upc || typeof upc !== 'string' || upc.trim() === '') { // <--- Added strict
         return null;
     }
     displayMessage('Searching for product...', 'info');
- console.log("Attempting to fetch product from:", apiUrl);
+ console.log("Attempting to fetch product from:", `<span class="math-inline">\{API\_BASE\_URL\}/product/</span>{upc}`);
     try {
-        const response = await fetch(`${API_BASE_URL}/product/${upc}`);
+        const response = await fetch(`<span class="math-inline">\{API\_BASE\_URL\}/product/</span>{upc}`);
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
@@ -1076,31 +1076,34 @@ if (manualScanSection) {
     // Event Listeners
     if (lookupButton && upcInput) {
         lookupButton.addEventListener('click', async () => {
-            const upc = upcInput.value.trim();
-            if (upc) {
-                await fetchAndProcessProduct(upc, false);
-                // After manual lookup, stop scanner if running, to free up camera
-                if (isScannerRunning) {
-                    await stopScanner();
-                }
-            } else {
-                displayMessage('Please enter a UPC.', 'warning');
-            }
-        });
+    const upc = upcInput.value.trim();
+    if (upc) {
+        await fetchAndProcessProduct(upc, false);
+        if (isScannerRunning) {
+            await stopScanner();
+        }
+        scannerContainer.style.display = 'none'; // Ensure scanner is hidden after manual lookup
+        manualScanSection.style.display = 'block'; // Ensure manual section is visible
+    } else {
+        displayMessage('Please enter a UPC.', 'warning');
+    }
+});
     }
 
-    if (scanButton && scannerContainer) {
-        scanButton.addEventListener('click', async () => {
-            if (!isScannerRunning) {
-                scannerContainer.style.display = 'block'; // Show scanner container
-                await requestCameraAccess();
-                // Button text will be updated by initializeScanner on success
-            } else {
-                await stopScanner();
-                // Button text will be updated by stopScanner
-            }
-        });
-    }
+   if (scanButton && scannerContainer && manualScanSection) { // Ensure manualScanSection is also available
+    scanButton.addEventListener('click', async () => {
+        if (!isScannerRunning) {
+            scannerContainer.style.display = 'block'; // Show scanner
+            manualScanSection.style.display = 'none'; // Hide manual input when scanner starts
+            await requestCameraAccess();
+        } else {
+            await stopScanner();
+            scannerContainer.style.display = 'none'; // Hide scanner
+            manualScanSection.style.display = 'block'; // Show manual input when scanner stops
+        }
+    });
+}
+
 
     if (clearHistoryButton) {
         clearHistoryButton.addEventListener('click', () => {
