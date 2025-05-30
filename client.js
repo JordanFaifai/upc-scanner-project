@@ -864,6 +864,8 @@ function saveDietaryPreferences() {
     };
     try {
         localStorage.setItem(DIETARY_PREFERENCES_KEY, JSON.stringify(preferences));
+        displayMessage('Preferences saved!', 'success'); // <-- ADDED THIS LINE
+        console.log('Dietary preferences saved:', preferences); // <-- ADDED THIS FOR DEBUGGING
     } catch (e) {
         console.error("Failed to save dietary preferences:", e);
         displayMessage("Error saving preferences. Your browser might be in private mode or storage is full.", "error");
@@ -874,9 +876,13 @@ function saveDietaryPreferences() {
  * Clears dietary preferences from local storage and resets UI.
 */
 function clearDietaryPreferences() {
+    // This function is now called *after* confirmation from the event listener,
+    // so it just needs to perform the clearing logic.
     try {
         localStorage.removeItem(DIETARY_PREFERENCES_KEY);
-        loadDietaryPreferences(); // Reset UI elements
+        // Reset UI by calling loadDietaryPreferences, which will set checkboxes/input to default (false/empty)
+        loadDietaryPreferences();
+        // The displayMessage is handled by the event listener now, not directly here.
     } catch (e) {
         console.error("Failed to clear dietary preferences:", e);
         displayMessage("Error clearing preferences. Your browser might be in private mode or storage is full.", "error");
@@ -1106,7 +1112,10 @@ if (manualScanSection) {
     if (savePreferencesButton) {
         savePreferencesButton.addEventListener('click', () => {
             saveDietaryPreferences();
-            displayMessage('Dietary preferences saved!', 'success');
+            // Re-process the last scanned product with the new preferences
+            if (lastScannedCode) { // Only re-check if a product is currently displayed
+                fetchAndProcessProduct(lastScannedCode, false);
+            }
         });
     }
 
@@ -1117,6 +1126,10 @@ if (manualScanSection) {
                     if (confirmed) {
                         clearDietaryPreferences();
                         displayMessage('Dietary preferences cleared.', 'success');
+                        // Re-process the last scanned product with the cleared preferences
+                        if (lastScannedCode) {
+                            fetchAndProcessProduct(lastScannedCode, false);
+                        }
                     }
                 });
         });
