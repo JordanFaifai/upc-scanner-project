@@ -303,10 +303,24 @@ async function fetchAndProcessProduct(upc, fromScan) {
  * @param {object} nutrient The nutrient object from product.nutrition_facts.
  * @returns {number|string} The value per serving or 'N/A'.
 */
-function getPerServingValue(nutrient) {
+function getPerServingValue(nutrient, productServingQuantity) { // <-- Added productServingQuantity here
     if (nutrient && nutrient.per_serving !== undefined && nutrient.per_serving !== null) {
-        const value = parseFloat(nutrient.per_serving);
-        return isNaN(value) ? 'N/A' : value.toFixed(1);
+        const per100gValue = parseFloat(nutrient.per_serving);
+
+        // Check if per100gValue is a valid number
+        if (isNaN(per100gValue)) {
+            return 'N/A';
+        }
+
+        // Only perform calculation if serving_quantity is provided and valid
+        if (productServingQuantity && !isNaN(productServingQuantity) && productServingQuantity > 0) {
+            const perServingValue = (per100gValue / 100) * productServingQuantity;
+            return perServingValue.toFixed(1); // Format to one decimal place
+        } else {
+            // If serving_quantity is not available or invalid, return the per100g value.
+            // You might want to indicate it's per 100g if this happens frequently.
+            return per100gValue.toFixed(1);
+        }
     }
     return 'N/A';
 }
