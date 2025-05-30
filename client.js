@@ -167,9 +167,9 @@ if (!upc || typeof upc !== 'string' || upc.trim() === '') { // <--- Added strict
         return null;
     }
     displayMessage('Searching for product...', 'info');
- console.log("Attempting to fetch product from:", `<span class="math-inline">\{API\_BASE\_URL\}/product/</span>{upc}`);
+console.log("Attempting to fetch product from:", `${API_BASE_URL}/product/${upc}`); // Corrected line 170
     try {
-        const response = await fetch(`<span class="math-inline">\{API\_BASE\_URL\}/product/</span>{upc}`);
+        const response = await fetch(`${API_BASE_URL}/product/${upc}`); // Corrected line 173
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
