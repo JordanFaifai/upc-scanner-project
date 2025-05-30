@@ -91,9 +91,13 @@ app.get('/api/product/:upc', async (req, res) => {
         const ingredientsText = productData.ingredients_text_en || productData.ingredients_text || 'No ingredients listed.';
         const imageUrl = productData.image_front_url || productData.image_url || null;
         
-        // Process allergens: remove 'en:' prefix, replace hyphens, filter out empty strings
-        const allergens = productData.allergens_from_ingredients ?
-            productData.allergens_from_ingredients.split(',').map(a => a.trim().replace(/^en:/, '').replace(/-/g, ' ')).filter(Boolean) : [];
+        // Process allergens: remove 'en:' prefix, replace hyphens, filter out empty strings, and de-duplicate
+const allergens = productData.allergens_from_ingredients ?
+    [...new Set(productData.allergens_from_ingredients
+        .split(',')
+        .map(a => a.trim().replace(/^en:/, '').replace(/-/g, ' ').toLowerCase()) // Clean and convert to lowercase
+        .filter(Boolean))] // Create Set for uniqueness, then convert back to array
+    : [];
         
         const novaGroup = productData.nova_group ? String(productData.nova_group) : null;
 
