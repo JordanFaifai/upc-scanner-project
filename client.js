@@ -15,24 +15,23 @@ let modalButtonNo;
 let cameraControls;
 let switchCameraButton;
 let stopCameraButton;
-let startCameraButton; // New start button
+let startCameraButton; // New start button (for within cameraControls)
 let vegetarianCheckbox;
 let veganCheckbox;
 let glutenFreeCheckbox;
 let allergensToAvoid;
-let scanButton; // Added scanButton to global vars for broader access
-let sidebarDietaryPreferencesHeader;
-let sidebarScanHistoryHeader;
+let scanButton; // Main button to toggle scanner visibility
+let manualScanSection; // The div containing UPC input and lookup button
+
 // Sidebar specific DOM elements
 let sidebar;
 let sidebarOverlay;
 let hamburgerMenu;
 let sidebarCloseButton;
-let dietaryPreferencesSection; // New: Section to show/hide
-let scanHistorySection;     // New: Section to show/hide
-let showPreferencesButton;  // New: Button in sidebar
-let showHistoryButton;      // New: Button in sidebar
-
+let dietaryPreferencesSection; // Section for dietary preferences (in main content)
+let scanHistorySection;      // Section for scan history (in main content)
+let showPreferencesButton;   // Button in sidebar to show preferences section
+let showHistoryButton;       // Button in sidebar to show history section
 
 // Html5Qrcode related variables
 let html5QrcodeScanner = null;
@@ -86,7 +85,7 @@ function showCustomConfirm(message) {
             resolveModalPromise = resolve;
         });
     } else {
-        console.error('Modal elements not found for custom confirmation.');
+        console.error('Modal elements not found for custom confirmation. Falling back to native confirm.');
         return Promise.resolve(window.confirm(message)); // Fallback to native confirm
     }
 }
@@ -106,19 +105,16 @@ function setupAccordions() {
         header.classList.remove('active'); // Remove active class from header
         const content = header.nextElementSibling;
         if (content && content.classList.contains('accordion-content')) {
-            content.classList.remove('show'); // Ensure content is not 'show'
             content.style.maxHeight = null; // Reset max-height
         }
     });
 
     // Optional: Open the first accordion (e.g., Product Details or Ingredients) by default
-    // after content is loaded. Adjust ID as needed based on which section you want open.
     const firstHeader = document.querySelector('.accordion-header');
     if (firstHeader) {
         firstHeader.classList.add('active');
         const firstContent = firstHeader.nextElementSibling;
         if (firstContent && firstContent.classList.contains('accordion-content')) {
-            firstContent.classList.add('show');
             // Set max-height for the initial open state, crucial for transition.
             // Use setTimeout to ensure the element is rendered and scrollHeight is accurate.
             setTimeout(() => {
@@ -139,15 +135,11 @@ function handleAccordionClick(event) {
     // Toggle the 'active' class on the header
     header.classList.toggle('active');
 
-    // Toggle the 'show' class on the content and manage max-height for smooth transition
-    if (content.classList.contains('show')) {
+    // Toggle max-height for smooth transition
+    if (content.style.maxHeight) {
         content.style.maxHeight = null; // Collapse the content
-        content.classList.remove('show');
     } else {
-        content.classList.add('show');
         // Set max-height to the scrollHeight to enable smooth transition
-        // A slight delay or fixed large value is sometimes needed for proper animation
-        // Setting it to scrollHeight immediately then transitioning to that.
         content.style.maxHeight = content.scrollHeight + 'px';
     }
 }
@@ -161,13 +153,13 @@ function handleAccordionClick(event) {
  * @returns {Promise<object|null>} The product data or null if not found/error.
  */
 async function fetchProductData(upc) {
-if (!upc || typeof upc !== 'string' || upc.trim() === '') { // <--- Added stricter check
+    if (!upc || typeof upc !== 'string' || upc.trim() === '') {
         console.error("fetchProductData: UPC is empty or invalid.", upc);
         displayMessage('Please enter a valid UPC.', 'warning');
         return null;
     }
     displayMessage('Searching for product...', 'info');
- console.log("Attempting to fetch product from:", apiUrl);
+    console.log("Attempting to fetch product from:", `${API_BASE_URL}/product/${upc}`); // Corrected: Use API_BASE_URL
     try {
         const response = await fetch(`${API_BASE_URL}/product/${upc}`);
         if (!response.ok) {
@@ -192,13 +184,9 @@ if (!upc || typeof upc !== 'string' || upc.trim() === '') { // <--- Added strict
  */
 function checkDietaryCompliance(product, preferences) {
     const feedback = [];
-    // Ensure product.ingredients is a string for lowerCase and includes check
     const lowerCaseIngredients = (product.ingredients || '').toLowerCase();
     const lowerCaseAllergens = (product.allergens || []).map(a => a.toLowerCase());
 
-    // Check Vegan/Vegetarian statuses
-    // Backend should ideally provide 'is_vegan', 'is_vegetarian' booleans
-    // Adapting to existing backend structure with 'vegan_status', 'vegetarian_status'
     if (preferences.vegan) {
         if (product.vegan_status === 'not-vegan') {
             feedback.push('Not Vegan: Contains non-vegan ingredients.');
@@ -214,7 +202,6 @@ function checkDietaryCompliance(product, preferences) {
         }
     }
 
-    // Check Gluten-Free
     if (preferences.glutenFree) {
         if (product.gluten_free_status === 'not-gluten-free') {
             feedback.push('Not Gluten-Free: Contains gluten.');
@@ -223,10 +210,8 @@ function checkDietaryCompliance(product, preferences) {
         }
     }
 
-    // Check Allergens against user preferences
     if (preferences.allergens && preferences.allergens.length > 0) {
         preferences.allergens.forEach(allergenPref => {
-            // Trim and convert preference to lowercase for comparison
             const trimmedAllergenPref = allergenPref.toLowerCase().trim();
             if (lowerCaseAllergens.includes(trimmedAllergenPref)) {
                 feedback.push(`Allergen Alert: Contains "${allergenPref}"`);
@@ -234,15 +219,11 @@ function checkDietaryCompliance(product, preferences) {
         });
     }
 
-    // Check additives against preferences (if API provides additive risk data and you have preferences for them)
     if (product.additives && product.additives.length > 0) {
         product.additives.forEach(add => {
             if (add.status && add.status.includes('BANNED in EU')) {
                 feedback.push(`Additive Alert: ${add.eNumber || add.name || 'Unknown Additive'} is BANNED in EU.`);
             }
-            // Add other additive checks based on your preferences
-            // e.g., if you have a list of 'additivesToAvoid' in preferences
-            // if (preferences.additivesToAvoid.includes(add.eNumber)) { ... }
         });
     }
 
@@ -258,21 +239,16 @@ function checkDietaryCompliance(product, preferences) {
 async function fetchAndProcessProduct(upc, fromScan) {
     displayMessage('Fetching product details...', 'info');
     productInfoDiv.innerHTML = ''; // Clear previous product info
-    lastScannedCode = upc; // <--- ADD THIS LINE (from my previous suggestion)
-
-    // Only add to history if it's a new scan, not a manual lookup
-    // (addToScanHistory already handles duplicates, but this avoids fetching for history if it's a lookup)
     
-        addToScanHistory(upc);
+    // Always add to history, it handles duplicates internally
+    addToScanHistory(upc);
     
-
     const product = await fetchProductData(upc);
 
     if (product) {
         renderProductInfo(product);
 
-        // Apply dietary preferences after product info is rendered
-        const preferences = loadDietaryPreferences(); // Make sure to load preferences again if needed
+        const preferences = loadDietaryPreferences();
         const complianceFeedback = checkDietaryCompliance(product, preferences);
 
         if (complianceFeedback.length > 0) {
@@ -281,20 +257,18 @@ async function fetchAndProcessProduct(upc, fromScan) {
                 feedbackHtml += `<li><span class="allergen-alert-badge">${msg}</span></li>`;
             });
             feedbackHtml += '</ul></div>';
-            // Insert at the top of the product info display
             productInfoDiv.insertAdjacentHTML('afterbegin', feedbackHtml);
         }
 
         // Re-setup accordions after content is rendered
-        // This setTimeout is a good safeguard, but ensure setupAccordions itself handles initial state
         setTimeout(() => {
             setupAccordions();
         }, 50); // Small delay to ensure DOM is ready
     } else {
         productInfoDiv.innerHTML = '<div class="section-card info-card error-card"><h2>Product Not Found</h2><p>No information available for this UPC code.</p></div>';
-        // If product not found, clear lastScannedCode as it's no longer a valid displayed product
-        lastScannedCode = null; // <--- ADD THIS LINE
     }
+    // Update lastScannedCode *after* product is processed, for re-checking preferences
+    lastScannedCode = upc;
 }
 
 
@@ -302,7 +276,7 @@ async function fetchAndProcessProduct(upc, fromScan) {
  * Helper to get a nutrient value per serving.
  * @param {object} nutrient The nutrient object from product.nutrition_facts.
  * @returns {number|string} The value per serving or 'N/A'.
-*/
+ */
 function getPerServingValue(nutrient) {
     if (nutrient && nutrient.per_serving !== undefined && nutrient.per_serving !== null) {
         const value = parseFloat(nutrient.per_serving);
@@ -317,7 +291,7 @@ function getPerServingValue(nutrient) {
  * @param {string} nutrientName e.g., 'sugar', 'salt', 'fat'
  * @param {string|number} value The nutrient value (can be 'N/A' string or number).
  * @returns {string} CSS class (e.g., 'nutrient-low', 'nutrient-high').
-*/
+ */
 function getNutrientStatusClass(nutrientName, value) {
     if (value === 'N/A' || isNaN(parseFloat(value))) {
         return '';
@@ -371,19 +345,15 @@ function renderProductInfo(product) {
         const novaClass = `nova-group-${product.nova_group}`;
         const novaDescription = product.nova_group_description || 'No description available.';
 
-        // --- Correct Additives Count Calculation ---
         const additivesCount = (product.additives && Array.isArray(product.additives)) ? product.additives.length : 0;
-        let additivesListHtml = ''; // Will hold the detailed list
+        let additivesListHtml = '';
 
         if (product.additives_tags && Array.isArray(product.additives_tags) && product.additives_tags.length > 0) {
-            // Format the list of additives (e.g., remove "en:" prefix)
             const formattedAdditives = product.additives_tags
                 .map(tag => tag.replace(/^en:/, '').replace(/-/g, ' ').toUpperCase())
                 .join(', ');
             additivesListHtml = `<p><strong>Details:</strong> ${formattedAdditives}</p>`;
         }
-        // If additivesCount > 0 but no detailed tags, the general message below will cover it.
-        // If additivesCount == 0, the general message below will cover it.
 
         html += `
             <div class="section-card info-card nova-info ${novaClass}">
@@ -405,10 +375,8 @@ function renderProductInfo(product) {
     // Ingredients
     if (product.ingredients && product.ingredients.length > 0) {
         let ingredientTagsHtml = '';
-        // Assuming product.ingredients_analysis_tags is an array of strings like ["en:palm-oil-free"]
         if (product.ingredients_analysis_tags && Array.isArray(product.ingredients_analysis_tags) && product.ingredients_analysis_tags.length > 0) {
             product.ingredients_analysis_tags.forEach(tag => {
-                // Example: split tag like 'en:palm-oil-free' to 'Palm Oil Free'
                 const displayTag = tag.replace(/^en:/, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
                 ingredientTagsHtml += `<span class="allergen-tag">${displayTag}</span>`;
             });
@@ -478,10 +446,10 @@ function renderProductInfo(product) {
                     statusText = 'Requires warning';
                     statusClass = 'additive-risk-badge warning';
                 } else if (add.status === 'Not banned in EU') {
-                    statusText = 'Not banned in EU'; // Can be info or just no badge
-                    statusClass = 'additive-risk-badge safe'; // New 'safe' class for clarity
+                    statusText = 'Not banned in EU';
+                    statusClass = 'additive-risk-badge safe';
                 } else if (add.status !== 'Unknown Status' && add.status !== 'Details from Wikipedia.') {
-                    statusText = add.status; // Use specific status if present
+                    statusText = add.status;
                     statusClass = 'additive-risk-badge info';
                 }
             }
@@ -503,7 +471,7 @@ function renderProductInfo(product) {
                     <p class="additive-lookup-note">
                         <small>
                             For more information on E-numbers, consult resources like
-                            <a href="https://en.wikipedia.org/wiki/E_number" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of  E-numbers</a>.
+                            <a href="https://en.wikipedia.org/wiki/E_number" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia's List of E-numbers</a>.
                         </small>
                     </p>
                 </div>
@@ -591,13 +559,11 @@ async function onScanSuccess(decodedText, decodedResult) {
     await fetchAndProcessProduct(decodedText, true);
     // After a successful scan, you might want to stop the scanner automatically
     // or keep it running for continuous scanning.
-    await stopScanner(); // Uncomment if you want the scanner to stop after one successful scan
+    // await stopScanner(); // Uncomment if you want the scanner to stop after one successful scan
 }
 
 function onScanError(errorMessage) {
-    if (isScannerRunning) {
-        // console.warn('Scanner error during active scan:', errorMessage); // Too verbose for console
-    }
+    // console.warn('Scanner error during active scan:', errorMessage); // Too verbose for console
 }
 
 async function initializeScanner(cameraId) {
@@ -637,28 +603,19 @@ async function initializeScanner(cameraId) {
             onScanError,
             renderConfig
         );
-        // ******************************************************************
-        // ADD THESE LINES RIGHT HERE
-        const manualScanSection = document.getElementById('manualScanSection');
-        if (manualScanSection) {
-            manualScanSection.style.setProperty('display', 'block', 'important');
-            manualScanSection.style.setProperty('visibility', 'visible', 'important');
-            console.log("Manual Scan Section forced visible after scanner render."); // For debugging
-        }
-        // ******************************************************************
-
-
-
         isScannerRunning = true;
         currentCameraId = cameraId;
         displayMessage('Scanner active. Point to a barcode.', 'success');
         if (cameraControls) cameraControls.style.display = 'flex'; // Show camera controls once scanner starts
         if (scanButton) scanButton.textContent = 'Hide Scanner'; // Update main scan button
+        if (manualScanSection) manualScanSection.style.display = 'none'; // Hide manual input when scanner is active
+
     } catch (err) {
         console.error('Error starting scanner with ID ' + cameraId + ':', err);
         isScannerRunning = false;
         if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls on error
         if (scanButton) scanButton.textContent = 'Start Scan'; // Reset main scan button
+        if (manualScanSection) manualScanSection.style.display = 'block'; // Show manual input on error
         let errorMessage = 'Error starting scanner.';
         if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
             errorMessage = 'Camera access denied by user. Please enable camera permissions in your browser settings (e.g., Site Settings > Permissions > Camera).';
@@ -761,9 +718,8 @@ async function stopScanner() {
                     scannerContainer.style.display = 'flex'; // Keep it flex to center message
                 }
                 if (cameraControls) cameraControls.style.display = 'none'; // Hide camera controls
-
-                // Reset main scan button text
-                if (scanButton) scanButton.textContent = 'Start Scan';
+                if (scanButton) scanButton.textContent = 'Start Scan'; // Reset main scan button
+                if (manualScanSection) manualScanSection.style.display = 'block'; // Show manual input after scanner stops
 
             } catch (err) {
                 console.error('Error stopping scanner:', err);
@@ -771,6 +727,7 @@ async function stopScanner() {
                 isScannerRunning = false;
                 if (cameraControls) cameraControls.style.display = 'none';
                 if (scanButton) scanButton.textContent = 'Start Scan';
+                if (manualScanSection) manualScanSection.style.display = 'block';
             }
         }
         resolve();
@@ -802,37 +759,42 @@ function toggleSidebar(forceState = null) {
 }
 
 /**
- * Shows a specific section in the main content area and hides others.
- * Designed for use with sidebar navigation.
- *@param {HTMLElement} sectionToShow The DOM element of the main content section to display.
- * @param {string} [initialMessage=''] An optional message to display in the product info area if it's not the sectionToShow.
+ * Manages the display of main content sections.
+ * Hides all main content sections (product info, scanner, manual input) and
+ * then shows the specified `sectionToShow`.
+ * @param {HTMLElement} sectionToShow The DOM element of the main content section to display (e.g., productInfoDiv, scannerContainer, manualScanSection, dietaryPreferencesSection, scanHistorySection).
+ * @param {string} [initialMessage=''] An optional message to display if the shown section is `productInfoDiv` and it's empty, or if other sections are shown and `productInfoDiv` needs a placeholder message.
  */
 function showMainContent(sectionToShow, initialMessage = '') {
-    // List all main content sections
-    const mainContentSections = [productInfoDiv, scannerContainer, manualScanSection];
+    const mainContentSections = [productInfoDiv, scannerContainer, manualScanSection, dietaryPreferencesSection, scanHistorySection];
 
     mainContentSections.forEach(section => {
         if (section) {
-            section.style.display = 'none'; // Hide all main content sections
+            section.style.display = 'none'; // Hide all sections
         }
     });
 
     if (sectionToShow) {
-        sectionToShow.style.display = 'block'; // Show the requested main content section
+        sectionToShow.style.display = 'block'; // Show the requested section
+
+        // Specific handling for productInfoDiv and manualScanSection
+        if (sectionToShow === productInfoDiv) {
+            // If productInfoDiv is being shown, ensure it displays product data or a placeholder
+            if (productInfoDiv.innerHTML.trim() === '') {
+                productInfoDiv.innerHTML = `<p class="no-product">${initialMessage || 'Scan a barcode or enter a UPC to get started!'}</p>`;
+            }
+        } else if (sectionToShow === scannerContainer) {
+            // When scanner is shown, manualScanSection should generally be hidden
+            if (manualScanSection) manualScanSection.style.display = 'none';
+        } else if (sectionToShow === manualScanSection) {
+             // When manual scan is shown, scanner should be stopped if running
+            if (isScannerRunning) stopScanner();
+        }
     }
 
-    // Ensure productInfoDiv is visible for messages if another section is showing
-    if (productInfoDiv && sectionToShow !== productInfoDiv) {
-        productInfoDiv.innerHTML = `<p class="no-product">${initialMessage || 'Select an option from the sidebar or scan a product.'}</p>`;
-        productInfoDiv.style.display = 'block';
-    } else if (productInfoDiv && sectionToShow === productInfoDiv) {
-        productInfoDiv.innerHTML = ''; // Clear if product info is the primary display
-    }
-
-    // Always close the sidebar when a main content section is activated
+    // Always close the sidebar when a main content section is activated from it
     toggleSidebar(false);
 }
-
 
 // --- Preferences and History Logic ---
 
@@ -842,7 +804,7 @@ const SCAN_HISTORY_KEY = 'scanHistory';
 /**
  * Loads dietary preferences from local storage.
  * @returns {object} The loaded preferences or defaults.
-*/
+ */
 function loadDietaryPreferences() {
     try {
         const preferencesJson = localStorage.getItem(DIETARY_PREFERENCES_KEY);
@@ -863,7 +825,7 @@ function loadDietaryPreferences() {
 
 /**
  * Saves dietary preferences to local storage.
-*/
+ */
 function saveDietaryPreferences() {
     const preferences = {
         vegetarian: vegetarianCheckbox ? vegetarianCheckbox.checked : false,
@@ -873,8 +835,8 @@ function saveDietaryPreferences() {
     };
     try {
         localStorage.setItem(DIETARY_PREFERENCES_KEY, JSON.stringify(preferences));
-        displayMessage('Preferences saved!', 'success'); // <-- ADDED THIS LINE
-        console.log('Dietary preferences saved:', preferences); // <-- ADDED THIS FOR DEBUGGING
+        displayMessage('Preferences saved!', 'success');
+        console.log('Dietary preferences saved:', preferences);
     } catch (e) {
         console.error("Failed to save dietary preferences:", e);
         displayMessage("Error saving preferences. Your browser might be in private mode or storage is full.", "error");
@@ -883,11 +845,16 @@ function saveDietaryPreferences() {
 
 /**
  * Clears dietary preferences from local storage and resets UI.
-*/
+ */
 function clearDietaryPreferences() {
     try {
         localStorage.removeItem(DIETARY_PREFERENCES_KEY);
         loadDietaryPreferences(); // Reset UI elements
+        displayMessage('Dietary preferences cleared.', 'success');
+        // Re-process the last scanned product with the new preferences if it's currently displayed
+        if (lastScannedCode && productInfoDiv.innerHTML.trim() !== '<div class="section-card info-card error-card"><h2>Product Not Found</h2><p>No information available for this UPC code.</p></div>') {
+             fetchAndProcessProduct(lastScannedCode, false);
+        }
     } catch (e) {
         console.error("Failed to clear dietary preferences:", e);
         displayMessage("Error clearing preferences. Your browser might be in private mode or storage is full.", "error");
@@ -896,7 +863,7 @@ function clearDietaryPreferences() {
 
 /**
  * Loads scan history from local storage and populates the list.
-*/
+ */
 function loadScanHistory() {
     try {
         const historyJson = localStorage.getItem(SCAN_HISTORY_KEY);
@@ -912,7 +879,7 @@ function loadScanHistory() {
                     listItem.className = 'scan-history-item';
                     listItem.dataset.upc = item.upc;
                     listItem.innerHTML = `
-                       ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="history-item-image">` : ''}
+                        ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="history-item-image">` : ''}
                         <div class="history-item-details">
                             <span class="history-item-name">${item.name}</span>
                             <small class="history-item-upc">${item.upc}</small>
@@ -920,8 +887,8 @@ function loadScanHistory() {
                     `;
                     listItem.addEventListener('click', () => {
                         upcInput.value = item.upc;
+                        showMainContent(productInfoDiv); // Show product info section
                         fetchAndProcessProduct(item.upc, false); // False because it's a history lookup, not a live scan
-                        toggleSidebar(false); // Close sidebar after selecting from history
                     });
                     scanHistoryList.appendChild(listItem); // Add to the end (since we reversed the array)
                 });
@@ -936,7 +903,7 @@ function loadScanHistory() {
 /**
  * Adds a scanned product to history.
  * @param {string} upc The UPC of the scanned product.
-*/
+ */
 async function addToScanHistory(upc) {
     let history = [];
     try {
@@ -949,12 +916,8 @@ async function addToScanHistory(upc) {
     // Remove existing item with the same UPC to ensure it's always the latest
     history = history.filter(item => item.upc !== upc);
 
-    // Fetch product details for history display (name, image) if not already fetched
-    // (This part is crucial: if you fetch product data in fetchAndProcessProduct,
-    // you should pass that data here to avoid a duplicate API call.
-    // For simplicity, I'm keeping the re-fetch as per your original code,
-    // but optimizing this would be good for performance.)
-    const productDataForHistory = await fetchProductData(upc);
+    // Fetch product details for history display (name, image)
+    const productDataForHistory = await fetchProductData(upc); // This call should be efficient as it might be cached
     let name = productDataForHistory ? productDataForHistory.product_name : 'Unknown Product';
     let imageUrl = productDataForHistory ? productDataForHistory.image_url : null;
 
@@ -984,11 +947,12 @@ async function addToScanHistory(upc) {
 
 /**
  * Clears the entire scan history.
-*/
+ */
 function clearScanHistory() {
     try {
         localStorage.removeItem(SCAN_HISTORY_KEY);
         loadScanHistory(); // Clear UI
+        displayMessage('Scan history cleared.', 'success');
     } catch (e) {
         console.error("Failed to clear scan history:", e);
         displayMessage("Error clearing scan history. Your browser might be in private mode or storage is full.", "error");
@@ -1002,7 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scanButton = document.getElementById('scanButton'); // Main toggle for scanner visibility
     lookupButton = document.getElementById('lookupButton');
     productInfoDiv = document.getElementById('productInfo');
-    messageDiv = document.getElementById('messageDisplay'); // Corrected ID
+    messageDiv = document.getElementById('messageDisplay');
     scannerContainer = document.getElementById('scanner-container');
     scanHistoryList = document.getElementById('scanHistoryList');
     clearHistoryButton = document.getElementById('clearHistoryButton');
@@ -1020,55 +984,22 @@ document.addEventListener('DOMContentLoaded', () => {
     veganCheckbox = document.getElementById('veganCheckbox');
     glutenFreeCheckbox = document.getElementById('glutenFreeCheckbox');
     allergensToAvoid = document.getElementById('allergensToAvoid');
-    const manualScanSection = document.getElementById('manualScanSection');    // Corrected Sidebar DOM element assignments
-if (manualScanSection) {
-    // 1. Initial force (in case it's hidden on page load)
-    manualScanSection.style.setProperty('display', 'block', 'important');
-    manualScanSection.style.setProperty('visibility', 'visible', 'important');
+    manualScanSection = document.getElementById('manualScanSection');
 
-    // 2. Create a MutationObserver to watch for style changes
-    const observer = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
-            // Check if the change was to the 'style' attribute
-            if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                // If 'display' is currently 'none'
-                if (manualScanSection.style.display === 'none') {
-                    // Force it back to 'block !important'
-                    manualScanSection.style.setProperty('display', 'block', 'important');
-                    manualScanSection.style.setProperty('visibility', 'visible', 'important');
-                    console.log("MutationObserver: manualScanSection forced visible.");
-                }
-            }
-        }
-    });
-
-    // 3. Start observing the manualScanSection element
-    //    We want to watch for changes to its 'attributes' (specifically 'style')
-    observer.observe(manualScanSection, { attributes: true, attributeFilter: ['style'] });
-
-    // IMPORTANT: If you have a 'stopScanner' function,
-    // you might want to call observer.disconnect() when the scanner stops
-    // to prevent it from running unnecessarily.
-    // E.g., in your stopScanner function:
-    // if (observer) {
-    //     observer.disconnect();
-    // }
-}
-    sidebar = document.getElementById('mySidebar'); // Corrected ID
+    // Sidebar DOM element assignments
+    sidebar = document.getElementById('mySidebar');
     sidebarOverlay = document.getElementById('sidebarOverlay');
-    hamburgerMenu = document.getElementById('hamburgerMenu'); // Corrected ID
+    hamburgerMenu = document.getElementById('hamburgerMenu');
     sidebarCloseButton = document.getElementById('sidebarCloseButton');
-    showPreferencesButton = document.getElementById('showPreferencesButton'); // New: Button in sidebar
-    showHistoryButton = document.getElementById('showHistoryButton');     // New: Button in sidebar
-    dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // New: Section to show/hide
-    scanHistorySection = document.getElementById('scanHistorySection');       // New: Section to show/hide
-    sidebarDietaryPreferencesHeader = document.getElementById('sidebarDietaryPreferencesHeader');
-    sidebarScanHistoryHeader = document.getElementById('sidebarScanHistoryHeader');
+    showPreferencesButton = document.getElementById('showPreferencesButton'); // Button in sidebar to show preferences
+    showHistoryButton = document.getElementById('showHistoryButton');     // Button in sidebar to show history
+    dietaryPreferencesSection = document.getElementById('dietaryPreferencesSection'); // The main section for preferences
+    scanHistorySection = document.getElementById('scanHistorySection');       // The main section for history
 
     // Initial display of sections
-    if (productInfoDiv) productInfoDiv.innerHTML = '<p class="no-product">Scan a barcode or enter a UPC to get started!</p>';
-    displayMessage('Welcome! Enter a UPC or click "Start Scan" to begin.', 'info');
-
+    // Default to showing the product info area with a welcome message
+    showMainContent(productInfoDiv, 'Scan a barcode or enter a UPC to get started!');
+    
     // Load preferences and history on startup
     loadDietaryPreferences();
     loadScanHistory();
@@ -1078,6 +1009,7 @@ if (manualScanSection) {
         lookupButton.addEventListener('click', async () => {
             const upc = upcInput.value.trim();
             if (upc) {
+                showMainContent(productInfoDiv); // Ensure product info section is visible
                 await fetchAndProcessProduct(upc, false);
                 // After manual lookup, stop scanner if running, to free up camera
                 if (isScannerRunning) {
@@ -1089,15 +1021,13 @@ if (manualScanSection) {
         });
     }
 
-    if (scanButton && scannerContainer) {
+    if (scanButton) { // Main toggle for scanner visibility
         scanButton.addEventListener('click', async () => {
             if (!isScannerRunning) {
-                scannerContainer.style.display = 'block'; // Show scanner container
+                showMainContent(scannerContainer); // Show scanner container
                 await requestCameraAccess();
-                // Button text will be updated by initializeScanner on success
             } else {
-                await stopScanner();
-                // Button text will be updated by stopScanner
+                await stopScanner(); // Stop scanner and hide its container
             }
         });
     }
@@ -1108,7 +1038,6 @@ if (manualScanSection) {
                 .then(confirmed => {
                     if (confirmed) {
                         clearScanHistory();
-                        displayMessage('Scan history cleared.', 'success');
                     }
                 });
         });
@@ -1130,8 +1059,6 @@ if (manualScanSection) {
                 .then(confirmed => {
                     if (confirmed) {
                         clearDietaryPreferences();
-                        displayMessage('Dietary preferences cleared.', 'success');
-                        
                     }
                 });
         });
@@ -1168,7 +1095,8 @@ if (manualScanSection) {
     if (startCameraButton) { // The button inside cameraControls
         startCameraButton.addEventListener('click', async () => {
             if (!isScannerRunning) {
-                scannerContainer.style.display = 'block';
+                // This button is mainly for re-starting the scanner if it was stopped
+                showMainContent(scannerContainer);
                 await requestCameraAccess();
             } else {
                 displayMessage('Scanner is already running.', 'warning');
@@ -1193,7 +1121,7 @@ if (manualScanSection) {
         });
     }
 
-    // Sidebar Event Listeners (using corrected IDs)
+    // Sidebar Event Listeners
     if (hamburgerMenu) {
         hamburgerMenu.addEventListener('click', () => {
             toggleSidebar(); // Toggle sidebar state
@@ -1212,48 +1140,23 @@ if (manualScanSection) {
         });
     }
 
-    // Initial setup for accordions that are present on page load (e.g., in sidebar or if initial product data exists)
-    // IMPORTANT: For product info accordions loaded dynamically, setupAccordions is called in fetchAndProcessProduct.
+    // Sidebar navigation buttons to show main content sections
+    if (showPreferencesButton) {
+        showPreferencesButton.addEventListener('click', () => {
+            showMainContent(dietaryPreferencesSection, 'Adjust your dietary preferences here.');
+            loadDietaryPreferences(); // Ensure the latest preferences are loaded into the form
+        });
+    }
+
+    if (showHistoryButton) {
+        showHistoryButton.addEventListener('click', () => {
+            showMainContent(scanHistorySection, 'Your recent scan history.');
+            loadScanHistory(); // Ensure the latest history is loaded into the list
+        });
+    }
+
+    // Initial setup for accordions that are present on page load (e.g., in sidebar content)
+    // NOTE: For product info accordions loaded dynamically, setupAccordions is called in fetchAndProcessProduct.
     setupAccordions();
-
-    // Initial display of the "no product" message and hiding of other sections
-   
-  // --- Sidebar Section Toggling ---
-function setupSidebarAccordions() {
-    // These variables (dietaryPreferencesSection, scanHistorySection, sidebarDietaryPreferencesHeader, sidebarScanHistoryHeader)
-    // are already assigned at the top of your DOMContentLoaded listener, so they are available here.
-
-    if (sidebarDietaryPreferencesHeader && dietaryPreferencesSection) {
-        sidebarDietaryPreferencesHeader.addEventListener('click', () => {
-            sidebarDietaryPreferencesHeader.classList.toggle('active');
-            // Toggle 'active' on the correct parent content div (which has the max-height CSS)
-            dietaryPreferencesSection.classList.toggle('active'); 
-
-            // Ensure preferences are loaded only when its section is activated
-            if (sidebarDietaryPreferencesHeader.classList.contains('active')) {
-                loadDietaryPreferences(); // Re-load preferences when section opens
-            }
-        });
-    }
-
-    if (sidebarScanHistoryHeader && scanHistorySection) {
-        sidebarScanHistoryHeader.addEventListener('click', () => {
-            sidebarScanHistoryHeader.classList.toggle('active');
-            // Toggle 'active' on the correct parent content div (which has the max-height CSS)
-            scanHistorySection.classList.toggle('active'); 
-
-            // Ensure history is loaded only when its section is activated
-            if (sidebarScanHistoryHeader.classList.contains('active')) {
-                loadScanHistory(); // Load history when section opens
-            }
-        });
-    }
-}
-
-    // Call this new setup function
-    setupSidebarAccordions();
-
-    // Initial display of the main product info section, as the default view
-    showMainContent(productInfoDiv, 'Scan a barcode or enter a UPC to get started!');
 
 }); // End DOMContentLoaded
