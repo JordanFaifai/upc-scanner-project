@@ -894,7 +894,7 @@ function clearDietaryPreferences() {
     }
 }
 
-*/
+/*
  * Loads scan history from local storage and populates the list.
 */
 function loadScanHistory() {
