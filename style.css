@@ -1021,7 +1021,10 @@ div[id^="html5-qrcode-info"] {
     width: 100%; /* Make SVG fill its parent button's width */
     height: 100%; /* Make SVG fill its parent button's height */
 }
-
+#sidebarDietaryPreferencesHeader,
+    #dietaryPreferencesSection {
+        display: none !important; /* Hides the elements and ensures they take no space */
+    }
 /* Responsive Design */
 @media (max-width: 768px) {
     header h1 {
@@ -1077,4 +1080,5 @@ div[id^="html5-qrcode-info"] {
     .sidebar.open {
         width: 250px; /* Slightly smaller width on small screens */
     }
+
 }
