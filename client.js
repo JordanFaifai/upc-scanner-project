@@ -544,7 +544,7 @@ function renderProductInfo(product) {
     // Nutrition Facts
     if (product.nutrition_facts) {
   // --- START OF NEW CODE FOR CALORIE CALCULATION ---
-        const caloriesValue = getPerServingValue(product.nutrition_facts.calories); // Get the actual calorie value
+        const caloriesValue = getPerServingValue(product.nutrition_facts.calories, product.serving_quantity); // Get the actual calorie value
 
         let calorieBurnText = '';
         if (caloriesValue !== null && caloriesValue !== undefined && caloriesValue > 0) {
@@ -569,13 +569,13 @@ const servingSizeText = product.serving_size ? `<small> (per ${product.serving_s
                     <h2>Nutrition Facts ${servingSizeText} <span class="arrow">▼</span></h2>
                 </button>
                 <div class="accordion-content"> <div class="nutrition-grid">
-                        <p><strong>Calories:</strong> <span class="${getNutrientStatusClass('calories', caloriesValue)}">${caloriesValue} kcal</span>${calorieBurnText}</p>
-                        <p><strong>Protein:</strong> <span class="${getNutrientStatusClass('protein', getPerServingValue(product.nutrition_facts.protein))}">${getPerServingValue(product.nutrition_facts.protein)} g</span></p>
-                        <p><strong>Carbohydrates:</strong> <span class="${getNutrientStatusClass('carbohydrates', getPerServingValue(product.nutrition_facts.carbohydrates))}">${getPerServingValue(product.nutrition_facts.carbohydrates)} g</span></p>
-                        <p><strong>Fat:</strong> <span class="${getNutrientStatusClass('fat', getPerServingValue(product.nutrition_facts.fat))}">${getPerServingValue(product.nutrition_facts.fat)} g</span></p>
-                        <p><strong>Sugar:</strong> <span class="${getNutrientStatusClass('sugar', getPerServingValue(product.nutrition_facts.sugar))}">${getPerServingValue(product.nutrition_facts.sugar)} g</span></p>
-                        <p><strong>Salt:</strong> <span class="${getNutrientStatusClass('salt', getPerServingValue(product.nutrition_facts.salt))}">${getPerServingValue(product.nutrition_facts.salt)} g</span></p>
-                        <p><strong>Fiber:</strong> <span class="${getNutrientStatusClass('fiber', getPerServingValue(product.nutrition_facts.fiber))}">${getPerServingValue(product.nutrition_facts.fiber)} g</span></p>
+                        <p><strong>Calories:</strong> <span class="${getNutrientStatusClass('calories', getPerServingValue(product.nutrition_facts.calories, product.serving_quantity))}">${getPerServingValue(product.nutrition_facts.calories, product.serving_quantity)} kcal</span>${calorieBurnText}</p>
+<p><strong>Protein:</strong> <span class="${getNutrientStatusClass('protein', getPerServingValue(product.nutrition_facts.protein, product.serving_quantity))}">${getPerServingValue(product.nutrition_facts.protein, product.serving_quantity)} g</span></p>
+<p><strong>Carbohydrates:</strong> <span class="${getNutrientStatusClass('carbohydrates', getPerServingValue(product.nutrition_facts.carbohydrates, product.serving_quantity))}">${getPerServingValue(product.nutrition_facts.carbohydrates, product.serving_quantity)} g</span></p>
+<p><strong>Fat:</strong> <span class="${getNutrientStatusClass('fat', getPerServingValue(product.nutrition_facts.fat, product.serving_quantity))}">${getPerServingValue(product.nutrition_facts.fat, product.serving_quantity)} g</span></p>
+<p><strong>Sugar:</strong> <span class="${getNutrientStatusClass('sugar', getPerServingValue(product.nutrition_facts.sugar, product.serving_quantity))}">${getPerServingValue(product.nutrition_facts.sugar, product.serving_quantity)} g</span></p>
+<p><strong>Salt:</strong> <span class="${getNutrientStatusClass('salt', getPerServingValue(product.nutrition_facts.salt, product.serving_quantity))}">${getPerServingValue(product.nutrition_facts.salt, product.serving_quantity)} g</span></p>
+<p><strong>Fiber:</strong> <span class="${getNutrientStatusClass('fiber', getPerServingValue(product.nutrition_facts.fiber, product.serving_quantity))}">${getPerServingValue(product.nutrition_facts.fiber, product.serving_quantity)} g</span></p>
                     </div>
                 </div>
             </div>
