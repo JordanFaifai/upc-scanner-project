@@ -618,8 +618,59 @@ const servingSizeText = product.serving_size ? `<small> (per ${product.serving_s
             </div>
         </div>
     `;
-
+}
     productInfoDiv.innerHTML = html;
+}
+function getAdditivesReminderHtml() {
+    return `
+        <div class="section-card reminder-card">
+            <button class="accordion-header" aria-expanded="false">
+                <h2>Food Additives to Watch Out For <span class="arrow">▼</span></h2>
+            </button>
+            <div class="accordion-content">
+                <p>While some additives are harmless, many are used to enhance flavor, texture, or shelf-life in highly processed foods. Here are some commonly discussed ones:</p>
+                <h3>Common Additives & What to Know:</h3>
+                <ul>
+                    <li><strong>Artificial Sweeteners (e.g., Aspartame, Sucralose, Saccharin):</strong> Used to reduce sugar content. Some studies suggest potential effects on gut microbiome or appetite.</li>
+                    <li><strong>Artificial Colors (e.g., Red 40, Yellow 5, Blue 1):</strong> Can be linked to hyperactivity in some children. Often found in candies, drinks, and processed snacks.</li>
+                    <li><strong>High-Fructose Corn Syrup (HFCS):</strong> A highly processed sugar made from corn starch. Contributes to added sugar intake and is common in ultra-processed foods.</li>
+                    <li><strong>Trans Fats (Partially Hydrogenated Oils):</strong> Created by industrial processing. Known to significantly increase the risk of heart disease. Increasingly banned.</li>
+                    <li><strong>Monosodium Glutamate (MSG):</strong> A flavor enhancer. While generally recognized as safe, some individuals report sensitivity (e.g., headaches, nausea).</li>
+                    <li><strong>BHA & BHT (Butylated Hydroxyanisole & Hydroxytoluene):</strong> Antioxidant preservatives used to prevent spoilage. Some animal studies have raised health concerns, though human data is mixed.</li>
+                    <li><strong>Sodium Nitrite/Nitrate:</strong> Preservatives found in cured meats (like bacon, hot dogs). Can form potentially carcinogenic compounds (nitrosamines) when cooked at high heat.</li>
+                    <li><strong>Carrageenan:</strong> A common thickener and stabilizer. Some concerns regarding its potential to cause inflammation or digestive issues, especially degraded forms.</li>
+                </ul>
+                <p class="note"><strong>Pure Scan Tip:</strong> A long list of unpronounceable ingredients often indicates heavy processing. Look for "clean label" products with fewer, recognizable ingredients!</p>
+            </div>
+        </div>
+    `; // <--- MISSING CLOSING BACKTICK AND SEMICOLON
+} // <--- MISSING CLOSING CURLY BRACE FOR THE FUNCTION
+
+function getNovaGroupReminderHtml() {
+    return `
+        <div class="section-card reminder-card">
+            <button class="accordion-header" aria-expanded="false">
+                <h2>Understanding NOVA Groups <span class="arrow">▼</span></h2>
+            </button>
+            <div class="accordion-content">
+                <p>The NOVA classification system categorizes foods based on their level of processing. It helps you understand how much a food has been altered from its natural state:</p>
+                <dl>
+                    <dt><strong>NOVA Group 1: Unprocessed or Minimally Processed Foods</strong></dt>
+                    <dd>Whole foods like fresh fruits, vegetables, meat, fish, eggs, milk, nuts, and seeds. Undergo minimal processing (e.g., drying, chilling, pasteurization) to preserve or make them edible.</dd>
+
+                    <dt><strong>NOVA Group 2: Processed Culinary Ingredients</strong></dt>
+                    <dd>Substances like oils, butter, sugar, salt, and flour obtained directly from Group 1 foods or from nature. Used in kitchens to prepare Group 1 foods.</dd>
+
+                    <dt><strong>NOVA Group 3: Processed Foods</strong></dt>
+                    <dd>Relatively simple products made by adding Group 2 ingredients to Group 1 foods (e.g., canned vegetables, simple breads, cheeses, cured meats). Generally, they retain most of the original food's characteristics.</dd>
+
+                    <dt><strong>NOVA Group 4: Ultra-Processed Foods (UPF)</strong></dt>
+                    <dd>Industrial formulations of ingredients, many of which are exclusive to industrial use (e.g., highly refined sugars, hydrogenated fats, protein isolates). They often contain many additives, are high in sugar, unhealthy fats, and salt, and are designed to be hyper-palatable and convenient. <span class="text-bold text-red-500">Minimizing consumption of NOVA Group 4 foods is generally recommended for health.</span></dd>
+                </dl>
+                <p class="note">Pure Scan helps you identify NOVA groups so you can make more informed dietary choices!</p>
+            </div>
+        </div>
+    `; 
 }
 
 // --- Scanner Logic ---
@@ -1311,57 +1362,3 @@ function setupSidebarAccordions() {
     showMainContent(productInfoDiv, 'Scan a barcode or enter a UPC to get started!');
 
 }); // End DOMContentLoaded
-// --- New Reminder HTML Generation Functions ---
-
-function getAdditivesReminderHtml() {
-    return `
-        <div class="section-card reminder-card">
-            <button class="accordion-header" aria-expanded="false">
-                <h2>Food Additives to Watch Out For <span class="arrow">▼</span></h2>
-            </button>
-            <div class="accordion-content">
-                <p>While some additives are harmless, many are used to enhance flavor, texture, or shelf-life in highly processed foods. Here are some commonly discussed ones:</p>
-                <h3>Common Additives & What to Know:</h3>
-                <ul>
-                    <li><strong>Artificial Sweeteners (e.g., Aspartame, Sucralose, Saccharin):</strong> Used to reduce sugar content. Some studies suggest potential effects on gut microbiome or appetite.</li>
-                    <li><strong>Artificial Colors (e.g., Red 40, Yellow 5, Blue 1):</strong> Can be linked to hyperactivity in some children. Often found in candies, drinks, and processed snacks.</li>
-                    <li><strong>High-Fructose Corn Syrup (HFCS):</strong> A highly processed sugar made from corn starch. Contributes to added sugar intake and is common in ultra-processed foods.</li>
-                    <li><strong>Trans Fats (Partially Hydrogenated Oils):</strong> Created by industrial processing. Known to significantly increase the risk of heart disease. Increasingly banned.</li>
-                    <li><strong>Monosodium Glutamate (MSG):</strong> A flavor enhancer. While generally recognized as safe, some individuals report sensitivity (e.g., headaches, nausea).</li>
-                    <li><strong>BHA & BHT (Butylated Hydroxyanisole & Hydroxytoluene):</strong> Antioxidant preservatives used to prevent spoilage. Some animal studies have raised health concerns, though human data is mixed.</li>
-                    <li><strong>Sodium Nitrite/Nitrate:</strong> Preservatives found in cured meats (like bacon, hot dogs). Can form potentially carcinogenic compounds (nitrosamines) when cooked at high heat.</li>
-                    <li><strong>Carrageenan:</strong> A common thickener and stabilizer. Some concerns regarding its potential to cause inflammation or digestive issues, especially degraded forms.</li>
-                </ul>
-                <p class="note"><strong>Pure Scan Tip:</strong> A long list of unpronounceable ingredients often indicates heavy processing. Look for "clean label" products with fewer, recognizable ingredients!</p>
-            </div>
-        </div>
-    `; // <--- MISSING CLOSING BACKTICK AND SEMICOLON
-} // <--- MISSING CLOSING CURLY BRACE FOR THE FUNCTION
-
-function getNovaGroupReminderHtml() {
-    return `
-        <div class="section-card reminder-card">
-            <button class="accordion-header" aria-expanded="false">
-                <h2>Understanding NOVA Groups <span class="arrow">▼</span></h2>
-            </button>
-            <div class="accordion-content">
-                <p>The NOVA classification system categorizes foods based on their level of processing. It helps you understand how much a food has been altered from its natural state:</p>
-                <dl>
-                    <dt><strong>NOVA Group 1: Unprocessed or Minimally Processed Foods</strong></dt>
-                    <dd>Whole foods like fresh fruits, vegetables, meat, fish, eggs, milk, nuts, and seeds. Undergo minimal processing (e.g., drying, chilling, pasteurization) to preserve or make them edible.</dd>
-
-                    <dt><strong>NOVA Group 2: Processed Culinary Ingredients</strong></dt>
-                    <dd>Substances like oils, butter, sugar, salt, and flour obtained directly from Group 1 foods or from nature. Used in kitchens to prepare Group 1 foods.</dd>
-
-                    <dt><strong>NOVA Group 3: Processed Foods</strong></dt>
-                    <dd>Relatively simple products made by adding Group 2 ingredients to Group 1 foods (e.g., canned vegetables, simple breads, cheeses, cured meats). Generally, they retain most of the original food's characteristics.</dd>
-
-                    <dt><strong>NOVA Group 4: Ultra-Processed Foods (UPF)</strong></dt>
-                    <dd>Industrial formulations of ingredients, many of which are exclusive to industrial use (e.g., highly refined sugars, hydrogenated fats, protein isolates). They often contain many additives, are high in sugar, unhealthy fats, and salt, and are designed to be hyper-palatable and convenient. <span class="text-bold text-red-500">Minimizing consumption of NOVA Group 4 foods is generally recommended for health.</span></dd>
-                </dl>
-                <p class="note">Pure Scan helps you identify NOVA groups so you can make more informed dietary choices!</p>
-            </div>
-        </div>
-    `; 
-}
-}
