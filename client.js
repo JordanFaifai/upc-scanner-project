@@ -1362,6 +1362,6 @@ function getNovaGroupReminderHtml() {
                 <p class="note">Pure Scan helps you identify NOVA groups so you can make more informed dietary choices!</p>
             </div>
         </div>
-    `; //
-} //
-
+    `; 
+} 
+}
