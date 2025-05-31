@@ -1363,4 +1363,5 @@ function getNovaGroupReminderHtml() {
             </div>
         </div>
     `; 
-} 
+}
+}
