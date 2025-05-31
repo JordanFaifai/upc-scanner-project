@@ -1335,8 +1335,8 @@ function getAdditivesReminderHtml() {
                 <p class="note"><strong>Pure Scan Tip:</strong> A long list of unpronounceable ingredients often indicates heavy processing. Look for "clean label" products with fewer, recognizable ingredients!</p>
             </div>
         </div>
-    `;
-}
+    `; // <--- MISSING CLOSING BACKTICK AND SEMICOLON
+} // <--- MISSING CLOSING CURLY BRACE FOR THE FUNCTION
 
 function getNovaGroupReminderHtml() {
     return `
