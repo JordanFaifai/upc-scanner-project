@@ -373,53 +373,65 @@ function getNutrientStatusClass(nutrientName, value) {
  * Renders the product information into the DOM.
  * @param {object} product The product data object.
  */
-function renderProductInfo(product) {
+function renderProductInfo(product, scannedBarcode = null) {
     let html = '';
+    productInfoDiv.innerHTML = ''; // Clear previous content
 
-    // Product Header
-    html += `
-        <div class="section-card product-header">
-            <h1>${product.product_name || 'Unknown Product'}</h1>
-            ${product.image_url ? `<img src="${product.image_url}" alt="${product.product_name || 'Product'}" class="product-image">` : ''}
-            <p><small>UPC: ${product.barcode || 'N/A'}</small></p>
-        </div>
-    `;
-
-    // NOVA Group (if available)
-    if (product.nova_group) {
-        const novaClass = `nova-group-${product.nova_group}`;
-        const novaDescription = product.nova_group_description || 'No description available.';
-
-        // --- Correct Additives Count Calculation ---
-        const additivesCount = (product.additives && Array.isArray(product.additives)) ? product.additives.length : 0;
-        let additivesListHtml = ''; // Will hold the detailed list
-
-        if (product.additives_tags && Array.isArray(product.additives_tags) && product.additives_tags.length > 0) {
-            // Format the list of additives (e.g., remove "en:" prefix)
-            const formattedAdditives = product.additives_tags
-                .map(tag => tag.replace(/^en:/, '').replace(/-/g, ' ').toUpperCase())
-                .join(', ');
-            additivesListHtml = `<p><strong>Details:</strong> ${formattedAdditives}</p>`;
-        }
-        // If additivesCount > 0 but no detailed tags, the general message below will cover it.
-        // If additivesCount == 0, the general message below will cover it.
-
+    // THIS IS THE CRITICAL IF/ELSE BLOCK THAT NEEDS TO BE AT THE TOP
+    if (!product || !product.product_name) {
+        // --- Code for when product is NOT found ---
         html += `
-            <div class="section-card info-card nova-info ${novaClass}">
-                <h2>NOVA Group ${product.nova_group}</h2>
-                <p><strong>Processing Level:</strong> ${novaDescription}</p>
-                <p>
-                    ${additivesCount > 0
-                        ? `This product contains <strong>${additivesCount}</strong> food additives.`
-                        : `No food additives found in this product.`
-                    }
-                </p>
-                ${additivesListHtml}
-                <p class="additives-info"><small>Lower numbers of additives are generally preferred. You can research specific additives (like E-numbers) online for more details.</small></p>
-                <p class="nova-source-note"><small>NOVA groups classify foods by level of processing. Learn more on <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia</a>.</small></p>
+            <div class="section-card">
+                <h2>Product Details</h2>
+                <p class="text-center text-gray-700">Oops! Product with UPC <strong>${scannedBarcode || 'N/A'}</strong> not found in our database.</p>
+                <p class="text-center text-gray-700 mb-4">It might be a very new product, regional, or simply not yet added to the Open Food Facts database.</p>
+            </div>
+            ${getAdditivesReminderHtml()}
+            ${getNovaGroupReminderHtml()}
+        `;
+    } else {
+        // --- Code for when product IS found (all your existing HTML generation goes here) ---
+
+        // Product Header (this is the part that caused your error before)
+        html += `
+            <div class="section-card product-header">
+                <h1>${product.product_name || 'Unknown Product'}</h1>
+                ${product.image_url ? `<img src="${product.image_url}" alt="${product.product_name || 'Product'}" class="product-image">` : ''}
+                <p><small>UPC: ${product.barcode || 'N/A'}</small></p>
             </div>
         `;
-    }
+
+        // NOVA Group (if available)
+        if (product.nova_group) {
+            const novaClass = `nova-group-${product.nova_group}`;
+            const novaDescription = product.nova_group_description || 'No description available.';
+
+            const additivesCount = (product.additives && Array.isArray(product.additives)) ? product.additives.length : 0;
+            let additivesListHtml = '';
+
+            if (product.additives_tags && Array.isArray(product.additives_tags) && product.additives_tags.length > 0) {
+                const formattedAdditives = product.additives_tags
+                    .map(tag => tag.replace(/^en:/, '').replace(/-/g, ' ').toUpperCase())
+                    .join(', ');
+                additivesListHtml = `<p><strong>Details:</strong> ${formattedAdditives}</p>`;
+            }
+
+            html += `
+                <div class="section-card info-card nova-info ${novaClass}">
+                    <h2>NOVA Group ${product.nova_group}</h2>
+                    <p><strong>Processing Level:</strong> ${novaDescription}</p>
+                    <p>
+                        ${additivesCount > 0
+                            ? `This product contains <strong>${additivesCount}</strong> food additives.`
+                            : `No food additives found in this product.`
+                        }
+                    </p>
+                    ${additivesListHtml}
+                    <p class="additives-info"><small>Lower numbers of additives are generally preferred. You can research specific additives (like E-numbers) online for more details.</small></p>
+                    <p class="nova-source-note"><small>NOVA groups classify foods by level of processing. Learn more on <a href="https://en.wikipedia.org/wiki/Nova_classification" target="_blank" class="external-link" rel="noopener noreferrer">Wikipedia</a>.</small></p>
+                </div>
+            `;
+        }
 
     // Ingredients
     if (product.ingredients && product.ingredients.length > 0) {
