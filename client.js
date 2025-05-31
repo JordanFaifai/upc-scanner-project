@@ -1364,3 +1364,5 @@ function getNovaGroupReminderHtml() {
         </div>
     `; //
 } //
+
+}
