@@ -3,8 +3,7 @@ const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const admin = require('firebase-admin'); // ADD THIS LINE
-const serviceAccount = require('./firebase-service-account.json'); // ADD THIS LINE (ensure path is correct)
+
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Confirmed from your file: local default is 3000
