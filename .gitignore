@@ -1,0 +1,5 @@
+# Firebase private key file - DO NOT COMMIT THIS
+firebase-service-account.json
+
+# Local development scripts
+importAdditives.js
