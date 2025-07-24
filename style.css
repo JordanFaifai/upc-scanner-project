@@ -218,7 +218,7 @@ input[type="text"]:focus {
 .product-header h1 {
     font-family: 'Poppins', sans-serif;
     font-size: 2em;
-    color: #a3e635;
+    color: #f0f0f0;
     margin-bottom: 10px;
 }
 
@@ -240,7 +240,7 @@ input[type="text"]:focus {
 
 .info-card h2 {
     font-size: 1.4em;
-    color: #a3e635;
+    color: #ccc;
     margin-top: 0;
     margin-bottom: 10px;
     border-bottom: 1px solid #444;
@@ -270,13 +270,13 @@ input[type="text"]:focus {
 }
 
 .external-link {
-    color: #74b9ff; /* Light blue for links */
-    text-decoration: none;
+    color: #a0a0a0; /* Muted grey for links */
+    text-decoration: underline; /* Keep underline for clear link identification */
     transition: color 0.3s ease;
 }
 
 .external-link:hover {
-    color: #4a90e2; /* Darker blue on hover */
+    color: #f0f0f0; /* White on hover for subtle highlight */
     text-decoration: underline;
 }
 
@@ -286,11 +286,11 @@ input[type="text"]:focus {
     padding-left: 20px;
 }
 
-.nova-group-1 { border-color: #27ae60; /* Dark green */ }
-.nova-group-2 { border-color: #2ecc71; /* Medium green */ }
-.nova-group-3 { border-color: #f1c40f; /* Yellow */ }
-.nova-group-4 { border-color: #e74c3c; /* Red */ }
-.nova-group-unknown { border-color: #95a5a6; /* Grey */ }
+.nova-group-1 { border-color: #6c6c6c; /* Muted grey */ }
+.nova-group-2 { border-color: #8c8c8c; /* Slightly lighter grey */ }
+.nova-group-3 { border-color: #a0a0a0; /* Another light grey */ }
+.nova-group-4 { border-color: #D32F2F; /* Retain red for critical Nova group */ }
+.nova-group-unknown { border-color: #444; /* Darker grey for unknown */ }
 
 .nova-info h2 {
     font-size: 1.5em;
@@ -300,7 +300,7 @@ input[type="text"]:focus {
 
 .nova-info p strong {
     font-weight: 700;
-    color: #a3e635;
+    color: #f0f0f0; /* Use soft white for strong text */
 }
 
 .nova-info .nova-description {
@@ -317,7 +317,7 @@ input[type="text"]:focus {
 /* Additive Note */
 .additive-nova-note {
     font-size: 0.9em;
-    color: #ffcc00;
+    color: #f1c40f; /* Use standard warning yellow/orange */
     margin-top: -10px;
     margin-bottom: 15px;
     padding: 0 10px;
@@ -326,8 +326,8 @@ input[type="text"]:focus {
 /* Old Accordion Styles (not used in sidebar accordion) */
 /* Keeping these here in case they are used elsewhere in your main content */
 .accordion-header {
-    background-color: #4a627a; /* Darker than card, lighter than background */
-    color: #ecf0f1;
+    background-color: #2c2c2c; /* Darker than card, lighter than background */
+    color: #f0f0f0;
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -350,7 +350,8 @@ input[type="text"]:focus {
 }
 
 .accordion-header:hover, .accordion-header.active {
-    background-color: #557088;
+     background-color: #3a3a3a; /* Slightly lighter grey on hover/active */
+    color: #ffffff; /* Brighter white for active state */
 }
 
 .accordion-header .arrow {
@@ -363,13 +364,13 @@ input[type="text"]:focus {
 }
 
 .accordion-content {
-    background-color: #34495e;
+    background-color: #222; /* Consistent with other nested dark elements */
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-out; /* Slower transition */
-    padding: 0 18px; /* Initial padding */
+    transition: max-height 0.4s ease-out;
+    padding: 0 18px;
     border-radius: 6px;
-    margin-top: -5px; /* Overlap slightly for seamless look */
+    margin-top: -5px;
 }
 
 .accordion-content.show {
@@ -388,7 +389,7 @@ input[type="text"]:focus {
 }
 
 .accordion-content ul li {
-    background-color: #4a627a;
+    background-color: #333; /* Slightly different shade for list items */
     margin-bottom: 5px;
     padding: 8px 12px;
     border-radius: 4px;
@@ -412,16 +413,16 @@ input[type="text"]:focus {
 }
 
 .additive-list li {
-    background-color: #4a627a;
+    background-color: #333; /* Consistent dark background for list items */
     padding: 10px 15px;
     border-radius: 5px;
     margin-bottom: 8px;
     font-size: 0.95em;
-    border-left: 4px solid #a3e635; /* Default accent */
+    border-left: 4px solid #6c6c6c; /* Muted accent border */
 }
 
 .additive-list li strong {
-    color: #ecf0f1;
+    color: #f0f0f0;
 }
 
 .additive-list li small {
@@ -440,18 +441,18 @@ input[type="text"]:focus {
 }
 
 .additive-risk-badge.banned {
-    background-color: #e74c3c; /* Red */
-    color: #ecf0f1;
+    background-color: #D32F2F; /* Red for banned */
+    color: #f0f0f0;
 }
 
 .additive-risk-badge.warning {
     background-color: #f1c40f; /* Yellow */
-    color: #34495e;
+    color: #1a1a1a;
 }
 
 .additive-risk-badge.info {
-    background-color: #3498db; /* Blue */
-    color: #ecf0f1;
+    background-color: #5aa1d9; /* Softer blue for info */
+    color: #f0f0f0;
 }
 
 .additive-lookup-note {
@@ -467,14 +468,14 @@ input[type="text"]:focus {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 10px;
     padding: 10px;
-    background-color: #4a627a;
+    background-color: #222; /* Darker background for grid */
     border-radius: 6px;
 }
 
 .nutrition-grid p {
     margin: 0;
     padding: 5px 0;
-    border-bottom: 1px dashed #557088;
+    border-bottom: 1px dashed #444; /* Muted border */
 }
 
 .nutrition-grid p:last-child {
@@ -482,7 +483,7 @@ input[type="text"]:focus {
 }
 
 .nutrition-grid p strong {
-    color: #a3e635;
+    color: #f0f0f0; /* Soft white for emphasis */
 }
 
 /* Nutrient status classes */
@@ -510,7 +511,7 @@ input[type="text"]:focus {
     display: flex;
     align-items: center;
     font-size: 1.1em;
-    color: #ecf0f1;
+    color: #f0f0f0;
     margin-bottom: 10px;
     cursor: pointer;
 }
@@ -519,17 +520,17 @@ input[type="text"]:focus {
     margin-right: 10px;
     width: 20px;
     height: 20px;
-    accent-color: #a3e635; /* Custom color for checkbox */
+    accent-color: #6c6c6c; /* Muted grey accent for checkbox */
     cursor: pointer;
 }
 
 #dietaryPreferencesSection textarea {
     width: calc(100% - 20px);
     padding: 10px;
-    border: 1px solid #557088;
+    border: 1px solid #444;
     border-radius: 5px;
-    background-color: #4a627a;
-    color: #ecf0f1;
+    background-color: #2c2c2c;
+    color: #f0f0f0;
     font-size: 1em;
     min-height: 80px;
     resize: vertical;
@@ -553,19 +554,18 @@ input[type="text"]:focus {
     font-size: 0.85em;
     font-weight: 600;
     margin: 5px;
-    color: #2c3e50; /* Dark text for contrast */
-}
+    color: #1a1a1a; 
 
-.diet-vegetarian { background-color: #2ecc71; } /* Green */
-.diet-vegan { background-color: #3498db; } /* Blue */
-.diet-gluten-free { background-color: #9b59b6; } /* Purple */
-.diet-vegetarian-potential { background-color: #7bed9f; } /* Lighter Green */
-.diet-vegan-potential { background-color: #82cced; } /* Lighter Blue */
-.diet-gluten-free-potential { background-color: #c09de0; } /* Lighter Purple */
+.diet-vegetarian { background-color: #6c6c6c; } /* Muted grey */
+.diet-vegan { background-color: #8c8c8c; } /* Slightly lighter grey */
+.diet-gluten-free { background-color: #a0a0a0; } /* Another light grey */
+.diet-vegetarian-potential { background-color: #5a5a5a; } /* Darker muted green */
+.diet-vegan-potential { background-color: #7a7a7a; } /* Darker muted blue */
+.diet-gluten-free-potential { background-color: #909090; } /* Darker muted purple */
 
 .allergen-alert-badge {
-    background-color: #e74c3c; /* Red for alert */
-    color: #ecf0f1;
+   background-color: #D32F2F; /* Retain strong red for allergen alert */
+    color: #f0f0f0;
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 0.85em;
@@ -593,24 +593,24 @@ input[type="text"]:focus {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 400px; /* Limit height for scrollability */
+    max-height: 400px;
     overflow-y: auto;
-    border: 1px solid #4a627a;
+    border: 1px solid #4a4a4a; /* Muted border */
     border-radius: 6px;
-    background-color: #2c3e50;
+    background-color: #222; /* Darker background for history list */
 }
 
 .scan-history-item {
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    border-bottom: 1px solid #4a627a;
+    border-bottom: 1px solid #333; /* Even more subtle border between items */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .scan-history-item:hover {
-    background-color: #4a627a;
+    background-color: #3a3a3a; /* Slightly lighter grey on hover */
 }
 
 .scan-history-item:last-child {
@@ -623,7 +623,7 @@ input[type="text"]:focus {
     object-fit: cover;
     border-radius: 4px;
     margin-right: 15px;
-    border: 1px solid #557088;
+    border: 1px solid #555;
 }
 
 .history-item-details {
@@ -633,7 +633,7 @@ input[type="text"]:focus {
 .history-item-name {
     display: block;
     font-weight: 600;
-    color: #ecf0f1;
+    color: #f0f0f0;
     margin-bottom: 2px;
 }
 
@@ -667,21 +667,21 @@ input[type="text"]:focus {
 }
 
 .custom-modal-content {
-    background-color: #34495e;
+    background-color: #2c2c2c; /* Consistent dark background */
     margin: auto;
     padding: 30px;
-    border: 1px solid #557088;
+    border: 1px solid #444;
     border-radius: 10px;
     width: 80%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
 #customConfirmMessage {
     margin-bottom: 25px;
     font-size: 1.1em;
-    color: #ecf0f1;
+    color: #f0f0f0;
 }
 
 .custom-modal-buttons {
