@@ -3,9 +3,41 @@ const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const admin = require('firebase-admin'); // ADD THIS LINE
+const serviceAccount = require('./firebase-service-account.json'); // ADD THIS LINE (ensure path is correct)
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Confirmed from your file: local default is 3000
+
+// --- Initialize Firebase Admin SDK for Firestore access ---
+// Ensure this is done only once
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore(); // Get a reference to the Firestore database
+console.log('[SERVER] Firebase Admin SDK initialized.');
+
+// --- Load EFSA Additive Details from Firestore (once on startup) ---
+let efsaAdditiveDetailsCache = {}; // Use a cache object
+async function loadAdditivesFromFirestore() {
+    try {
+        const snapshot = await db.collection('efsaAdditives').get(); // Get all documents from the collection
+        snapshot.forEach(doc => {
+            efsaAdditiveDetailsCache[doc.id] = doc.data(); // Store data using document ID (E-number) as key
+        });
+        console.log(`[SERVER] EFSA Additive Details loaded from Firestore: ${Object.keys(efsaAdditiveDetailsCache).length} additives.`);
+    } catch (error) {
+        console.error('[SERVER] Error loading EFSA Additive Details from Firestore:', error.message);
+        // Depending on criticality, you might want to exit or retry here
+    }
+}
+
+// Call the function to load data when the server starts
+loadAdditivesFromFirestore(); // ADD THIS LINE
+
+// --- CORS Configuration (Explicitly allow frontend URL and common local dev origins) ---
+// ... (rest of your CORS config)
 
 // --- CORS Configuration (Explicitly allow frontend URL and common local dev origins) ---
 const allowedOrigins = [
@@ -14,8 +46,8 @@ const allowedOrigins = [
     'http://localhost:3000', // Your local backend dev port (from PORT variable)
     'http://localhost:8080', // Common local dev port for frontend frameworks (e.g., React, Vue)
     'http://127.0.0.1:5500', // Common local dev port for VS Code Live Server
-    'https://purescan.net' // <--- You need to add your custom domain here!
-
+    'https://purescan.net', // <--- You need to add your custom domain here!
+    'http://localhost:8081' //
 ];
 
 app.use(cors({
@@ -36,16 +68,7 @@ app.use(cors({
 
 app.use(express.json()); // Middleware to parse JSON request bodies
 
-// --- Load EFSA Additive Details ---
-let efsaAdditiveDetails = {};
-try {
-    const efsaPath = path.join(__dirname, 'efsa_additive_details.json');
-    const rawData = fs.readFileSync(efsaPath);
-    efsaAdditiveDetails = JSON.parse(rawData);
-    console.log('[SERVER] EFSA Additive Details loaded successfully.');
-} catch (error) {
-    console.error('[SERVER] Error loading EFSA Additive Details:', error.message);
-}
+
 
 // --- API Routes ---
 
@@ -78,6 +101,12 @@ app.get('/api/product/:upc', async (req, res) => {
         const openFoodFactsUrl = `https://world.openfoodfacts.org/api/v0/product/${upc}.json`;
         console.log(`[SERVER] Fetching from Open Food Facts: ${openFoodFactsUrl}`);
         const response = await axios.get(openFoodFactsUrl);
+	console.log(`[SERVER] Received response from Open Food Facts for UPC ${upc}. Status: ${response.status}`);
+        console.log(`[SERVER] Open Food Facts response data keys: ${Object.keys(response.data).join(', ')}`); // Log top-level keys
+        if (response.data.status === 0) { // Open Food Facts often uses 'status: 0' for product not found
+            console.log(`[SERVER] Open Food Facts API indicated product not found (status 0) or error for UPC: ${upc}`);
+            return res.status(404).json({ message: `Product not found for UPC: ${upc}` });
+        }
         const productData = response.data.product;
 
         if (!productData) {
@@ -142,7 +171,7 @@ const allergens = productData.allergens_from_ingredients ?
             // Extract only the base E-number (e.g., E500 from E500II) for lookup
             const baseENumber = fullENumber.match(/^E\d+/)?.[0] || fullENumber;
 
-            const additiveInfo = efsaAdditiveDetails[baseENumber]; // Look up in your loaded JSON
+            const additiveInfo = efsaAdditiveDetailsCache[baseENumber]; // Look up in your loaded JSON
 
             const name = additiveInfo ? additiveInfo.name : `${fullENumber} (Details Not Available)`;
             const type = additiveInfo ? additiveInfo.type : 'N/A';
