@@ -4,93 +4,65 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-
 const app = express();
-const PORT = process.env.PORT || 3000; // Confirmed from your file: local default is 3000
+const PORT = process.env.PORT || 3000;
 
-// --- Initialize Firebase Admin SDK for Firestore access ---
-// Ensure this is done only once
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-const db = admin.firestore(); // Get a reference to the Firestore database
-console.log('[SERVER] Firebase Admin SDK initialized.');
-
-// --- Load EFSA Additive Details from Firestore (once on startup) ---
-let efsaAdditiveDetailsCache = {}; // Use a cache object
-async function loadAdditivesFromFirestore() {
-    try {
-        const snapshot = await db.collection('efsaAdditives').get(); // Get all documents from the collection
-        snapshot.forEach(doc => {
-            efsaAdditiveDetailsCache[doc.id] = doc.data(); // Store data using document ID (E-number) as key
-        });
-        console.log(`[SERVER] EFSA Additive Details loaded from Firestore: ${Object.keys(efsaAdditiveDetailsCache).length} additives.`);
-    } catch (error) {
-        console.error('[SERVER] Error loading EFSA Additive Details from Firestore:', error.message);
-        // Depending on criticality, you might want to exit or retry here
+// Load EFSA Additive Details from a local JSON file (e.g., efsa_additive_details.json)
+let efsaAdditiveDetailsCache = {};
+try {
+    const additivesFilePath = path.join(__dirname, 'efsa_additive_details.json'); // Updated filename here
+    if (fs.existsSync(additivesFilePath)) {
+        efsaAdditiveDetailsCache = JSON.parse(fs.readFileSync(additivesFilePath, 'utf8'));
+        console.log(`[SERVER] EFSA Additive Details loaded from file: ${Object.keys(efsaAdditiveDetailsCache).length} additives.`);
+    } else {
+        console.error('[SERVER] ERROR: efsa_additive_details.json file not found.'); // Updated filename here
     }
+} catch (error) {
+    console.error('[SERVER] Error loading EFSA Additive Details from file:', error.message);
 }
 
-// Call the function to load data when the server starts
-loadAdditivesFromFirestore(); // ADD THIS LINE
-
-// --- CORS Configuration (Explicitly allow frontend URL and common local dev origins) ---
-// ... (rest of your CORS config)
-
-// --- CORS Configuration (Explicitly allow frontend URL and common local dev origins) ---
+// --- CORS Configuration ---
 const allowedOrigins = [
-    'https://upc-scanner-project.onrender.com', // Your frontend deployed URL on Render
+    'https://upc-scanner-project.onrender.com',
     'http://localhost:10000',
-    'http://localhost:3000', // Your local backend dev port (from PORT variable)
-    'http://localhost:8080', // Common local dev port for frontend frameworks (e.g., React, Vue)
-    'http://127.0.0.1:5500', // Common local dev port for VS Code Live Server
-    'https://purescan.net', // <--- You need to add your custom domain here!
-    'http://localhost:8081' //
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'http://127.0.0.1:5500',
+    'https://purescan.net',
+    'http://localhost:8081'
 ];
 
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like file:// access or curl requests)
-        if (!origin) return callback(null, true);
-        // Check if the requesting origin is in our allowed list
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-            return callback(new Error(msg), false);
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error(`The CORS policy for this site does not allow access from the specified Origin: ${origin}`), false);
         }
-        return callback(null, true);
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Explicitly allow common HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Explicitly allow common headers
-    credentials: true // Set to true if your frontend sends cookies or authorization headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 
-app.use(express.json()); // Middleware to parse JSON request bodies
-
-
+app.use(express.json());
 
 // --- API Routes ---
 
-// Simple test route (for basic server check)
 app.get('/test', (req, res) => {
     console.log('[SERVER] /test route was hit!');
     res.json({ message: 'Hello from the simple Render backend!' });
 });
 
-// Health check route for Render
 app.get('/', (req, res) => {
     console.log('[SERVER] Health check / route was hit!');
     res.send('Backend API is running!');
 });
 
-// API route to get product information by UPC
-// IMPORTANT: Changed route from /api/ingredients/:upc to /api/product/:upc
-// to match the frontend's fetchProductData call.
 app.get('/api/product/:upc', async (req, res) => {
     const upc = req.params.upc;
     console.log(`[SERVER] Received request for UPC: ${upc}`);
 
-    // Basic UPC validation
     if (!upc || typeof upc !== 'string' || upc.length < 8 || upc.length > 14) {
         console.warn(`[SERVER] Invalid UPC format received: ${upc}`);
         return res.status(400).json({ message: 'Invalid UPC format. Please provide an 8, 12, 13, or 14-digit UPC.' });
@@ -100,12 +72,12 @@ app.get('/api/product/:upc', async (req, res) => {
         const openFoodFactsUrl = `https://world.openfoodfacts.org/api/v0/product/${upc}.json`;
         console.log(`[SERVER] Fetching from Open Food Facts: ${openFoodFactsUrl}`);
         const response = await axios.get(openFoodFactsUrl);
-	console.log(`[SERVER] Received response from Open Food Facts for UPC ${upc}. Status: ${response.status}`);
-        console.log(`[SERVER] Open Food Facts response data keys: ${Object.keys(response.data).join(', ')}`); // Log top-level keys
-        if (response.data.status === 0) { // Open Food Facts often uses 'status: 0' for product not found
+        
+        if (response.data.status === 0) {
             console.log(`[SERVER] Open Food Facts API indicated product not found (status 0) or error for UPC: ${upc}`);
             return res.status(404).json({ message: `Product not found for UPC: ${upc}` });
         }
+        
         const productData = response.data.product;
 
         if (!productData) {
@@ -113,22 +85,18 @@ app.get('/api/product/:upc', async (req, res) => {
             return res.status(404).json({ message: `Product not found for UPC: ${upc}` });
         }
 
-        // --- Extract and Format Product Data ---
-        // Using common English fields or fallbacks
         const productName = productData.product_name_en || productData.product_name || 'Unknown Product';
         const ingredientsText = productData.ingredients_text_en || productData.ingredients_text || 'No ingredients listed.';
         const imageUrl = productData.image_front_url || productData.image_url || null;
         
-        // Process allergens: remove 'en:' prefix, replace hyphens, filter out empty strings, and de-duplicate
-const allergens = productData.allergens_from_ingredients ?
-    [...new Set(productData.allergens_from_ingredients
-        .split(',')
-        .map(a => a.trim().replace(/^en:/, '').replace(/-/g, ' ').toLowerCase()) // Clean and convert to lowercase
-        .filter(Boolean))] // Create Set for uniqueness, then convert back to array
-    : [];
+        const allergens = productData.allergens_from_ingredients ?
+            [...new Set(productData.allergens_from_ingredients
+                .split(',')
+                .map(a => a.trim().replace(/^en:/, '').replace(/-/g, ' ').toLowerCase())
+                .filter(Boolean))]
+            : [];
         
         const novaGroup = productData.nova_group ? String(productData.nova_group) : null;
-
         let novaExplanation = '';
         if (novaGroup) {
             switch (novaGroup) {
@@ -152,8 +120,6 @@ const allergens = productData.allergens_from_ingredients ?
         const servingSize = productData.serving_size || null;
         const servingQuantity = productData.serving_quantity ? parseFloat(productData.serving_quantity) : null;
 
-        // Extract nutrition facts, ensuring they are objects with a 'per_serving' field
-        // as expected by frontend's getPerServingValue
         const nutritionFacts = {
             calories: { per_serving: productData.nutriments?.['energy-kcal_100g'] || null },
             protein: { per_serving: productData.nutriments?.proteins_100g || null },
@@ -164,35 +130,30 @@ const allergens = productData.allergens_from_ingredients ?
             fiber: { per_serving: productData.nutriments?.fiber_100g || null },
         };
 
-        // --- Extract and Enrich Additives with EFSA data ---
         const additives = productData.additives_tags ? productData.additives_tags.map(tag => {
             const fullENumber = tag.replace('en:', '').toUpperCase();
-            // Extract only the base E-number (e.g., E500 from E500II) for lookup
             const baseENumber = fullENumber.match(/^E\d+/)?.[0] || fullENumber;
-
-            const additiveInfo = efsaAdditiveDetailsCache[baseENumber]; // Look up in your loaded JSON
-
+            const additiveInfo = efsaAdditiveDetailsCache[baseENumber];
+            
             const name = additiveInfo ? additiveInfo.name : `${fullENumber} (Details Not Available)`;
             const type = additiveInfo ? additiveInfo.type : 'N/A';
             const status = additiveInfo ? additiveInfo.status : 'Unknown Status';
 
             return {
-                eNumber: fullENumber, // Keep the original full E-number for display
+                eNumber: fullENumber,
                 name: name,
                 type: type,
                 status: status
             };
         }) : [];
 
-        // Construct the final product object to send to the frontend
-        // IMPORTANT: Ensure keys match what your frontend client.js expects
         const result = {
-            barcode: upc, // Frontend expects 'barcode'
+            barcode: upc,
             product_name: productName,
             ingredients: ingredientsText,
-            image_url: imageUrl, // Frontend expects 'image_url'
+            image_url: imageUrl,
             nova_group: novaGroup,
-            nova_group_description: novaExplanation, // Frontend expects 'nova_group_description'
+            nova_group_description: novaExplanation,
             allergens: allergens,
             additives: additives,
             nutrition_facts: nutritionFacts,
@@ -226,14 +187,11 @@ const allergens = productData.allergens_from_ingredients ?
     }
 });
 
-// --- 404 Catch-all Middleware ---
-// This middleware catches requests that don't match any defined routes
 app.use((req, res) => {
     console.log(`[SERVER] No specific route found for: ${req.method} ${req.url}`);
     res.status(404).json({ message: 'API endpoint not found.' });
 });
 
-// --- Start the Server ---
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on http://0.0.0.0:${PORT}`);
     console.log(`[SERVER] Backend API server listening on PORT: ${PORT}`);
